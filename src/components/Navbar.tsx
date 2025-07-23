@@ -58,7 +58,10 @@ const Navbar = () => {
             <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300">
               Login
             </Button>
-            <Button className="btn-hero group">
+            <Button 
+              className="btn-hero group"
+              onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+            >
               <span>Começar Agora</span>
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -97,7 +100,10 @@ const Navbar = () => {
               >
                 Login
               </Button>
-              <Button className="w-full btn-hero">
+              <Button 
+                className="w-full btn-hero"
+                onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+              >
                 <span>Começar Agora</span>
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>

@@ -116,10 +116,15 @@ const Footer = () => {
                 <span>contato@mov.marketing</span>
               </div>
               
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <Phone className="w-5 h-5 text-primary" />
-                <span>+55 (11) 99999-9999</span>
-              </div>
+              <a 
+                href="https://wa.me/5519981134193" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group"
+              >
+                <Phone className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                <span>(19) 98113-4193</span>
+              </a>
               
               <div className="flex items-start gap-3 text-muted-foreground">
                 <MapPin className="w-5 h-5 text-primary mt-0.5" />
@@ -170,7 +175,10 @@ const Footer = () => {
 
       {/* Floating Action Button */}
       <div className="fixed bottom-8 right-8 z-50">
-        <Button className="btn-hero rounded-full w-14 h-14 p-0 shadow-2xl animate-glow">
+        <Button 
+          className="btn-hero rounded-full w-14 h-14 p-0 shadow-2xl animate-glow"
+          onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+        >
           <ArrowRight className="w-6 h-6" />
         </Button>
       </div>

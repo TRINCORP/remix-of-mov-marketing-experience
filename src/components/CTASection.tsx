@@ -82,20 +82,35 @@ const CTASection = () => {
 
           {/* Quick Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20 animate-slide-up animation-delay-1200">
-            <Button className="btn-hero group text-xl px-12 py-6">
+            <Button 
+              className="btn-hero group text-xl px-12 py-6"
+              onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+            >
               <Sparkles className="mr-3 w-6 h-6 group-hover:rotate-12 transition-transform" />
               <span>Consultoria Gratuita</span>
               <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </Button>
             
             <div className="flex gap-4">
-              <Button variant="outline" className="btn-secondary p-4">
+              <Button 
+                variant="outline" 
+                className="btn-secondary p-4"
+                onClick={() => window.open('tel:+5519981134193', '_blank')}
+              >
                 <Phone className="w-6 h-6" />
               </Button>
-              <Button variant="outline" className="btn-secondary p-4">
+              <Button 
+                variant="outline" 
+                className="btn-secondary p-4"
+                onClick={() => window.open('mailto:contato@mov.marketing', '_blank')}
+              >
                 <Mail className="w-6 h-6" />
               </Button>
-              <Button variant="outline" className="btn-secondary p-4">
+              <Button 
+                variant="outline" 
+                className="btn-secondary p-4"
+                onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+              >
                 <MessageCircle className="w-6 h-6" />
               </Button>
             </div>
@@ -191,7 +206,7 @@ const CTASection = () => {
                   </div>
                   <div>
                     <div className="font-semibold text-foreground">Telefone</div>
-                    <div className="text-muted-foreground">+55 (11) 99999-9999</div>
+                    <div className="text-muted-foreground">(19) 98113-4193</div>
                   </div>
                 </div>
 

@@ -57,7 +57,10 @@ const HeroSection = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-slide-up animation-delay-1200">
-          <Button className="btn-hero group">
+          <Button 
+            className="btn-hero group"
+            onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+          >
             <span>Começar Revolução</span>
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Button>
