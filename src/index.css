@@ -8,58 +8,61 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Brand Colors - Vibrant Marketing Palette */
-    --background: 220 25% 6%;
+    /* MOV Brand Colors - Authentic Brand Palette */
+    --background: 0 0% 4%;
     --foreground: 0 0% 98%;
 
-    --card: 220 25% 8%;
+    --card: 0 0% 6%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 220 25% 10%;
+    --popover: 0 0% 8%;
     --popover-foreground: 0 0% 98%;
 
-    /* Primary - Electric Purple */
-    --primary: 270 91% 65%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 270 91% 75%;
+    /* Primary - MOV Golden Yellow */
+    --primary: 45 95% 58%;
+    --primary-foreground: 0 0% 10%;
+    --primary-glow: 45 95% 68%;
+    --primary-dark: 45 85% 48%;
     
-    /* Secondary - Cyber Orange */
-    --secondary: 25 95% 63%;
-    --secondary-foreground: 220 25% 6%;
-    --secondary-glow: 25 95% 73%;
+    /* Secondary - Warm Accent */
+    --secondary: 42 88% 62%;
+    --secondary-foreground: 0 0% 10%;
+    --secondary-glow: 42 88% 72%;
 
-    /* Accent - Neon Blue */
-    --accent: 200 100% 70%;
-    --accent-foreground: 220 25% 6%;
-    --accent-glow: 200 100% 80%;
+    /* Accent - Sophisticated Gray */
+    --accent: 220 8% 25%;
+    --accent-foreground: 0 0% 98%;
+    --accent-light: 220 8% 35%;
 
-    /* Muted - Dark Gray */
-    --muted: 220 15% 15%;
-    --muted-foreground: 220 10% 70%;
+    /* Muted - Dark Charcoal */
+    --muted: 220 8% 12%;
+    --muted-foreground: 220 8% 65%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 20% 20%;
-    --input: 220 20% 18%;
-    --ring: 270 91% 65%;
+    --border: 220 8% 18%;
+    --input: 220 8% 15%;
+    --ring: 45 95% 58%;
 
-    --radius: 1rem;
+    --radius: 1.2rem;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    /* MOV Brand Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary)));
-    --gradient-hero: linear-gradient(135deg, hsl(270 91% 20%), hsl(220 25% 6%));
-    --gradient-glow: radial-gradient(circle at center, hsl(var(--primary) / 0.3), transparent 70%);
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 4%));
+    --gradient-accent: linear-gradient(45deg, hsl(var(--primary) / 0.1), hsl(var(--secondary) / 0.05));
+    --gradient-glow: radial-gradient(circle at center, hsl(var(--primary) / 0.15), transparent 70%);
     
-    /* Shadows & Glows */
-    --shadow-neon: 0 0 20px hsl(var(--primary) / 0.5), 0 0 40px hsl(var(--primary) / 0.3);
-    --shadow-glow: 0 10px 40px hsl(var(--primary) / 0.2);
-    --shadow-card: 0 20px 60px hsl(220 25% 3% / 0.5);
+    /* MOV Shadows & Effects */
+    --shadow-golden: 0 0 30px hsl(var(--primary) / 0.4), 0 0 60px hsl(var(--primary) / 0.2);
+    --shadow-soft: 0 10px 40px hsl(0 0% 0% / 0.3);
+    --shadow-card: 0 25px 80px hsl(0 0% 0% / 0.4);
     
-    /* Animations */
+    /* Advanced Animations */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-elastic: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .dark {
@@ -112,26 +115,40 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Hero Button Variants */
+  /* MOV Button Variants */
   .btn-hero {
-    @apply bg-gradient-to-r from-primary to-accent text-primary-foreground px-8 py-4 rounded-full font-bold text-lg;
-    @apply hover:scale-105 hover:shadow-[var(--shadow-neon)] transition-all duration-300;
-    @apply active:scale-95;
+    @apply bg-gradient-to-r from-primary to-secondary text-primary-foreground px-8 py-4 rounded-full font-bold text-lg;
+    @apply hover:scale-105 hover:shadow-[var(--shadow-golden)] transition-all duration-300;
+    @apply active:scale-95 border-2 border-primary/20;
   }
   
   .btn-secondary {
-    @apply border-2 border-primary text-primary px-8 py-4 rounded-full font-bold text-lg;
-    @apply hover:bg-primary hover:text-primary-foreground hover:scale-105 transition-all duration-300;
+    @apply border-2 border-primary text-primary px-8 py-4 rounded-full font-bold text-lg bg-transparent;
+    @apply hover:bg-primary hover:text-primary-foreground hover:scale-105 hover:shadow-[var(--shadow-golden)] transition-all duration-300;
     @apply active:scale-95;
   }
 
-  /* Text Effects */
+  /* MOV Text Effects */
   .text-glow {
-    text-shadow: 0 0 20px hsl(var(--primary) / 0.6);
+    text-shadow: 0 0 30px hsl(var(--primary) / 0.8);
   }
   
   .text-gradient {
-    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary via-secondary to-primary-glow bg-clip-text text-transparent;
+  }
+
+  .text-split {
+    overflow: hidden;
+  }
+  
+  .text-split .word {
+    display: inline-block;
+    transform: translateY(100%);
+    transition: transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  
+  .text-split.animate .word {
+    transform: translateY(0);
   }
 
   /* Background Effects */
@@ -194,6 +211,34 @@ All colors MUST be HSL.
   
   .animate-scale-in {
     animation: scaleIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+  
+  .animation-delay-900 {
+    animation-delay: 900ms;
+  }
+  
+  .animation-delay-1000 {
+    animation-delay: 1000ms;
+  }
+  
+  .animation-delay-1200 {
+    animation-delay: 1200ms;
+  }
+  
+  .animation-delay-1500 {
+    animation-delay: 1500ms;
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2000ms;
   }
 }
 

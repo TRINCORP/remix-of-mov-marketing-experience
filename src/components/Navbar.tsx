@@ -33,10 +33,12 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center gap-3 group cursor-pointer">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Sparkles className="w-6 h-6 text-white animate-pulse" />
-            </div>
-            <div className="text-2xl font-black text-gradient">MOV</div>
+            <img 
+              src="/lovable-uploads/5b1fbcd6-b921-46de-81cc-192aea869e0f.png" 
+              alt="MOV Logo" 
+              className="w-10 h-10 group-hover:scale-110 transition-transform filter drop-shadow-lg"
+            />
+            <div className="text-2xl font-black text-primary">MOV</div>
           </div>
 
           {/* Desktop Navigation */}
