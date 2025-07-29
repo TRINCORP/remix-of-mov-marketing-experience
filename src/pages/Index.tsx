@@ -6,6 +6,7 @@ import TestimonialsSection from '@/components/TestimonialsSection';
 import CTASection from '@/components/CTASection';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import PinnedSection from '@/components/PinnedSection';
 
 const Index = () => {
   return (
@@ -14,6 +15,7 @@ const Index = () => {
       <main>
         <HeroSection />
         <ParallaxSection />
+        <PinnedSection />
         <AboutSection />
         <ServicesSection />
         <TestimonialsSection />
