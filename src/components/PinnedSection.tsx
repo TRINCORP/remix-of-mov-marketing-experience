@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 const PinnedSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [animationPhase, setAnimationPhase] = useState(0);
+  const [hasStartedScrolling, setHasStartedScrolling] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,28 +31,37 @@ const PinnedSection = () => {
         const clampedProgress = Math.min(Math.max(progress, 0), 1);
         setScrollProgress(clampedProgress);
         
-        // Define as fases da animação com hysteresis para evitar flickering
-        const currentPhase = animationPhase;
-        let newPhase = currentPhase;
-        
-        if (clampedProgress < 0.1) {
-          newPhase = 0;
-        } else if (clampedProgress >= 0.15 && currentPhase < 1) {
-          newPhase = 1;
-        } else if (clampedProgress >= 0.35 && currentPhase < 2) {
-          newPhase = 2;
-        } else if (clampedProgress >= 0.55 && currentPhase < 3) {
-          newPhase = 3;
-        } else if (clampedProgress >= 0.75 && currentPhase < 4) {
-          newPhase = 4;
+        // Marca que o usuário começou a rolar se o progresso > 0
+        if (clampedProgress > 0 && !hasStartedScrolling) {
+          setHasStartedScrolling(true);
         }
         
-        if (newPhase !== currentPhase) {
-          setAnimationPhase(newPhase);
+        // Define as fases da animação apenas após o usuário começar a rolar
+        if (hasStartedScrolling || clampedProgress > 0) {
+          const currentPhase = animationPhase;
+          let newPhase = currentPhase;
+          
+          if (clampedProgress < 0.1) {
+            newPhase = 0;
+          } else if (clampedProgress >= 0.15 && currentPhase < 1) {
+            newPhase = 1;
+          } else if (clampedProgress >= 0.35 && currentPhase < 2) {
+            newPhase = 2;
+          } else if (clampedProgress >= 0.55 && currentPhase < 3) {
+            newPhase = 3;
+          } else if (clampedProgress >= 0.75 && currentPhase < 4) {
+            newPhase = 4;
+          }
+          
+          if (newPhase !== currentPhase) {
+            setAnimationPhase(newPhase);
+          }
         }
       } else {
         setScrollProgress(0);
-        setAnimationPhase(0);
+        if (!hasStartedScrolling) {
+          setAnimationPhase(0);
+        }
       }
     };
 
@@ -74,7 +84,7 @@ const PinnedSection = () => {
       window.removeEventListener('scroll', optimizedHandleScroll);
       window.removeEventListener('resize', optimizedHandleScroll);
     };
-  }, [animationPhase]);
+  }, [animationPhase, hasStartedScrolling]);
 
   return (
     <section 
@@ -140,36 +150,57 @@ const PinnedSection = () => {
         {/* Conteúdo principal */}
         <div className="relative z-10 text-center px-6 max-w-7xl mx-auto">
           
-          {/* Título principal sempre visível */}
-          <div 
-            className={`transition-all duration-1000 ease-out ${
-              animationPhase >= 1 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
-            }`}
-          >
-            <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6">
-              <span 
-                className="inline-block text-gradient"
+          {/* Mensagem inicial - antes do scroll começar */}
+          {!hasStartedScrolling && (
+            <div 
+              className={`transition-all duration-1000 ease-out ${
+                scrollProgress === 0 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'
+              }`}
+            >
+              <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6">
+                <span className="inline-block text-gradient">
+                  TUDO COMEÇA
+                </span>
+              </h2>
+              <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-foreground/80 font-light mb-8 md:mb-12 px-4">
+                com uma <span className="text-primary font-bold">ideia...</span>
+              </p>
+            </div>
+          )}
+
+          {/* Conteúdo de transformação - após começar o scroll */}
+          {hasStartedScrolling && (
+            <div 
+              className={`transition-all duration-1000 ease-out ${
+                animationPhase >= 1 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
+              }`}
+            >
+              <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6">
+                <span 
+                  className="inline-block text-gradient"
+                  style={{
+                    transform: `translateY(${Math.max(0, (1 - scrollProgress) * 30)}px)`,
+                    transition: 'transform 0.6s ease-out'
+                  }}
+                >
+                  TRANSFORMAÇÃO
+                </span>
+              </h2>
+              <p 
+                className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-foreground/80 font-light mb-8 md:mb-12 px-4"
                 style={{
-                  transform: `translateY(${Math.max(0, (1 - scrollProgress) * 30)}px)`,
+                  transform: `translateY(${Math.max(0, (1 - scrollProgress) * 20)}px)`,
                   transition: 'transform 0.6s ease-out'
                 }}
               >
-                TRANSFORMAÇÃO
-              </span>
-            </h2>
-            <p 
-              className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-foreground/80 font-light mb-8 md:mb-12 px-4"
-              style={{
-                transform: `translateY(${Math.max(0, (1 - scrollProgress) * 20)}px)`,
-                transition: 'transform 0.6s ease-out'
-              }}
-            >
-              Cada pixel conta uma história de <span className="text-primary font-bold">sucesso</span>
-            </p>
-          </div>
+                Cada pixel conta uma história de <span className="text-primary font-bold">sucesso</span>
+              </p>
+            </div>
+          )}
 
-          {/* Cards de impacto */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-12 md:mb-16 px-4">
+          {/* Cards de impacto - apenas após começar o scroll */}
+          {hasStartedScrolling && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-12 md:mb-16 px-4">
             
             {/* Card 1 */}
             <div 
@@ -237,8 +268,10 @@ const PinnedSection = () => {
               </div>
             </div>
           </div>
+          )}
 
-          {/* Estatísticas finais */}
+          {/* Estatísticas finais - apenas após começar o scroll */}
+          {hasStartedScrolling && (
           <div 
             className={`transition-all duration-1000 ease-out px-4 ${
               animationPhase >= 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
@@ -268,6 +301,7 @@ const PinnedSection = () => {
               </div>
             </div>
           </div>
+          )}
 
         </div>
 
