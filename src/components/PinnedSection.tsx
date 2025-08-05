@@ -32,24 +32,22 @@ const PinnedSection = () => {
         setScrollProgress(clampedProgress);
         
         // Marca que o usuário começou a rolar se o progresso > 0
-        if (clampedProgress > 0 && !hasStartedScrolling) {
+        if (clampedProgress > 0.05 && !hasStartedScrolling) {
           setHasStartedScrolling(true);
         }
         
         // Define as fases da animação apenas após o usuário começar a rolar
-        if (hasStartedScrolling || clampedProgress > 0) {
+        if (hasStartedScrolling) {
           const currentPhase = animationPhase;
           let newPhase = currentPhase;
           
-          if (clampedProgress < 0.1) {
-            newPhase = 0;
-          } else if (clampedProgress >= 0.15 && currentPhase < 1) {
+          if (clampedProgress >= 0.1 && currentPhase < 1) {
             newPhase = 1;
-          } else if (clampedProgress >= 0.35 && currentPhase < 2) {
+          } else if (clampedProgress >= 0.25 && currentPhase < 2) {
             newPhase = 2;
-          } else if (clampedProgress >= 0.55 && currentPhase < 3) {
+          } else if (clampedProgress >= 0.45 && currentPhase < 3) {
             newPhase = 3;
-          } else if (clampedProgress >= 0.75 && currentPhase < 4) {
+          } else if (clampedProgress >= 0.65 && currentPhase < 4) {
             newPhase = 4;
           }
           
@@ -59,9 +57,7 @@ const PinnedSection = () => {
         }
       } else {
         setScrollProgress(0);
-        if (!hasStartedScrolling) {
-          setAnimationPhase(0);
-        }
+        // Não resetar hasStartedScrolling nem animationPhase quando sair da seção
       }
     };
 
@@ -151,55 +147,55 @@ const PinnedSection = () => {
         <div className="relative z-10 text-center px-6 max-w-7xl mx-auto">
           
           {/* Mensagem inicial - antes do scroll começar */}
-          {!hasStartedScrolling && (
-            <div 
-              className={`transition-all duration-1000 ease-out ${
-                scrollProgress === 0 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'
-              }`}
-            >
-              <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6">
-                <span className="inline-block text-gradient">
-                  TUDO COMEÇA
-                </span>
-              </h2>
-              <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-foreground/80 font-light mb-8 md:mb-12 px-4">
-                com uma <span className="text-primary font-bold">ideia...</span>
-              </p>
-            </div>
-          )}
+          <div 
+            className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 ease-out ${
+              !hasStartedScrolling ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95 pointer-events-none'
+            }`}
+          >
+            <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6">
+              <span className="inline-block text-gradient">
+                TUDO COMEÇA
+              </span>
+            </h2>
+            <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-foreground/80 font-light mb-8 md:mb-12 px-4">
+              com uma <span className="text-primary font-bold">ideia...</span>
+            </p>
+          </div>
 
           {/* Conteúdo de transformação - após começar o scroll */}
-          {hasStartedScrolling && (
-            <div 
-              className={`transition-all duration-1000 ease-out ${
-                animationPhase >= 1 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
-              }`}
-            >
-              <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6">
-                <span 
-                  className="inline-block text-gradient"
-                  style={{
-                    transform: `translateY(${Math.max(0, (1 - scrollProgress) * 30)}px)`,
-                    transition: 'transform 0.6s ease-out'
-                  }}
-                >
-                  TRANSFORMAÇÃO
-                </span>
-              </h2>
-              <p 
-                className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-foreground/80 font-light mb-8 md:mb-12 px-4"
+          <div 
+            className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 ease-out ${
+              hasStartedScrolling && animationPhase >= 1 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95 pointer-events-none'
+            }`}
+          >
+            <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6">
+              <span 
+                className="inline-block text-gradient"
                 style={{
-                  transform: `translateY(${Math.max(0, (1 - scrollProgress) * 20)}px)`,
+                  transform: `translateY(${Math.max(0, (1 - scrollProgress) * 30)}px)`,
                   transition: 'transform 0.6s ease-out'
                 }}
               >
-                Cada pixel conta uma história de <span className="text-primary font-bold">sucesso</span>
-              </p>
-            </div>
-          )}
+                TRANSFORMAÇÃO
+              </span>
+            </h2>
+            <p 
+              className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-foreground/80 font-light mb-8 md:mb-12 px-4"
+              style={{
+                transform: `translateY(${Math.max(0, (1 - scrollProgress) * 20)}px)`,
+                transition: 'transform 0.6s ease-out'
+              }}
+            >
+              Cada pixel conta uma história de <span className="text-primary font-bold">sucesso</span>
+            </p>
+          </div>
 
           {/* Cards de impacto - apenas após começar o scroll */}
-          {hasStartedScrolling && (
+          <div 
+            className={`transition-all duration-1000 ease-out ${
+              hasStartedScrolling ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-12 md:mb-16 px-4">
             
             {/* Card 1 */}
@@ -267,41 +263,45 @@ const PinnedSection = () => {
                 </p>
               </div>
             </div>
+            </div>
           </div>
-          )}
 
           {/* Estatísticas finais - apenas após começar o scroll */}
-          {hasStartedScrolling && (
           <div 
-            className={`transition-all duration-1000 ease-out px-4 ${
-              animationPhase >= 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
+            className={`transition-all duration-1000 ease-out ${
+              hasStartedScrolling ? 'opacity-100' : 'opacity-0 pointer-events-none'
             }`}
-            style={{ transitionDelay: '800ms' }}
           >
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 rounded-2xl md:rounded-3xl blur-xl md:blur-2xl" />
-              <div className="relative p-6 md:p-8 lg:p-12 bg-card/80 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-primary/20">
-                <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-gradient mb-6 md:mb-8">
-                  NÚMEROS QUE IMPRESSIONAM
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-primary mb-2 animate-glow">+500%</div>
-                    <div className="text-muted-foreground font-medium text-sm md:text-base lg:text-lg">ROI Médio dos Clientes</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-secondary mb-2 animate-glow">15+</div>
-                    <div className="text-muted-foreground font-medium text-sm md:text-base lg:text-lg">Anos Transformando Marcas</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-gradient mb-2">200+</div>
-                    <div className="text-muted-foreground font-medium text-sm md:text-base lg:text-lg">Projetos de Sucesso</div>
+            <div 
+              className={`transition-all duration-1000 ease-out px-4 ${
+                animationPhase >= 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
+              }`}
+              style={{ transitionDelay: '800ms' }}
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 rounded-2xl md:rounded-3xl blur-xl md:blur-2xl" />
+                <div className="relative p-6 md:p-8 lg:p-12 bg-card/80 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-primary/20">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-gradient mb-6 md:mb-8">
+                    NÚMEROS QUE IMPRESSIONAM
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                    <div className="text-center">
+                      <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-primary mb-2 animate-glow">+500%</div>
+                      <div className="text-muted-foreground font-medium text-sm md:text-base lg:text-lg">ROI Médio dos Clientes</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-secondary mb-2 animate-glow">15+</div>
+                      <div className="text-muted-foreground font-medium text-sm md:text-base lg:text-lg">Anos Transformando Marcas</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-gradient mb-2">200+</div>
+                      <div className="text-muted-foreground font-medium text-sm md:text-base lg:text-lg">Projetos de Sucesso</div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          )}
 
         </div>
 
