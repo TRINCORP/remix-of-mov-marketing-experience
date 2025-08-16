@@ -3,8 +3,17 @@ import { useState, useEffect, useRef } from 'react';
 
 const PinnedSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [animationPhase, setAnimationPhase] = useState(0);
+  const [currentMessage, setCurrentMessage] = useState(0);
+  const [hasStartedScrolling, setHasStartedScrolling] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Mensagens progressivas de carregamento
+  const loadingMessages = [
+    "Você está pronto para revolucionar?",
+    "Cada detalhe faz a diferença…", 
+    "A inovação está acontecendo agora.",
+    "Bem-vindo à MOV, onde cada pixel conta uma história de sucesso."
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,28 +39,21 @@ const PinnedSection = () => {
         const clampedProgress = Math.min(Math.max(progress, 0), 1);
         setScrollProgress(clampedProgress);
         
-        // Define as fases da animação com hysteresis para evitar flickering
-        const currentPhase = animationPhase;
-        let newPhase = currentPhase;
-        
-        if (clampedProgress < 0.1) {
-          newPhase = 0;
-        } else if (clampedProgress >= 0.15 && currentPhase < 1) {
-          newPhase = 1;
-        } else if (clampedProgress >= 0.35 && currentPhase < 2) {
-          newPhase = 2;
-        } else if (clampedProgress >= 0.55 && currentPhase < 3) {
-          newPhase = 3;
-        } else if (clampedProgress >= 0.75 && currentPhase < 4) {
-          newPhase = 4;
+        // Marca que o usuário começou a rolar
+        if (clampedProgress > 0.01 && !hasStartedScrolling) {
+          setHasStartedScrolling(true);
         }
         
-        if (newPhase !== currentPhase) {
-          setAnimationPhase(newPhase);
-        }
+        // Define qual mensagem mostrar baseada no progresso
+        let messageIndex = 0;
+        if (clampedProgress >= 0.25) messageIndex = 1;
+        if (clampedProgress >= 0.5) messageIndex = 2;
+        if (clampedProgress >= 0.75) messageIndex = 3;
+        
+        setCurrentMessage(messageIndex);
       } else {
         setScrollProgress(0);
-        setAnimationPhase(0);
+        setCurrentMessage(0);
       }
     };
 
@@ -74,7 +76,7 @@ const PinnedSection = () => {
       window.removeEventListener('scroll', optimizedHandleScroll);
       window.removeEventListener('resize', optimizedHandleScroll);
     };
-  }, [animationPhase]);
+  }, [hasStartedScrolling]);
 
   return (
     <section 
@@ -138,156 +140,115 @@ const PinnedSection = () => {
         </div>
 
         {/* Conteúdo principal */}
-        <div className="relative z-10 text-center px-6 max-w-7xl mx-auto">
+        <div className="relative z-10 text-center px-4 sm:px-6 max-w-7xl mx-auto">
           
-          {/* Título principal sempre visível */}
-          <div 
-            className={`transition-all duration-1000 ease-out ${
-              animationPhase >= 1 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
-            }`}
-          >
-            <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6">
-              <span 
-                className="inline-block text-gradient"
-                style={{
-                  transform: `translateY(${Math.max(0, (1 - scrollProgress) * 30)}px)`,
-                  transition: 'transform 0.6s ease-out'
-                }}
-              >
-                TRANSFORMAÇÃO
-              </span>
-            </h2>
-            <p 
-              className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-foreground/80 font-light mb-8 md:mb-12 px-4"
-              style={{
-                transform: `translateY(${Math.max(0, (1 - scrollProgress) * 20)}px)`,
-                transition: 'transform 0.6s ease-out'
-              }}
-            >
-              Cada pixel conta uma história de <span className="text-primary font-bold">sucesso</span>
-            </p>
-          </div>
+          {/* Mensagem inicial (aparece apenas no início) */}
+          {!hasStartedScrolling && (
+            <div className="animate-fade-in">
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6">
+                <span className="inline-block text-gradient">
+                  TRANSFORMAÇÃO
+                </span>
+              </h2>
+              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-foreground/80 font-light mb-8 md:mb-12 px-2">
+                Cada pixel conta uma história de <span className="text-primary font-bold">sucesso</span>
+              </p>
+            </div>
+          )}
 
-          {/* Cards de impacto */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-12 md:mb-16 px-4">
-            
-            {/* Card 1 */}
+          {/* Mensagens progressivas durante o scroll */}
+          {hasStartedScrolling && (
             <div 
-              className={`transition-all duration-1000 ease-out ${
-                animationPhase >= 2 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
-              }`}
-              style={{ transitionDelay: '200ms' }}
+              key={currentMessage}
+              className="animate-fade-in min-h-[200px] sm:min-h-[250px] md:min-h-[300px] flex items-center justify-center"
             >
-              <div className="card-glow group cursor-pointer">
-                <div className="mb-4 md:mb-6">
-                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-xl md:text-2xl font-black text-primary-foreground">+</span>
-                  </div>
+              <div className="text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 md:mb-8">
+                  <span 
+                    className="inline-block text-gradient leading-tight"
+                    style={{
+                      transform: `translateY(${Math.max(0, (1 - scrollProgress) * 20)}px)`,
+                      transition: 'transform 0.8s ease-out'
+                    }}
+                  >
+                    {loadingMessages[currentMessage]}
+                  </span>
+                </h2>
+                
+                {/* Barra de progresso elegante */}
+                <div className="w-32 sm:w-48 md:w-64 h-1 bg-border rounded-full mx-auto mb-4 overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-primary via-secondary to-primary-glow transition-all duration-700 ease-out"
+                    style={{ 
+                      width: `${scrollProgress * 100}%`,
+                      boxShadow: `0 0 10px hsl(var(--primary) / 0.5)`
+                    }}
+                  />
                 </div>
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-gradient mb-3 md:mb-4">
-                  ESTRATÉGIA
-                </h3>
-                <p className="text-muted-foreground text-base md:text-lg leading-relaxed px-2">
-                  Transformamos dados em <span className="text-primary font-semibold">insights poderosos</span>
+                
+                {/* Percentual */}
+                <p className="text-sm sm:text-base md:text-lg text-muted-foreground font-medium">
+                  {Math.round(scrollProgress * 100)}% Carregado
                 </p>
               </div>
             </div>
+          )}
 
-            {/* Card 2 */}
-            <div 
-              className={`transition-all duration-1000 ease-out ${
-                animationPhase >= 3 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
-              }`}
-              style={{ transitionDelay: '400ms' }}
-            >
-              <div className="card-glow group cursor-pointer">
-                <div className="mb-4 md:mb-6">
-                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto bg-gradient-to-br from-secondary to-primary rounded-2xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-xl md:text-2xl font-black text-primary-foreground">⚡</span>
-                  </div>
-                </div>
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-gradient mb-3 md:mb-4">
-                  EXECUÇÃO
-                </h3>
-                <p className="text-muted-foreground text-base md:text-lg leading-relaxed px-2">
-                  Implementamos com <span className="text-secondary font-semibold">precisão cirúrgica</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div 
-              className={`transition-all duration-1000 ease-out md:col-span-2 lg:col-span-1 ${
-                animationPhase >= 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
-              }`}
-              style={{ transitionDelay: '600ms' }}
-            >
-              <div className="card-glow group cursor-pointer">
-                <div className="mb-4 md:mb-6">
-                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto bg-gradient-to-br from-primary via-secondary to-primary-glow rounded-2xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-xl md:text-2xl font-black text-primary-foreground">∞</span>
-                  </div>
-                </div>
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-gradient mb-3 md:mb-4">
-                  RESULTADOS
-                </h3>
-                <p className="text-muted-foreground text-base md:text-lg leading-relaxed px-2">
-                  Entregamos <span className="text-gradient font-semibold">crescimento exponencial</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Estatísticas finais */}
-          <div 
-            className={`transition-all duration-1000 ease-out px-4 ${
-              animationPhase >= 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'
-            }`}
-            style={{ transitionDelay: '800ms' }}
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 rounded-2xl md:rounded-3xl blur-xl md:blur-2xl" />
-              <div className="relative p-6 md:p-8 lg:p-12 bg-card/80 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-primary/20">
-                <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-gradient mb-6 md:mb-8">
-                  NÚMEROS QUE IMPRESSIONAM
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-primary mb-2 animate-glow">+500%</div>
-                    <div className="text-muted-foreground font-medium text-sm md:text-base lg:text-lg">ROI Médio dos Clientes</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-secondary mb-2 animate-glow">15+</div>
-                    <div className="text-muted-foreground font-medium text-sm md:text-base lg:text-lg">Anos Transformando Marcas</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-gradient mb-2">200+</div>
-                    <div className="text-muted-foreground font-medium text-sm md:text-base lg:text-lg">Projetos de Sucesso</div>
+          {/* Conteúdo adicional que aparece apenas quando o carregamento termina */}
+          {scrollProgress >= 0.95 && (
+            <div className="animate-fade-in mt-8 md:mt-12">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-8 md:mb-12">
+                
+                {/* Card de impacto final */}
+                <div className="md:col-span-3">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-2xl md:rounded-3xl blur-xl" />
+                    <div className="relative p-6 md:p-8 lg:p-12 bg-card/90 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-primary/30">
+                      <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gradient mb-6 md:mb-8 leading-tight">
+                        TRANSFORMAÇÃO COMPLETA
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+                        <div className="text-center p-4">
+                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-2 animate-glow">+500%</div>
+                          <div className="text-muted-foreground font-medium text-xs sm:text-sm md:text-base">ROI Médio dos Clientes</div>
+                        </div>
+                        <div className="text-center p-4">
+                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-secondary mb-2 animate-glow">15+</div>
+                          <div className="text-muted-foreground font-medium text-xs sm:text-sm md:text-base">Anos Transformando Marcas</div>
+                        </div>
+                        <div className="text-center p-4 sm:col-span-2 md:col-span-1">
+                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gradient mb-2">200+</div>
+                          <div className="text-muted-foreground font-medium text-xs sm:text-sm md:text-base">Projetos de Sucesso</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
         </div>
 
-        {/* Indicador de progresso aprimorado */}
-        <div className="absolute right-4 md:right-6 lg:right-8 top-1/2 transform -translate-y-1/2 z-20">
-          <div className="flex flex-col items-center space-y-3 md:space-y-4">
-            <div className="w-0.5 md:w-1 h-32 md:h-40 bg-border rounded-full overflow-hidden">
-              <div 
-                className="w-full bg-gradient-to-t from-primary via-secondary to-primary-glow transition-all duration-500 ease-out"
-                style={{ 
-                  height: `${scrollProgress * 100}%`,
-                  boxShadow: `0 0 15px hsl(var(--primary) / 0.4)`
-                }}
-              />
-            </div>
-            <div className="text-[10px] md:text-xs text-muted-foreground font-medium">
-              {Math.round(scrollProgress * 100)}%
+        {/* Indicador de progresso lateral (apenas durante o carregamento) */}
+        {hasStartedScrolling && scrollProgress < 0.95 && (
+          <div className="absolute right-3 sm:right-4 md:right-6 lg:right-8 top-1/2 transform -translate-y-1/2 z-20">
+            <div className="flex flex-col items-center space-y-2 md:space-y-3">
+              <div className="w-0.5 md:w-1 h-24 sm:h-32 md:h-40 bg-border rounded-full overflow-hidden">
+                <div 
+                  className="w-full bg-gradient-to-t from-primary via-secondary to-primary-glow transition-all duration-700 ease-out"
+                  style={{ 
+                    height: `${scrollProgress * 100}%`,
+                    boxShadow: `0 0 12px hsl(var(--primary) / 0.5)`
+                  }}
+                />
+              </div>
+              <div className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground font-medium bg-background/80 px-1 py-0.5 rounded text-center">
+                {Math.round(scrollProgress * 100)}%
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
       </div>
     </section>
