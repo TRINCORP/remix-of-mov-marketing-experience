@@ -114,14 +114,6 @@ const TrustIndicators = () => {
                 className={`card-premium text-center group cursor-pointer animate-scale-in`}
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${
-                  metric.color === 'primary' ? 'from-primary to-primary-glow' :
-                  metric.color === 'secondary' ? 'from-secondary to-secondary-glow' :
-                  'from-accent to-accent-light'
-                } flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon className="w-8 h-8 text-white" />
-                </div>
-                
                 <div className="text-4xl font-black text-gradient mb-2 group-hover:scale-110 transition-transform">
                   {metric.value}
                 </div>
@@ -148,10 +140,6 @@ const TrustIndicators = () => {
                 className="card-premium flex items-center gap-4 group hover:border-primary/30 animate-slide-up"
                 style={{ animationDelay: `${(index + 4) * 150}ms` }}
               >
-                <div className="w-12 h-12 bg-primary/10 border border-primary/20 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <Icon className="w-6 h-6 text-primary" />
-                </div>
-                
                 <div>
                   <div className="font-bold text-foreground group-hover:text-primary transition-colors">
                     {cert.title}
@@ -195,24 +183,14 @@ const TrustIndicators = () => {
           </div>
         </Card>
 
-        {/* Social Proof Stars */}
+        {/* Social Proof */}
         <div className="text-center mt-16">
-          <div className="flex justify-center gap-2 mb-4">
-            {[...Array(5)].map((_, i) => (
-              <Star 
-                key={i} 
-                className="w-8 h-8 fill-secondary text-secondary animate-bounce-subtle" 
-                style={{ animationDelay: `${i * 200}ms` }}
-              />
-            ))}
-          </div>
-          
-          <p className="text-body text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-body text-muted-foreground max-w-2xl mx-auto mb-4">
             "A MOV não é apenas uma agência, é um parceiro estratégico que realmente 
             entende nosso negócio e entrega resultados excepcionais."
           </p>
           
-          <div className="text-sm text-primary font-semibold mt-2">
+          <div className="text-sm text-primary font-semibold">
             Avaliação média de 4.9/5 baseada em 200+ reviews
           </div>
         </div>

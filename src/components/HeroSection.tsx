@@ -121,10 +121,9 @@ const HeroSection = () => {
       }`}>
         
         {/* Premium Brand Badge */}
-        <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-secondary/20 border border-primary/30 rounded-full px-8 py-4 mb-12 animate-scale-in backdrop-blur-xl">
-          <Sparkles className="w-6 h-6 text-primary animate-pulse" />
-          <span className="text-caption text-primary font-bold tracking-wide">INOVAÇÃO EM MARKETING DIGITAL</span>
-          <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+        <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 to-secondary/20 border border-primary/30 rounded-full px-6 py-3 mb-8 animate-scale-in backdrop-blur-xl">
+          <Sparkles className="w-5 h-5 text-primary animate-pulse" />
+          <span className="text-sm text-primary font-semibold tracking-wide">ASSESSORIA DE MARKETING</span>
         </div>
 
         {/* Hero Headlines with Staggered Animation */}
