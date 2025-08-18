@@ -56,10 +56,9 @@ const CTASection = () => {
             <span className="block text-gradient animate-slide-up animation-delay-600">SEU NEGÓCIO</span>
           </h2>
           
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-12 animate-slide-up animation-delay-900">
-            Não espere mais para transformar sua marca em um 
-            <span className="text-primary font-bold"> fenômeno digital</span>. 
-            Agende uma consultoria gratuita e descubra seu potencial inexplorado.
+          <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12 animate-slide-up animation-delay-900">
+            Transforme sua marca em um <span className="text-primary font-bold">fenômeno digital</span>. 
+            Consultoria gratuita disponível.
           </p>
 
           {/* Benefits */}

@@ -111,9 +111,7 @@ const ServicesSection = () => {
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Cada serviço é uma arma poderosa no nosso arsenal de marketing. 
-            Combinamos estratégia, criatividade e tecnologia para criar 
-            <span className="text-primary font-bold"> resultados extraordinários</span>.
+            Estratégia, criatividade e tecnologia combinadas para gerar <span className="text-primary font-bold">resultados extraordinários</span> para sua marca.
           </p>
         </div>
 

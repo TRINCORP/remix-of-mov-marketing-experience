@@ -91,9 +91,8 @@ const AboutSection = () => {
             <span className="text-foreground">Revolução Digital</span>
           </h2>
           
-          <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Somos uma equipe apaixonada de estrategistas, criativos e desenvolvedores unidos 
-            por uma missão: <span className="text-primary font-bold">transformar marcas em fenômenos digitais</span>.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Equipe especializada em <span className="text-primary font-bold">transformar marcas em fenômenos digitais</span> com resultados comprovados.
           </p>
         </div>
 
@@ -141,24 +140,18 @@ const AboutSection = () => {
               Nossa História de Sucesso
             </h3>
             
-            <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
+            <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
               <p>
-                Nascemos da necessidade de trazer <span className="text-primary font-semibold">inovação real</span> 
-                para o mercado de marketing digital. Com mais de 8 anos de experiência, construímos 
-                nossa reputação entregando resultados extraordinários.
+                <span className="text-primary font-semibold">8+ anos</span> transformando negócios através de marketing digital inovador e estratégico.
               </p>
               
               <p>
-                Nosso diferencial está na combinação única de <span className="text-accent font-semibold">criatividade, 
-                tecnologia e estratégia</span>. Cada campanha é meticulosamente planejada para não apenas 
-                atingir, mas superar expectativas.
+                Combinamos <span className="text-accent font-semibold">criatividade, tecnologia e estratégia</span> para superar expectativas e gerar resultados.
               </p>
               
               <p>
-                Hoje, somos reconhecidos como uma das principais forças do marketing digital, 
-                com <span className="text-primary font-semibold">500+ projetos entregues</span> e uma 
-                taxa de satisfação de 98%.
-               </p>
+                <span className="text-primary font-semibold">500+ projetos</span> entregues com 98% de satisfação dos clientes.
+              </p>
             </div>
 
             {/* Workspace Image */}

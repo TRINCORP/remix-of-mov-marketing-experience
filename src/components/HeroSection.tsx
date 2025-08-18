@@ -87,17 +87,16 @@ const HeroSection = () => {
           }}
         />
 
-        {/* Floating Particles */}
+        {/* Floating Particles - Sem interação do mouse */}
         {[...Array(8)].map((_, i) => (
           <div
             key={i}
             className="absolute w-2 h-2 bg-primary rounded-full animate-float opacity-60"
             style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
+              top: `${20 + (i * 12)}%`,
+              left: `${10 + (i * 11)}%`,
               animationDelay: `${i * 800}ms`,
-              animationDuration: `${4 + Math.random() * 4}s`,
-              transform: `translate(${mousePosition.x * (10 + i * 2)}px, ${mousePosition.y * (5 + i)}px)`
+              animationDuration: `${4 + (i % 3)}s`
             }}
           />
         ))}
@@ -143,9 +142,8 @@ const HeroSection = () => {
 
         {/* Enhanced Subtitle */}
         <div className="animate-slide-up animation-delay-900 mb-16">
-          <p className="text-body-large text-muted-foreground max-w-5xl mx-auto leading-loose">
-            Transformamos marcas em <span className="text-gradient font-bold">fenômenos digitais</span> através de 
-            estratégias inovadoras, tecnologia de ponta e criatividade sem limites.
+          <p className="text-body-large text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+            Transformamos marcas em <span className="text-gradient font-bold">fenômenos digitais</span> com estratégias inovadoras e resultados comprovados.
           </p>
           
           <div className="flex items-center justify-center gap-6 mt-8 text-sm text-muted-foreground">
