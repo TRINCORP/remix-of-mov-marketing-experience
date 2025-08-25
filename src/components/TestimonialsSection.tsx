@@ -207,45 +207,8 @@ const TestimonialsSection = () => {
           </div>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.slice(0, 6).map((testimonial, index) => (
-            <Card
-              key={index}
-              className={`p-6 cursor-pointer transition-all duration-300 hover:scale-105 ${
-                index === currentIndex 
-                  ? 'border-primary/50 bg-primary/5' 
-                  : 'border-border/50 hover:border-primary/30'
-              }`}
-              onClick={() => setCurrentIndex(index)}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full border border-primary/20"
-                />
-                <div>
-                  <div className="font-semibold text-sm">{testimonial.name}</div>
-                  <div className="text-xs text-muted-foreground">{testimonial.company}</div>
-                </div>
-              </div>
-              
-              <div className="flex gap-1 mb-3">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-3 h-3 fill-secondary text-secondary" />
-                ))}
-              </div>
-              
-              <p className="text-sm text-muted-foreground line-clamp-3">
-                {testimonial.text}
-              </p>
-            </Card>
-          ))}
-        </div>
-
         {/* CTA */}
-        <div className="text-center mt-20">
+        <div className="text-center mt-16">
           <button className="btn-hero group">
             <span>Seja o Próximo Case de Sucesso</span>
             <TrendingUp className="ml-2 w-5 h-5 group-hover:translate-y-[-2px] transition-transform" />

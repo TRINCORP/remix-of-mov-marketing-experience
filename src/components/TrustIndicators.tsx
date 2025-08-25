@@ -6,12 +6,8 @@ import {
   Award, 
   Users, 
   TrendingUp, 
-  Star,
   CheckCircle,
-  Globe,
-  Zap,
-  Target,
-  Clock
+  Globe
 } from 'lucide-react';
 
 const trustMetrics = [
@@ -63,25 +59,11 @@ const certifications = [
   }
 ];
 
-const liveActivity = [
-  "Nova campanha ativada para TechCorp",
-  "Cliente EcoSmart alcançou 250% ROI",
-  "Estratégia aprovada para StartupX",
-  "Case Fashion Forward publicado",
-  "Consultoria concluída para FinTechPro"
-];
-
 const TrustIndicators = () => {
-  const [currentActivity, setCurrentActivity] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
-    const interval = setInterval(() => {
-      setCurrentActivity((prev) => (prev + 1) % liveActivity.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -153,38 +135,8 @@ const TrustIndicators = () => {
           })}
         </div>
 
-        {/* Live Activity Feed */}
-        <Card className="card-premium">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-primary" />
-              <span className="font-semibold text-foreground">Atividade em Tempo Real</span>
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            {liveActivity.map((activity, index) => (
-              <div
-                key={index}
-                className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
-                  index === currentActivity 
-                    ? 'bg-primary/10 border border-primary/20 scale-105' 
-                    : 'bg-muted/20 opacity-60'
-                }`}
-              >
-                <Clock className="w-4 h-4 text-primary flex-shrink-0" />
-                <span className="text-sm text-foreground">{activity}</span>
-                <div className="ml-auto text-xs text-muted-foreground">
-                  {index === currentActivity ? 'Agora' : `${(index + 1) * 2}min`}
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-
         {/* Social Proof */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-8">
           <p className="text-body text-muted-foreground max-w-2xl mx-auto mb-4">
             "A MOV não é apenas uma agência, é um parceiro estratégico que realmente 
             entende nosso negócio e entrega resultados excepcionais."
