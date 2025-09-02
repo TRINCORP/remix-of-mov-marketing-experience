@@ -161,6 +161,21 @@ const ServicesSection = () => {
           </p>
         </div>
 
+        {/* Auto-Running Services List */}
+        <div className="mb-12 overflow-hidden">
+          <div className="flex items-center gap-8 animate-marquee whitespace-nowrap">
+            {[...services, ...services].map((service, index) => (
+              <div
+                key={index}
+                className="inline-flex items-center gap-3 px-6 py-3 bg-card/50 border border-border/30 rounded-full backdrop-blur-sm"
+              >
+                <service.icon className="w-5 h-5 text-primary" />
+                <span className="text-sm font-medium text-foreground">{service.title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Carousel Container */}
         <div className="relative">
           {/* Services Grid - Show All Services */}
