@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoadingAnimation from "./components/LoadingAnimation";
 import WhatsAppButton from "./components/WhatsAppButton";
+import RealTimeActivity from "./components/RealTimeActivity";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -51,6 +52,7 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
           <WhatsAppButton />
+          <RealTimeActivity />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

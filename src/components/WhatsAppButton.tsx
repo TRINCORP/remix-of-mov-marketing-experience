@@ -8,8 +8,8 @@ const WhatsAppButton = () => {
     const message = encodeURIComponent(
       "Olá! Vim através do site e gostaria de mais informações sobre os serviços de marketing digital da MOV. Podemos conversar?"
     );
-    const phoneNumber = "5519981134193";
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    const phoneNumber = "19981134193";
+    const whatsappUrl = `https://wa.me/55${phoneNumber}?text=${message}`;
     
     window.open(whatsappUrl, '_blank');
   };
@@ -64,11 +64,6 @@ const WhatsAppButton = () => {
             
             {/* Pulse Animation */}
             <div className="absolute inset-0 rounded-full bg-green-600 animate-ping opacity-20" />
-            
-            {/* Notification Badge */}
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
-              1
-            </div>
           </button>
         </div>
       </div>
