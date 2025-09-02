@@ -113,14 +113,19 @@ const ServicesSection = () => {
     setIsAutoPlaying(false);
   };
 
-  // Get visible services (3 on desktop, 2 on tablet, 1 on mobile)
-  const getVisibleServices = () => {
-    const visibleServices = [];
-    for (let i = 0; i < 3; i++) {
-      const index = (currentIndex + i) % services.length;
-      visibleServices.push({ ...services[index], originalIndex: index });
+  // Show all services but highlight the active ones
+  const getServiceClasses = (index: number) => {
+    const isActive = index === currentIndex;
+    const isNext = index === (currentIndex + 1) % services.length;
+    const isPrev = index === (currentIndex - 1 + services.length) % services.length;
+    
+    if (isActive) {
+      return "scale-105 border-primary/50 bg-primary/5 shadow-lg shadow-primary/25";
+    } else if (isNext || isPrev) {
+      return "scale-100 border-accent/30 bg-accent/5";
+    } else {
+      return "scale-95 border-border/30 bg-card/30 opacity-70";
     }
-    return visibleServices;
   };
 
   return (
@@ -158,98 +163,78 @@ const ServicesSection = () => {
 
         {/* Carousel Container */}
         <div className="relative">
-          {/* Navigation Buttons */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10"
-            onClick={prevSlide}
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </Button>
-          
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10"
-            onClick={nextSlide}
-          >
-            <ChevronRight className="w-6 h-6" />
-          </Button>
-
-          {/* Services Carousel */}
-          <div className="overflow-hidden rounded-3xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-16">
-              {getVisibleServices().map((service, index) => {
-                const Icon = service.icon;
-                const isHovered = hoveredIndex === service.originalIndex;
-                
-                return (
-                  <Card
-                    key={`${service.originalIndex}-${currentIndex}`}
-                    className={`card-glow group cursor-pointer transition-all duration-500 animate-scale-in ${
-                      isHovered ? 'scale-105' : ''
-                    }`}
-                    style={{ animationDelay: `${index * 150}ms` }}
-                    onMouseEnter={() => {
-                      setHoveredIndex(service.originalIndex);
-                      setIsAutoPlaying(false);
-                    }}
-                    onMouseLeave={() => {
-                      setHoveredIndex(null);
-                      setIsAutoPlaying(true);
-                    }}
-                  >
+          {/* Services Grid - Show All Services */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+            {services.map((service, index) => {
+              const Icon = service.icon;
+              return (
+                <Card
+                  key={index}
+                  className={`group cursor-pointer transition-all duration-700 ease-out ${getServiceClasses(index)}`}
+                  onClick={() => goToSlide(index)}
+                  onMouseEnter={() => {
+                    setHoveredIndex(index);
+                    setIsAutoPlaying(false);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredIndex(null);
+                    setTimeout(() => setIsAutoPlaying(true), 3000);
+                  }}
+                >
+                  <div className="p-6 h-full">
                     {/* Icon */}
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${
-                      service.color === 'primary' ? 'from-primary to-primary-glow' :
-                      service.color === 'secondary' ? 'from-secondary to-secondary-glow' :
-                      'from-accent to-accent-glow'
-                    } flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon className="w-8 h-8 text-white" />
+                    <div 
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-500 ${
+                        index === currentIndex 
+                          ? 'bg-gradient-to-br from-primary to-accent scale-110' 
+                          : `bg-gradient-to-br ${
+                            service.color === 'primary' ? 'from-primary to-primary-glow' :
+                            service.color === 'secondary' ? 'from-secondary to-secondary-glow' :
+                            'from-accent to-accent-glow'
+                          } group-hover:scale-110`
+                      }`}
+                    >
+                      <Icon className="w-6 h-6 text-white" />
                     </div>
 
                     {/* Content */}
-                    <h3 className="text-2xl font-bold mb-4 text-foreground group-hover:text-primary transition-colors">
+                    <h3 className={`text-lg font-bold mb-3 transition-colors duration-300 ${
+                      index === currentIndex ? 'text-primary' : 'text-foreground group-hover:text-primary'
+                    }`}>
                       {service.title}
                     </h3>
                     
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                    <p className="text-muted-foreground text-sm mb-4 leading-relaxed line-clamp-3">
                       {service.description}
                     </p>
 
-                    {/* Features */}
-                    <div className="space-y-2">
-                      {service.features.map((feature, featureIndex) => (
-                        <div 
-                          key={featureIndex}
-                          className={`flex items-center gap-3 transition-all duration-300 ${
-                            isHovered ? 'translate-x-2' : ''
-                          }`}
-                          style={{ transitionDelay: `${featureIndex * 100}ms` }}
-                        >
-                          <div className={`w-2 h-2 rounded-full ${
-                            service.color === 'primary' ? 'bg-primary' :
-                            service.color === 'secondary' ? 'bg-secondary' :
-                            'bg-accent'
-                          }`} />
-                          <span className="text-sm text-muted-foreground font-medium">
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                    {/* Features - Show only for active service */}
+                    {index === currentIndex && (
+                      <ul className="space-y-2 animate-fade-in">
+                        {service.features.slice(0, 3).map((feature, idx) => (
+                          <li key={idx} className="flex items-center gap-2 text-xs">
+                            <div className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
+                            <span className="text-muted-foreground">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
 
-                    {/* Hover Effect */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${
-                      service.color === 'primary' ? 'from-primary/5 to-transparent' :
-                      service.color === 'secondary' ? 'from-secondary/5 to-transparent' :
-                      'from-accent/5 to-transparent'
-                    } rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
-                  </Card>
-                );
-              })}
-            </div>
+                  {/* Active Service Indicator */}
+                  {index === currentIndex && (
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full animate-pulse" />
+                  )}
+
+                  {/* Hover Effect */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${
+                    service.color === 'primary' ? 'from-primary/5 to-transparent' :
+                    service.color === 'secondary' ? 'from-secondary/5 to-transparent' :
+                    'from-accent/5 to-transparent'
+                  } rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
+                </Card>
+              );
+            })}
           </div>
 
           {/* Dots Indicator */}

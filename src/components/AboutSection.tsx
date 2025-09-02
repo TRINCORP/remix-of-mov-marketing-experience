@@ -43,26 +43,40 @@ const AboutSection = () => {
 
   const values = [
     {
-      icon: Lightbulb,
       title: "Inovação Constante",
-      description: "Sempre na vanguarda das tendências e tecnologias do marketing digital."
+      description: "Sempre na vanguarda das tendências e tecnologias do marketing digital.",
+      message: "🚀 Transformando ideias em realidade digital",
+      gradient: "from-blue-500 to-purple-600"
     },
     {
-      icon: Target,
       title: "Resultados Comprovados",
-      description: "Foco total em métricas que realmente importam para o seu negócio."
+      description: "Foco total em métricas que realmente importam para o seu negócio.",
+      message: "📈 +300% crescimento médio dos nossos clientes",
+      gradient: "from-green-500 to-emerald-600"
     },
     {
-      icon: Heart,
       title: "Paixão pelo que Fazemos",
-      description: "Cada projeto é tratado com dedicação e comprometimento genuínos."
+      description: "Cada projeto é tratado com dedicação e comprometimento genuínos.",
+      message: "❤️ Sua marca é nossa prioridade número 1",
+      gradient: "from-red-500 to-pink-600"
     },
     {
-      icon: Zap,
       title: "Agilidade e Eficiência",
-      description: "Processos otimizados para entregas rápidas sem comprometer a qualidade."
+      description: "Processos otimizados para entregas rápidas sem comprometer a qualidade.",
+      message: "⚡ Resultados visíveis em 30 dias",
+      gradient: "from-yellow-500 to-orange-600"
     }
   ];
+
+  const [currentValueIndex, setCurrentValueIndex] = useState(0);
+
+  useEffect(() => {
+    const valueInterval = setInterval(() => {
+      setCurrentValueIndex((prev) => (prev + 1) % values.length);
+    }, 3000);
+
+    return () => clearInterval(valueInterval);
+  }, []);
 
   return (
     <section 
@@ -199,7 +213,7 @@ const AboutSection = () => {
           ))}
         </div>
 
-        {/* Values */}
+        {/* Values - Modern Approach */}
         <div className={`transition-all duration-1000 transform ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
@@ -212,26 +226,84 @@ const AboutSection = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <div 
-                key={index}
-                className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:bg-card/50 transition-all duration-300 group hover:scale-105"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <value.icon className="w-6 h-6 text-white" />
+          {/* Modern Values Display */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Rotating Messages */}
+            <div className="relative">
+              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-8 min-h-[300px] flex items-center justify-center">
+                <div className="text-center">
+                  <div className={`text-6xl mb-6 transition-all duration-500 ${
+                    currentValueIndex === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                  }`} style={{ display: currentValueIndex === 0 ? 'block' : 'none' }}>
+                    🚀
+                  </div>
+                  <div className={`text-6xl mb-6 transition-all duration-500 ${
+                    currentValueIndex === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                  }`} style={{ display: currentValueIndex === 1 ? 'block' : 'none' }}>
+                    📈
+                  </div>
+                  <div className={`text-6xl mb-6 transition-all duration-500 ${
+                    currentValueIndex === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                  }`} style={{ display: currentValueIndex === 2 ? 'block' : 'none' }}>
+                    ❤️
+                  </div>
+                  <div className={`text-6xl mb-6 transition-all duration-500 ${
+                    currentValueIndex === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                  }`} style={{ display: currentValueIndex === 3 ? 'block' : 'none' }}>
+                    ⚡
+                  </div>
+                  
+                  <h4 className="text-2xl font-bold text-foreground mb-4">
+                    {values[currentValueIndex].title}
+                  </h4>
+                  
+                  <p className="text-lg text-primary font-semibold mb-4">
+                    {values[currentValueIndex].message}
+                  </p>
+                  
+                  <p className="text-muted-foreground leading-relaxed">
+                    {values[currentValueIndex].description}
+                  </p>
                 </div>
-                
-                <h4 className="text-xl font-bold text-foreground mb-3">
-                  {value.title}
-                </h4>
-                
-                <p className="text-muted-foreground leading-relaxed">
-                  {value.description}
-                </p>
               </div>
-            ))}
+              
+              {/* Value Indicators */}
+              <div className="flex justify-center gap-3 mt-6">
+                {values.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentValueIndex(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentValueIndex 
+                        ? 'bg-primary w-8' 
+                        : 'bg-muted-foreground/30 hover:bg-primary/50'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Values Grid - Simplified */}
+            <div className="grid grid-cols-2 gap-6">
+              {values.map((value, index) => (
+                <div 
+                  key={index}
+                  className={`p-6 rounded-2xl cursor-pointer transition-all duration-500 ${
+                    index === currentValueIndex
+                      ? 'bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/30 scale-105'
+                      : 'bg-card/20 border border-border/30 hover:border-primary/20 hover:bg-card/40'
+                  }`}
+                  onClick={() => setCurrentValueIndex(index)}
+                >
+                  <h5 className="font-bold text-foreground mb-2">
+                    {value.title}
+                  </h5>
+                  <div className="text-sm text-muted-foreground">
+                    {value.message}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
