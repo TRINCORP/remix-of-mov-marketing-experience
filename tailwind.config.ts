@@ -110,7 +110,7 @@ export default {
 						transform: 'translateY(-10px)'
 					}
 				},
-				'golden-shine': {
+				'silver-shine': {
 					'0%': {
 						backgroundPosition: '-200% center'
 					},
@@ -124,7 +124,7 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'marquee': 'marquee 20s linear infinite',
 				'float': 'float 3s ease-in-out infinite',
-				'golden-shine': 'golden-shine 3s linear infinite'
+				'silver-shine': 'silver-shine 2.5s linear infinite'
 			}
 		}
 	},

@@ -151,13 +151,13 @@ const ServicesSection = () => {
           </div>
           
           <h2 className="text-4xl md:text-6xl font-black mb-6">
-            <span className="text-gradient golden-shine-text">SERVIÇOS QUE</span>
+            <span className="text-gradient silver-shine-text">SERVIÇOS QUE</span>
             <br />
             <span className="text-foreground">TRANSFORMAM NEGÓCIOS</span>
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Estratégia, criatividade e tecnologia combinadas para gerar <span className="text-primary font-bold golden-shine-text">resultados extraordinários</span> para sua marca.
+            Estratégia, criatividade e tecnologia combinadas para gerar <span className="silver-shine-text">resultados extraordinários</span> para sua marca.
           </p>
         </div>
 

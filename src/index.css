@@ -204,21 +204,23 @@
     @apply text-sm font-medium tracking-wide uppercase;
   }
 
-  /* Golden Shine Effect */
-  .golden-shine-text {
+  /* Silver Shine Effect */
+  .silver-shine-text {
     background: linear-gradient(
       90deg,
       transparent 0%,
       transparent 40%,
-      hsl(45 100% 70%) 50%,
+      hsl(0 0% 80%) 50%,
       transparent 60%,
       transparent 100%
     );
     background-size: 200% 100%;
     background-clip: text;
     -webkit-background-clip: text;
-    animation: golden-shine 3s linear infinite;
+    animation: silver-shine 2.5s linear infinite;
     background-repeat: no-repeat;
+    color: hsl(0 0% 85%);
+    font-weight: bold;
   }
 
   /* Background Effects Premium */

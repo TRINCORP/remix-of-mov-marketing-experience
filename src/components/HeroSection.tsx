@@ -129,11 +129,11 @@ const HeroSection = () => {
         {/* Hero Headlines with Staggered Animation */}
         <div className="space-y-4 mb-12">
           <h1 className="text-display leading-none">
-            <span className="block text-gradient animate-slide-up gradient-shift golden-shine-text">MOV</span>
+            <span className="block text-gradient animate-slide-up gradient-shift silver-shine-text">MOV</span>
             <span className="block text-foreground text-6xl md:text-7xl lg:text-8xl font-bold animate-slide-up animation-delay-300">
               REVOLUCIONA
             </span>
-            <span className="block text-gradient animate-slide-up animation-delay-600 gradient-shift golden-shine-text">
+            <span className="block text-gradient animate-slide-up animation-delay-600 gradient-shift silver-shine-text">
               SEU MARKETING
             </span>
           </h1>
@@ -142,7 +142,7 @@ const HeroSection = () => {
         {/* Enhanced Subtitle */}
         <div className="animate-slide-up animation-delay-900 mb-16">
           <p className="text-body-large text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Transformamos marcas em <span className="text-gradient font-bold golden-shine-text">fenômenos digitais</span> com estratégias inovadoras e resultados comprovados.
+            Transformamos marcas em <span className="silver-shine-text">fenômenos digitais</span> com estratégias inovadoras e resultados comprovados.
           </p>
           
           <div className="flex items-center justify-center gap-6 mt-8 text-sm text-muted-foreground">
