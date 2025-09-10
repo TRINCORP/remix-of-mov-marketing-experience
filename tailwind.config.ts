@@ -101,12 +101,30 @@ export default {
 					to: {
 						transform: 'translateX(-100%)'
 					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0px)'
+					},
+					'50%': {
+						transform: 'translateY(-10px)'
+					}
+				},
+				'golden-shine': {
+					'0%': {
+						backgroundPosition: '-200% center'
+					},
+					'100%': {
+						backgroundPosition: '200% center'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'marquee': 'marquee 20s linear infinite'
+				'marquee': 'marquee 20s linear infinite',
+				'float': 'float 3s ease-in-out infinite',
+				'golden-shine': 'golden-shine 3s linear infinite'
 			}
 		}
 	},

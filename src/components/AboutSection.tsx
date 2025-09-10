@@ -102,11 +102,11 @@ const AboutSection = () => {
           <h2 className="text-4xl md:text-6xl font-black text-gradient mb-8">
             Sobre Nós
             <br />
-            <span className="text-foreground">MOV Marketing</span>
+            <span className="text-foreground golden-shine-text">MOV Marketing</span>
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Uma <span className="text-primary font-bold">nova força</span> no marketing digital, focada em <span className="text-accent font-bold">resultados reais</span> para o seu negócio.
+            Uma <span className="text-primary font-bold golden-shine-text">nova força</span> no marketing digital, focada em <span className="text-accent font-bold golden-shine-text">resultados reais</span> para o seu negócio.
           </p>
         </div>
 
@@ -223,7 +223,7 @@ const AboutSection = () => {
         }`}>
           <div className="text-center mb-16">
             <h3 className="text-4xl font-black text-foreground mb-4">
-              Nossos <span className="text-gradient">Valores</span>
+              Nossos <span className="text-gradient golden-shine-text">Valores</span>
             </h3>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Os princípios que nos guiam em cada projeto e relacionamento.
