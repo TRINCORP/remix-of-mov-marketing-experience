@@ -58,12 +58,9 @@ const WhatsAppButton = () => {
               }
             }}
             onMouseEnter={() => !isExpanded && setIsExpanded(true)}
-            className="group relative flex items-center justify-center w-14 h-14 bg-green-600 hover:bg-green-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+            className="group relative flex items-center justify-center w-14 h-14 bg-green-600 hover:bg-green-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 animate-bounce"
           >
-            <MessageCircle className="w-6 h-6" />
-            
-            {/* Pulse Animation */}
-            <div className="absolute inset-0 rounded-full bg-green-600 animate-ping opacity-20" />
+            <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:rotate-12" />
           </button>
         </div>
       </div>
