@@ -34,36 +34,36 @@ const AboutSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  const teamStats = [
-    { number: "15+", label: "Especialistas", icon: Users },
-    { number: "8", label: "Anos de Experiência", icon: Award },
-    { number: "500+", label: "Projetos Entregues", icon: Target },
-    { number: "98%", label: "Taxa de Sucesso", icon: TrendingUp }
+  const companyValues = [
+    { icon: Heart, label: "Paixão", description: "Dedicação genuína em cada projeto" },
+    { icon: Lightbulb, label: "Inovação", description: "Soluções criativas e modernas" },
+    { icon: Target, label: "Foco", description: "Resultados que fazem a diferença" },
+    { icon: Zap, label: "Agilidade", description: "Entrega rápida sem perder qualidade" }
   ];
 
   const values = [
     {
-      title: "Inovação Constante",
-      description: "Sempre na vanguarda das tendências e tecnologias do marketing digital.",
-      message: "🚀 Transformando ideias em realidade digital",
+      title: "Fome de Crescimento",
+      description: "Cada projeto é uma oportunidade de provar nosso potencial e superar expectativas.",
+      message: "🚀 Determinação para transformar seu negócio",
       gradient: "from-blue-500 to-purple-600"
     },
     {
-      title: "Resultados Comprovados",
-      description: "Foco total em métricas que realmente importam para o seu negócio.",
-      message: "📈 +300% crescimento médio dos nossos clientes",
+      title: "Dedicação Total",
+      description: "Atenção personalizada que apenas uma agência focada pode oferecer.",
+      message: "📈 Seu sucesso é nossa maior conquista",
       gradient: "from-green-500 to-emerald-600"
     },
     {
-      title: "Paixão pelo que Fazemos",
-      description: "Cada projeto é tratado com dedicação e comprometimento genuínos.",
-      message: "❤️ Sua marca é nossa prioridade número 1",
+      title: "Energia Criativa",
+      description: "Ideias frescas e soluções inovadoras para destacar sua marca.",
+      message: "❤️ Paixão genuína em cada estratégia",
       gradient: "from-red-500 to-pink-600"
     },
     {
-      title: "Agilidade e Eficiência",
-      description: "Processos otimizados para entregas rápidas sem comprometer a qualidade.",
-      message: "⚡ Resultados visíveis em 30 dias",
+      title: "Parceria Verdadeira",
+      description: "Crescemos junto com nossos clientes, criando relacionamentos duradouros.",
+      message: "⚡ Juntos somos mais fortes",
       gradient: "from-yellow-500 to-orange-600"
     }
   ];
@@ -100,13 +100,13 @@ const AboutSection = () => {
           </div>
           
           <h2 className="text-4xl md:text-6xl font-black text-gradient mb-8">
-            A Força por Trás da
+            Sobre Nós
             <br />
-            <span className="text-foreground">Revolução Digital</span>
+            <span className="text-foreground">MOV Marketing</span>
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Equipe especializada em <span className="text-primary font-bold">transformar marcas em fenômenos digitais</span> com resultados comprovados.
+            Uma <span className="text-primary font-bold">nova força</span> no marketing digital, focada em <span className="text-accent font-bold">resultados reais</span> para o seu negócio.
           </p>
         </div>
 
@@ -148,23 +148,27 @@ const AboutSection = () => {
             <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-accent/10 rounded-full blur-xl animate-float" />
           </div>
 
-          {/* Story Content */}
+          {/* About Content */}
           <div>
             <h3 className="text-3xl font-bold text-foreground mb-6">
-              Nossa História de Sucesso
+              Quem Somos
             </h3>
             
             <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
               <p>
-                <span className="text-primary font-semibold">8+ anos</span> transformando negócios através de marketing digital inovador e estratégico.
+                Somos uma <span className="text-primary font-semibold">agência emergente</span> de marketing digital, nascida da paixão por transformar negócios através de estratégias inovadoras e personalizadas.
               </p>
               
               <p>
-                Combinamos <span className="text-accent font-semibold">criatividade, tecnologia e estratégia</span> para superar expectativas e gerar resultados.
+                Nossa <span className="text-accent font-semibold">energia jovem e fome de resultados</span> nos permite dedicar atenção total a cada cliente, tratando seu projeto como se fosse nosso próprio negócio.
               </p>
               
               <p>
-                <span className="text-primary font-semibold">500+ projetos</span> entregues com 98% de satisfação dos clientes.
+                Acreditamos que <span className="text-primary font-semibold">grandes conquistas começam com primeiros passos corajosos</span> - e estamos aqui para dar esse passo junto com você.
+              </p>
+              
+              <p>
+                <span className="text-accent font-semibold">Crescendo juntos</span> - enquanto impulsionamos seu negócio, também evoluímos, criando uma parceria genuína para o sucesso mútuo.
               </p>
             </div>
 
@@ -182,33 +186,33 @@ const AboutSection = () => {
               </div>
             </div>
 
-            <Button 
+              <Button 
               className="btn-hero group mt-8"
               onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
             >
-              <span>Conheça Nossos Cases</span>
+              <span>Vamos Conversar</span>
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
         </div>
 
-        {/* Team Stats */}
+        {/* Company Values */}
         <div className={`grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-24 transition-all duration-1000 transform ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          {teamStats.map((stat, index) => (
+          {companyValues.map((value, index) => (
             <div 
               key={index}
               className="text-center group"
               style={{ animationDelay: `${index * 200}ms` }}
             >
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <stat.icon className="w-8 h-8 text-white" />
+                <value.icon className="w-8 h-8 text-white" />
               </div>
-              <div className="text-4xl font-black text-gradient mb-2 group-hover:scale-110 transition-transform">
-                {stat.number}
+              <div className="text-xl font-bold text-foreground mb-2 group-hover:scale-105 transition-transform">
+                {value.label}
               </div>
-              <div className="text-muted-foreground font-semibold">{stat.label}</div>
+              <div className="text-muted-foreground text-sm">{value.description}</div>
             </div>
           ))}
         </div>
@@ -313,10 +317,10 @@ const AboutSection = () => {
         }`}>
           <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 rounded-3xl p-12">
             <h3 className="text-3xl font-bold text-foreground mb-4">
-              Pronto para Revolucionar Sua Marca?
+              Vamos Crescer Juntos?
             </h3>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Junte-se às centenas de empresas que já transformaram seus resultados conosco.
+              Seja um dos nossos primeiros parceiros de sucesso. Sua marca merece atenção especial.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
