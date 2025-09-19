@@ -5,6 +5,8 @@ import { ArrowRight, Sparkles, Zap, TrendingUp, Play, MousePointer } from 'lucid
 import heroImage from '@/assets/hero-bg.jpg';
 import { ParticleField } from '@/components/animations/ParticleField';
 import { MagneticNumber } from '@/components/animations/MagneticNumbers';
+import { BrilliantReflection } from '@/components/animations/BrilliantReflection';
+import { RotatingRectangle } from '@/components/animations/RotatingRectangle';
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
 import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
 
@@ -98,19 +100,6 @@ const HeroSection = () => {
           }}
         />
 
-        {/* Floating Particles - Sem interação do mouse */}
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-primary rounded-full animate-float opacity-60"
-            style={{
-              top: `${20 + (i * 12)}%`,
-              left: `${10 + (i * 11)}%`,
-              animationDelay: `${i * 800}ms`,
-              animationDuration: `${4 + (i % 3)}s`
-            }}
-          />
-        ))}
 
         {/* Interactive Grid Lines */}
         <div 
@@ -137,26 +126,39 @@ const HeroSection = () => {
           <span className="text-sm text-primary font-semibold tracking-wide">ASSESSORIA DE MARKETING</span>
         </div>
 
-        {/* Hero Headlines with Staggered Animation */}
-        <div className="space-y-4 mb-12">
-          <h1 className="text-display leading-none">
-            <span className="block text-gradient animate-slide-up gradient-shift silver-shine-text">MOV</span>
-            <span className="block text-foreground text-6xl md:text-7xl lg:text-8xl font-bold animate-slide-up animation-delay-300">
+        {/* Hero Headlines with Staggered Animation and Brilliant Reflection */}
+        <div className="space-y-2 mb-12 relative">
+          <BrilliantReflection className="z-0" />
+          <h1 className="relative z-10 text-display leading-tight">
+            <span className="block text-7xl md:text-8xl lg:text-9xl font-black text-gradient animate-slide-up gradient-shift silver-shine-text tracking-tighter">
+              MOV
+            </span>
+            <span className="block text-5xl md:text-6xl lg:text-7xl font-bold text-foreground animate-slide-up animation-delay-300 tracking-tight">
               REVOLUCIONA
             </span>
-            <span className="block text-gradient animate-slide-up animation-delay-600 gradient-shift silver-shine-text">
+            <span className="block text-6xl md:text-7xl lg:text-8xl font-black text-gradient animate-slide-up animation-delay-600 gradient-shift silver-shine-text tracking-tighter">
               SEU MARKETING
             </span>
           </h1>
         </div>
 
-        {/* Enhanced Subtitle */}
-        <div className="animate-slide-up animation-delay-900 mb-16">
-          <p className="text-body-large text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Transformamos marcas em <span className="silver-shine-text">fenômenos digitais</span> com estratégias inovadoras e resultados comprovados.
+        {/* Enhanced Subtitle with Rotating Rectangle Highlight */}
+        <div className="animate-slide-up animation-delay-900 mb-16 relative">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
+            Transformamos marcas em <span className="silver-shine-text font-semibold">fenômenos digitais</span> com estratégias inovadoras e resultados comprovados.
           </p>
           
-          <div className="flex items-center justify-center gap-6 mt-8 text-sm text-muted-foreground">
+          {/* Rotating Rectangle with Key Message */}
+          <div className="flex justify-center mb-8">
+            <RotatingRectangle size="md" speed="slow" className="animate-slide-up animation-delay-1000">
+              <div className="text-center">
+                <div className="text-sm font-bold text-primary mb-1">GARANTIA EXCLUSIVA</div>
+                <div className="text-xs text-muted-foreground">Resultados em 30 dias ou seu dinheiro de volta</div>
+              </div>
+            </RotatingRectangle>
+          </div>
+          
+          <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               <span>Resultados em 30 dias</span>
