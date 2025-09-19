@@ -1,21 +1,8 @@
-import { 
-  Sparkles, 
-  Facebook, 
-  Instagram, 
-  Linkedin, 
-  Twitter,
-  Mail,
-  Phone,
-  MapPin,
-  ArrowRight,
-  Heart
-} from 'lucide-react';
+import { Sparkles, Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin, ArrowRight, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
 const Footer = () => {
-  return (
-    <footer className="relative overflow-hidden">
+  return <footer className="relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
@@ -39,20 +26,25 @@ const Footer = () => {
             </p>
 
             <div className="flex gap-4">
-              {[
-                { icon: Facebook, href: '#', color: 'hover:text-[#1877F2]' },
-                { icon: Instagram, href: '#', color: 'hover:text-[#E4405F]' },
-                { icon: Linkedin, href: '#', color: 'hover:text-[#0A66C2]' },
-                { icon: Twitter, href: '#', color: 'hover:text-[#1DA1F2]' }
-              ].map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  className={`w-10 h-10 bg-muted/20 rounded-full flex items-center justify-center text-muted-foreground hover:scale-110 transition-all duration-300 ${social.color}`}
-                >
+              {[{
+              icon: Facebook,
+              href: '#',
+              color: 'hover:text-[#1877F2]'
+            }, {
+              icon: Instagram,
+              href: '#',
+              color: 'hover:text-[#E4405F]'
+            }, {
+              icon: Linkedin,
+              href: '#',
+              color: 'hover:text-[#0A66C2]'
+            }, {
+              icon: Twitter,
+              href: '#',
+              color: 'hover:text-[#1DA1F2]'
+            }].map((social, index) => <a key={index} href={social.href} className={`w-10 h-10 bg-muted/20 rounded-full flex items-center justify-center text-muted-foreground hover:scale-110 transition-all duration-300 ${social.color}`}>
                   <social.icon className="w-5 h-5" />
-                </a>
-              ))}
+                </a>)}
             </div>
           </div>
 
@@ -60,24 +52,12 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold text-foreground mb-6">Serviços</h3>
             <ul className="space-y-3">
-              {[
-                'Estratégia Digital',
-                'Growth Hacking',
-                'Performance Marketing',
-                'Branding & Design',
-                'Social Media',
-                'SEO & Conteúdo'
-              ].map((service, index) => (
-                <li key={index}>
-                  <a 
-                    href="#" 
-                    className="text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center gap-2 group"
-                  >
+              {['Estratégia Digital', 'Growth Hacking', 'Performance Marketing', 'Branding & Design', 'Social Media', 'SEO & Conteúdo'].map((service, index) => <li key={index}>
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                     <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                     <span>{service}</span>
                   </a>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -85,24 +65,12 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold text-foreground mb-6">Empresa</h3>
             <ul className="space-y-3">
-              {[
-                'Sobre Nós',
-                'Nossa Equipe',
-                'Cases de Sucesso',
-                'Blog',
-                'Carreiras',
-                'Contato'
-              ].map((item, index) => (
-                <li key={index}>
-                  <a 
-                    href="#" 
-                    className="text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center gap-2 group"
-                  >
+              {['Sobre Nós', 'Nossa Equipe', 'Cases de Sucesso', 'Blog', 'Carreiras', 'Contato'].map((item, index) => <li key={index}>
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                     <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                     <span>{item}</span>
                   </a>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -116,12 +84,7 @@ const Footer = () => {
                 <span>contato@mov.marketing</span>
               </div>
               
-              <a 
-                href="https://wa.me/5519981134193" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group"
-              >
+              <a href="https://wa.me/5519981134193" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group">
                 <Phone className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
                 <span>(19) 98113-4193</span>
               </a>
@@ -140,10 +103,7 @@ const Footer = () => {
               </p>
               
               <div className="flex gap-2">
-                <Input 
-                  placeholder="Seu email"
-                  className="bg-background/50 border-border/50 focus:border-primary"
-                />
+                <Input placeholder="Seu email" className="bg-background/50 border-border/50 focus:border-primary" />
                 <Button className="bg-primary hover:bg-primary/90 px-4">
                   <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -175,15 +135,8 @@ const Footer = () => {
 
       {/* Floating Action Button */}
       <div className="fixed bottom-8 right-8 z-50">
-        <Button 
-          className="btn-hero rounded-full w-14 h-14 p-0 shadow-2xl animate-glow"
-          onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
-        >
-          <ArrowRight className="w-6 h-6" />
-        </Button>
+        
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
