@@ -3,12 +3,20 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, Zap, TrendingUp, Play, MousePointer } from 'lucide-react';
 import heroImage from '@/assets/hero-bg.jpg';
+import { ParticleField } from '@/components/animations/ParticleField';
+import { MagneticNumber } from '@/components/animations/MagneticNumbers';
+import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
+import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
+  
+  // Initialize GSAP animations and performance monitoring
+  useGSAPNavigation();
+  const { getCurrentFPS } = usePerformanceMonitor();
 
   useEffect(() => {
     setIsVisible(true);
@@ -46,8 +54,11 @@ const HeroSection = () => {
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero"
+      className="section-animate relative min-h-screen flex items-center justify-center overflow-hidden bg-hero"
     >
+      {/* Three.js Particle Field - Performance Optimized */}
+      <ParticleField className={`transition-opacity duration-1000 ${getCurrentFPS() > 30 ? 'opacity-60' : 'opacity-30'}`} />
+      
       {/* Dynamic Background Image with Parallax */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000"
@@ -164,20 +175,20 @@ const HeroSection = () => {
         {/* Premium CTA Section */}
         <div className="flex flex-col lg:flex-row gap-8 justify-center items-center animate-slide-up animation-delay-1200 mb-20">
           <Button 
-            className="btn-hero group text-xl px-12 py-6 relative overflow-hidden"
+            className="btn-hero group text-xl px-12 py-6 relative overflow-hidden glow-border energy-pulse"
             onClick={handleCTAClick}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             <span className="relative z-10 flex items-center">
-              <Sparkles className="mr-3 w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
-              Começar Revolução
+              <Sparkles className="mr-3 w-6 h-6 group-hover:rotate-12 transition-transform duration-300 drop-shadow-glow" />
+              <span className="text-reveal">Começar Revolução</span>
               <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
             </span>
             
-            {/* Hover Effect */}
-            <div className={`absolute inset-0 bg-gradient-to-r from-secondary to-primary transition-opacity duration-300 ${
-              isHovered ? 'opacity-20' : 'opacity-0'
+            {/* Enhanced Hover Effect */}
+            <div className={`absolute inset-0 bg-gradient-to-r from-secondary to-primary transition-all duration-300 ${
+              isHovered ? 'opacity-20 scale-105' : 'opacity-0 scale-100'
             }`} />
           </Button>
           
@@ -198,32 +209,21 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Premium Stats with Enhanced Animation */}
+        {/* Premium Stats with Magnetic Animation */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 animate-slide-up animation-delay-1500">
           {[
             { value: "500+", label: "Marcas Transformadas", icon: TrendingUp },
             { value: "300%", label: "Crescimento Médio", icon: Zap },
             { value: "98%", label: "Satisfação dos Clientes", icon: Sparkles }
-          ].map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <div 
-                key={index}
-                className="group cursor-pointer"
-                style={{ animationDelay: `${(index + 15) * 100}ms` }}
-              >
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <Icon className="w-8 h-8 text-primary group-hover:scale-110 transition-transform" />
-                  <div className="text-5xl md:text-6xl font-black text-gradient group-hover:scale-110 transition-transform">
-                    {stat.value}
-                  </div>
-                </div>
-                <div className="text-muted-foreground font-semibold text-lg">
-                  {stat.label}
-                </div>
-              </div>
-            );
-          })}
+          ].map((stat, index) => (
+            <MagneticNumber
+              key={index}
+              value={stat.value}
+              label={stat.label}
+              icon={stat.icon}
+              delay={index * 200}
+            />
+          ))}
         </div>
 
         {/* Interactive Mouse Follower */}

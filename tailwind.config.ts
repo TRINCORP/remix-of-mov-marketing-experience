@@ -124,7 +124,15 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'marquee': 'marquee 20s linear infinite',
 				'float': 'float 3s ease-in-out infinite',
-				'silver-shine': 'silver-shine 2.5s linear infinite'
+				'silver-shine': 'silver-shine 2.5s linear infinite',
+				'fade-in': 'fade-in 0.5s ease-out',
+				'scale-in': 'scale-in 0.3s ease-out',
+				'slide-up': 'slide-up 0.6s ease-out',
+				'bounce-subtle': 'bounce 2s infinite',
+				'gradient-shift': 'gradient-shift 4s ease-in-out infinite',
+				'energy-pulse': 'energy-pulse 2s ease-in-out infinite',
+				'magnetic-float': 'magnetic-float 4s ease-in-out infinite',
+				'ping': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
 			}
 		}
 	},

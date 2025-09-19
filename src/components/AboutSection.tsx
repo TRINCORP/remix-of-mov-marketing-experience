@@ -12,6 +12,8 @@ import {
 import { Button } from '@/components/ui/button';
 import teamMeeting from '@/assets/team-meeting.jpg';
 import workspace from '@/assets/workspace.jpg';
+import { EnergyField } from '@/components/animations/EnergyField';
+import { MagneticNumber } from '@/components/animations/MagneticNumbers';
 
 const AboutSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -82,10 +84,13 @@ const AboutSection = () => {
     <section 
       ref={sectionRef}
       id="about"
-      className="py-32 relative overflow-hidden"
+      className="section-animate py-32 relative overflow-hidden"
     >
+      {/* Three.js Energy Background */}
+      <EnergyField className="opacity-30" intensity={0.3} />
+      
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-background to-primary/5" />
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-background to-primary/5 parallax-element" />
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -94,18 +99,18 @@ const AboutSection = () => {
         <div className={`text-center mb-20 transition-all duration-1000 transform ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-6 py-3 mb-6">
-            <Users className="w-5 h-5 text-accent" />
+          <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-6 py-3 mb-6 magnetic-float glow-border">
+            <Users className="w-5 h-5 text-accent drop-shadow-glow" />
             <span className="text-sm font-semibold text-accent">QUEM SOMOS</span>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black text-gradient mb-8">
+          <h2 className="text-4xl md:text-6xl font-black text-gradient mb-8 text-reveal">
             Sobre Nós
             <br />
             <span className="text-foreground silver-shine-text">MOV Marketing</span>
           </h2>
           
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed parallax-element">
             Uma <span className="silver-shine-text">nova força</span> no marketing digital, focada em <span className="silver-shine-text">resultados reais</span> para o seu negócio.
           </p>
         </div>
@@ -144,8 +149,8 @@ const AboutSection = () => {
             </div>
             
             {/* Floating Elements */}
-            <div className="absolute -top-6 -right-6 w-20 h-20 bg-primary/10 rounded-full blur-xl animate-pulse-slow" />
-            <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-accent/10 rounded-full blur-xl animate-float" />
+            <div className="absolute -top-6 -right-6 w-20 h-20 bg-primary/10 rounded-full blur-xl animate-pulse-slow energy-pulse" />
+            <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-accent/10 rounded-full blur-xl animate-float magnetic-float" />
           </div>
 
           {/* About Content */}
@@ -187,11 +192,11 @@ const AboutSection = () => {
             </div>
 
               <Button 
-              className="btn-hero group mt-8"
+              className="btn-hero group mt-8 glow-border energy-pulse"
               onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
             >
-              <span>Vamos Conversar</span>
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <span className="text-reveal">Vamos Conversar</span>
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform drop-shadow-glow" />
             </Button>
           </div>
         </div>
@@ -221,14 +226,14 @@ const AboutSection = () => {
         <div className={`transition-all duration-1000 transform ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          <div className="text-center mb-16">
-            <h3 className="text-4xl font-black text-foreground mb-4">
-              Nossos <span className="text-gradient silver-shine-text">Valores</span>
-            </h3>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Os princípios que nos guiam em cada projeto e relacionamento.
-            </p>
-          </div>
+            <div className="text-center mb-16">
+              <h3 className="text-4xl font-black text-foreground mb-4 text-reveal">
+                Nossos <span className="text-gradient silver-shine-text">Valores</span>
+              </h3>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto parallax-element">
+                Os princípios que nos guiam em cada projeto e relacionamento.
+              </p>
+            </div>
 
           {/* Modern Values Display */}
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -315,8 +320,8 @@ const AboutSection = () => {
         <div className={`text-center mt-20 transition-all duration-1000 transform ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 rounded-3xl p-12">
-            <h3 className="text-3xl font-bold text-foreground mb-4">
+          <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 rounded-3xl p-12 glow-border">
+            <h3 className="text-3xl font-bold text-foreground mb-4 text-reveal">
               Vamos Crescer Juntos?
             </h3>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -325,16 +330,16 @@ const AboutSection = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="btn-hero group"
+                className="btn-hero group energy-pulse glow-border"
                 onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
               >
-                <span>Começar Agora</span>
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <span className="text-reveal">Começar Agora</span>
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform drop-shadow-glow" />
               </Button>
               
               <Button 
                 variant="outline" 
-                className="btn-secondary"
+                className="btn-secondary magnetic-float"
                 onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
               >
                 <span>Falar no WhatsApp</span>
