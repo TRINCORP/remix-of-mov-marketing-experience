@@ -229,6 +229,23 @@
     animation: silver-shine 3s linear infinite;
   }
 
+  /* Golden Glow Text */
+  .text-golden-glow {
+    background: linear-gradient(
+      90deg,
+      hsl(45 96% 64%) 25%,
+      hsl(45 100% 74%) 50%,
+      hsl(42 89% 68%) 75%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px hsl(45 96% 64% / 0.5), 0 0 40px hsl(45 96% 64% / 0.3);
+    filter: drop-shadow(0 0 15px hsl(45 96% 64% / 0.4));
+    animation: silver-shine 3s linear infinite;
+  }
+
   /* Glow Effects */
   .drop-shadow-glow {
     filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.4)) drop-shadow(0 0 40px hsl(var(--primary) / 0.2));

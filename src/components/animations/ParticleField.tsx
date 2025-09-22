@@ -8,18 +8,21 @@ import { useThreeGuard } from '@/hooks/useThreeGuard';
 const AnimatedParticles = memo(() => {
   const ref = useRef<THREE.Points>(null);
   const [positions, colors] = useMemo(() => {
-    const positions = new Float32Array(1000 * 3); // Reduced particles
-    const colors = new Float32Array(1000 * 3);
+    const particleCount = 80; // Extremamente reduzido para máxima sutileza
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
     
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
-      positions[i3] = (Math.random() - 0.5) * 80;
-      positions[i3 + 1] = (Math.random() - 0.5) * 80;
-      positions[i3 + 2] = (Math.random() - 0.5) * 40;
+      // Espalhar muito mais as partículas para serem quase imperceptíveis
+      positions[i3] = (Math.random() - 0.5) * 150;
+      positions[i3 + 1] = (Math.random() - 0.5) * 150;
+      positions[i3 + 2] = (Math.random() - 0.5) * 80;
       
-      colors[i3] = Math.random() * 0.5 + 0.5;
-      colors[i3 + 1] = Math.random() * 0.3 + 0.7;
-      colors[i3 + 2] = 1;
+      // Tons de amarelo muito suaves
+      colors[i3] = 1.0; // Red
+      colors[i3 + 1] = 0.85 + Math.random() * 0.15; // Green (amarelado)
+      colors[i3 + 2] = 0.2 + Math.random() * 0.15; // Blue (baixo para amarelo)
     }
     
     return [positions, colors];
@@ -27,12 +30,14 @@ const AnimatedParticles = memo(() => {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
-      ref.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.15) * 0.1;
+      // Movimento muito mais suave e lento
+      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.02) * 0.03;
+      ref.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.03) * 0.03;
       
       const positions = ref.current.geometry.attributes.position.array as Float32Array;
+      // Movimento vertical muito sutil
       for (let i = 1; i < positions.length; i += 3) {
-        positions[i] += Math.sin(state.clock.elapsedTime + positions[i] * 0.01) * 0.005;
+        positions[i] += Math.sin(state.clock.elapsedTime * 0.3 + positions[i] * 0.005) * 0.002;
       }
       ref.current.geometry.attributes.position.needsUpdate = true;
     }
@@ -43,9 +48,9 @@ const AnimatedParticles = memo(() => {
       <PointMaterial 
         transparent 
         vertexColors 
-        size={1.2} 
+        size={0.8} 
         sizeAttenuation 
-        opacity={0.3}
+        opacity={0.15}
         blending={THREE.AdditiveBlending}
       />
     </Points>
