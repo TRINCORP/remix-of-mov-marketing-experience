@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { StarField } from '@/components/animations/StarField';
+import { FloatingDots } from '@/components/animations/FloatingDots';
 
 const ParallaxSection = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -54,6 +56,10 @@ const ParallaxSection = () => {
     >
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/70" />
+      
+      {/* Subtle Animation Effects */}
+      <StarField density="light" />
+      <FloatingDots count={10} color="primary" />
       
       {/* Animated Elements */}
       <div className="absolute inset-0">

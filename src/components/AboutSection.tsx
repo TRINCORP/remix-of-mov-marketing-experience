@@ -14,6 +14,10 @@ import teamMeeting from '@/assets/team-meeting.jpg';
 import workspace from '@/assets/workspace.jpg';
 import { EnergyField } from '@/components/animations/EnergyField';
 import { MagneticNumber } from '@/components/animations/MagneticNumbers';
+import { StarField } from '@/components/animations/StarField';
+import { FloatingDots } from '@/components/animations/FloatingDots';
+import { SubtleGradients } from '@/components/animations/SubtleGradients';
+import { ElegantParticles } from '@/components/animations/ElegantParticles';
 
 const AboutSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -86,8 +90,11 @@ const AboutSection = () => {
       id="about"
       className="section-animate py-32 relative overflow-hidden"
     >
-      {/* Three.js Energy Background */}
-      <EnergyField className="opacity-30" intensity={0.3} />
+      {/* Elegant Background Animations */}
+      <SubtleGradients variant="warm" />
+      <StarField density="light" />
+      <FloatingDots count={12} color="primary" />
+      <ElegantParticles density="sparse" theme="mixed" />
       
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-background to-primary/5 parallax-element" />

@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Star, Quote, TrendingUp, Users, Award } from 'lucide-react';
+import { StarField } from '@/components/animations/StarField';
+import { SubtleGradients } from '@/components/animations/SubtleGradients';
+import { FloatingDots } from '@/components/animations/FloatingDots';
+import { ElegantParticles } from '@/components/animations/ElegantParticles';
 
 const testimonials = [
   {
@@ -77,12 +81,11 @@ const TestimonialsSection = () => {
 
   return (
     <section className="py-32 px-6 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-float" />
-        <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-secondary rounded-full animate-ping" />
-      </div>
+      {/* Elegant Background Animations */}
+      <SubtleGradients variant="cool" />
+      <StarField density="light" />
+      <FloatingDots count={15} color="accent" />
+      <ElegantParticles density="sparse" theme="accent" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}

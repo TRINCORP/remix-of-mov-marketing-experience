@@ -1,5 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
+import { StarField } from '@/components/animations/StarField';
+import { ElegantParticles } from '@/components/animations/ElegantParticles';
 
 const PinnedSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -108,6 +110,10 @@ const PinnedSection = () => {
               hsl(var(--background) / ${0.9 - scrollProgress * 0.2}) 100%)`,
           }}
         />
+        
+        {/* Subtle Background Effects */}
+        <StarField density="light" />
+        <ElegantParticles density="sparse" theme="primary" />
         
         {/* Partículas douradas animadas */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">

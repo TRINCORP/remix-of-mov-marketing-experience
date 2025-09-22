@@ -578,6 +578,47 @@
   }
 }
 
+/* New Elegant Animations */
+@keyframes twinkle {
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.2); 
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px); 
+  }
+  25% { 
+    transform: translateY(-10px) translateX(5px); 
+  }
+  50% { 
+    transform: translateY(-15px) translateX(0px); 
+  }
+  75% { 
+    transform: translateY(-5px) translateX(-5px); 
+  }
+}
+
+/* Animation Classes */
+.animate-twinkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 5s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 8s ease-in-out infinite;
+  background-size: 400% 400%;
+}
+
 /* Responsive Design Premium */
 @media (max-width: 768px) {
   .text-display {
