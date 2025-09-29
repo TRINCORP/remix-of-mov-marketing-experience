@@ -59,7 +59,7 @@ const HeroSection = () => {
       className="section-animate relative min-h-screen flex items-center justify-center overflow-hidden bg-hero"
     >
       {/* Three.js Particle Field - Performance Optimized */}
-      <ParticleField className={`transition-opacity duration-1000 ${getCurrentFPS() > 30 ? 'opacity-20' : 'opacity-10'}`} />
+      <ParticleField className={`transition-opacity duration-1000 ${getCurrentFPS() > 30 ? 'opacity-60' : 'opacity-30'}`} />
       
       {/* Dynamic Background Image with Parallax */}
       <div 
@@ -79,17 +79,38 @@ const HeroSection = () => {
         }}
       />
       
-      {/* Subtle Grid Background */}
+      {/* Premium Animated Background Elements */}
       <div className="absolute inset-0">
+        {/* Main Orbs */}
         <div 
-          className="absolute inset-0 opacity-3"
+          className="absolute w-96 h-96 bg-gradient-to-r from-primary/20 to-secondary/10 rounded-full blur-3xl animate-float transition-transform duration-1000"
+          style={{
+            top: '10%',
+            left: '5%',
+            transform: `translate(${mousePosition.x * 30}px, ${mousePosition.y * 20}px)`
+          }}
+        />
+        
+        <div 
+          className="absolute w-80 h-80 bg-gradient-to-r from-accent/15 to-primary/10 rounded-full blur-3xl animate-float animation-delay-1000 transition-transform duration-1000"
+          style={{
+            bottom: '15%',
+            right: '8%',
+            transform: `translate(${-mousePosition.x * 25}px, ${-mousePosition.y * 15}px)`
+          }}
+        />
+
+
+        {/* Interactive Grid Lines */}
+        <div 
+          className="absolute inset-0 opacity-5"
           style={{
             backgroundImage: `
-              linear-gradient(0deg, hsl(var(--primary)) 0.5px, transparent 0.5px),
-              linear-gradient(90deg, hsl(var(--primary)) 0.5px, transparent 0.5px)
+              linear-gradient(0deg, hsl(var(--primary)) 1px, transparent 1px),
+              linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
             `,
-            backgroundSize: '80px 80px',
-            transform: `translate(${mousePosition.x * 2}px, ${mousePosition.y * 2}px)`
+            backgroundSize: '50px 50px',
+            transform: `translate(${mousePosition.x * 5}px, ${mousePosition.y * 5}px)`
           }}
         />
       </div>
@@ -109,7 +130,7 @@ const HeroSection = () => {
         <div className="space-y-2 mb-12 relative">
           <BrilliantReflection className="z-0" />
           <h1 className="relative z-10 text-display leading-tight">
-            <span className="block text-7xl md:text-8xl lg:text-9xl font-black animate-slide-up tracking-tighter text-golden-glow">
+            <span className="block text-7xl md:text-8xl lg:text-9xl font-black text-gradient animate-slide-up gradient-shift silver-shine-text tracking-tighter">
               MOV
             </span>
             <span className="block text-5xl md:text-6xl lg:text-7xl font-bold text-foreground animate-slide-up animation-delay-300 tracking-tight">

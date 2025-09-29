@@ -9,8 +9,6 @@ import {
   CheckCircle,
   Globe
 } from 'lucide-react';
-import { StarField } from '@/components/animations/StarField';
-import { FloatingDots } from '@/components/animations/FloatingDots';
 
 const trustMetrics = [
   {
@@ -72,8 +70,6 @@ const TrustIndicators = () => {
     <section className="py-20 px-6 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-mesh opacity-30" />
-      <StarField density="light" />
-      <FloatingDots count={8} color="primary" />
       
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}

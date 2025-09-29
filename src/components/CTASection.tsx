@@ -13,10 +13,6 @@ import {
   Target,
   CheckCircle
 } from 'lucide-react';
-import { StarField } from '@/components/animations/StarField';
-import { GlowingOrbs } from '@/components/animations/GlowingOrbs';
-import { SubtleGradients } from '@/components/animations/SubtleGradients';
-import { ElegantParticles } from '@/components/animations/ElegantParticles';
 
 const CTASection = () => {
   const [formData, setFormData] = useState({
@@ -34,11 +30,17 @@ const CTASection = () => {
 
   return (
     <section className="py-32 px-6 relative overflow-hidden">
-      {/* Elegant Background Animations */}
-      <SubtleGradients variant="mixed" />
-      <StarField density="dense" />
-      <GlowingOrbs size="large" intensity="normal" />
-      <ElegantParticles density="rich" theme="mixed" />
+      {/* Dramatic Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
+      
+      {/* Animated Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute top-1/3 right-1/4 w-4 h-4 bg-accent rounded-full animate-ping" />
+        <div className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-primary rounded-full animate-ping animation-delay-1000" />
+        <div className="absolute top-2/3 left-1/3 w-3 h-3 bg-secondary rounded-full animate-ping animation-delay-2000" />
+      </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Main CTA */}

@@ -15,10 +15,6 @@ import {
   ChevronRight
 } from 'lucide-react';
 import servicesImage from '@/assets/services-bg.jpg';
-import { StarField } from '@/components/animations/StarField';
-import { GlowingOrbs } from '@/components/animations/GlowingOrbs';
-import { FloatingDots } from '@/components/animations/FloatingDots';
-import { ElegantParticles } from '@/components/animations/ElegantParticles';
 
 const services = [
   {
@@ -140,11 +136,11 @@ const ServicesSection = () => {
         style={{ backgroundImage: `url(${servicesImage})` }}
       />
       
-      {/* Elegant Background Animations */}
-      <StarField density="medium" />
-      <GlowingOrbs size="medium" intensity="subtle" />
-      <FloatingDots count={20} color="secondary" />
-      <ElegantParticles density="normal" theme="secondary" />
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse-slow energy-pulse" />
+        <div className="absolute bottom-20 left-20 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-float magnetic-float" />
+      </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
