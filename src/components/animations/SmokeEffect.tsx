@@ -13,6 +13,16 @@ export const SmokeEffect = () => {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
+    // Get actual color values from CSS variables
+    const getColorValue = (cssVar: string) => {
+      const style = getComputedStyle(document.documentElement);
+      const hslString = style.getPropertyValue(cssVar).trim();
+      return hslString;
+    };
+
+    const accentColor = getColorValue('--accent');
+    const primaryColor = getColorValue('--primary');
+
     const particles: Array<{
       x: number;
       y: number;
@@ -62,9 +72,20 @@ export const SmokeEffect = () => {
           particle.size
         );
 
-        gradient.addColorStop(0, `hsla(var(--accent), ${particle.opacity})`);
-        gradient.addColorStop(0.5, `hsla(var(--primary), ${particle.opacity * 0.5})`);
-        gradient.addColorStop(1, 'transparent');
+        // Use actual HSL values with opacity in proper format
+        // CSS variables store values like "45 96% 64%", we need "hsla(45, 96%, 64%, opacity)"
+        const accentHsla = accentColor.split(' ');
+        const primaryHsla = primaryColor.split(' ');
+        
+        gradient.addColorStop(
+          0, 
+          `hsla(${accentHsla[0]}, ${accentHsla[1]}, ${accentHsla[2]}, ${particle.opacity})`
+        );
+        gradient.addColorStop(
+          0.5, 
+          `hsla(${primaryHsla[0]}, ${primaryHsla[1]}, ${primaryHsla[2]}, ${particle.opacity * 0.5})`
+        );
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
         ctx.fillStyle = gradient;
         ctx.beginPath();
