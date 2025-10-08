@@ -81,22 +81,22 @@ const HeroSection = () => {
       
       {/* Premium Animated Background Elements */}
       <div className="absolute inset-0">
-        {/* Main Orbs */}
+        {/* Smaller subtle orbs */}
         <div 
-          className="absolute w-96 h-96 bg-gradient-to-r from-primary/20 to-secondary/10 rounded-full blur-3xl animate-float transition-transform duration-1000"
+          className="absolute w-64 h-64 bg-gradient-to-r from-primary/10 to-secondary/5 rounded-full blur-3xl animate-float transition-transform duration-1000"
           style={{
-            top: '10%',
-            left: '5%',
-            transform: `translate(${mousePosition.x * 30}px, ${mousePosition.y * 20}px)`
+            top: '15%',
+            left: '10%',
+            transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 15}px)`
           }}
         />
         
         <div 
-          className="absolute w-80 h-80 bg-gradient-to-r from-accent/15 to-primary/10 rounded-full blur-3xl animate-float animation-delay-1000 transition-transform duration-1000"
+          className="absolute w-48 h-48 bg-gradient-to-r from-accent/8 to-primary/5 rounded-full blur-3xl animate-float animation-delay-1000 transition-transform duration-1000"
           style={{
-            bottom: '15%',
-            right: '8%',
-            transform: `translate(${-mousePosition.x * 25}px, ${-mousePosition.y * 15}px)`
+            bottom: '20%',
+            right: '15%',
+            transform: `translate(${-mousePosition.x * 15}px, ${-mousePosition.y * 10}px)`
           }}
         />
 
@@ -130,7 +130,7 @@ const HeroSection = () => {
         <div className="space-y-2 mb-12 relative">
           <BrilliantReflection className="z-0" />
           <h1 className="relative z-10 text-display leading-tight">
-            <span className="block text-7xl md:text-8xl lg:text-9xl font-black text-gradient animate-slide-up gradient-shift silver-shine-text tracking-tighter">
+            <span className="block text-7xl md:text-8xl lg:text-9xl font-black animate-slide-up tracking-tighter" style={{ color: 'hsl(var(--accent))' }}>
               MOV
             </span>
             <span className="block text-5xl md:text-6xl lg:text-7xl font-bold text-foreground animate-slide-up animation-delay-300 tracking-tight">
@@ -197,16 +197,19 @@ const HeroSection = () => {
           <div className="flex items-center gap-4">
             <Button 
               variant="outline" 
-              className="btn-secondary group px-8 py-6"
+              className="group px-8 py-6 bg-background hover:bg-primary/10 border-2 border-primary/30 hover:border-primary/50 text-foreground hover:text-foreground transition-all duration-300"
               onClick={handleVideoPlay}
             >
               <Play className="mr-3 w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span>Ver Demo</span>
+              <span className="font-semibold">Ver Demo</span>
             </Button>
             
-            <Button variant="ghost" className="btn-ghost">
+            <Button 
+              variant="ghost" 
+              className="px-8 py-6 text-foreground hover:text-primary hover:bg-primary/5 transition-all duration-300"
+            >
               <Zap className="mr-2 w-5 h-5" />
-              <span>Cases de Sucesso</span>
+              <span className="font-semibold">Cases de Sucesso</span>
             </Button>
           </div>
         </div>

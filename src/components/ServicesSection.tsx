@@ -15,6 +15,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import servicesImage from '@/assets/services-bg.jpg';
+import { SmokeEffect } from '@/components/animations/SmokeEffect';
 
 const services = [
   {
@@ -150,11 +151,14 @@ const ServicesSection = () => {
             <span className="text-sm font-semibold text-primary">NOSSOS SUPERPODERES</span>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black mb-6 text-reveal">
-            <span className="text-gradient silver-shine-text">SERVIÇOS QUE</span>
-            <br />
-            <span className="text-foreground">TRANSFORMAM NEGÓCIOS</span>
-          </h2>
+          <div className="relative inline-block">
+            <SmokeEffect />
+            <h2 className="text-4xl md:text-6xl font-black mb-6 text-reveal relative z-10">
+              <span className="text-gradient silver-shine-text drop-shadow-[0_0_30px_rgba(255,193,7,0.5)] animate-pulse">SERVIÇOS QUE</span>
+              <br />
+              <span className="text-foreground drop-shadow-[0_0_20px_rgba(255,193,7,0.3)]">TRANSFORMAM NEGÓCIOS</span>
+            </h2>
+          </div>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed parallax-element">
             Estratégia, criatividade e tecnologia combinadas para gerar <span className="silver-shine-text">resultados extraordinários</span> para sua marca.
@@ -271,14 +275,21 @@ const ServicesSection = () => {
         {/* CTA */}
         <div className="text-center mt-16 section-animate">
           <div className="inline-flex flex-col sm:flex-row gap-6">
-            <button className="btn-hero group glow-border energy-pulse">
+            <Button 
+              className="btn-hero group glow-border energy-pulse"
+              onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+            >
               <span className="text-reveal">Descobrir Mais Serviços</span>
               <Rocket className="ml-2 w-5 h-5 group-hover:translate-y-[-2px] transition-transform drop-shadow-glow" />
-            </button>
+            </Button>
             
-            <button className="btn-secondary magnetic-float">
-              Falar com Especialista
-            </button>
+            <Button 
+              variant="outline"
+              className="group px-8 py-6 bg-background hover:bg-primary/10 border-2 border-primary/30 hover:border-primary/50 text-foreground hover:text-foreground transition-all duration-300"
+              onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+            >
+              <span className="font-semibold">Falar com Especialista</span>
+            </Button>
           </div>
         </div>
       </div>

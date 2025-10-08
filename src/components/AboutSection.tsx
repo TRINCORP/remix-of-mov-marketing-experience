@@ -7,7 +7,8 @@ import {
   ArrowRight,
   TrendingUp,
   Heart,
-  Zap
+  Zap,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import teamMeeting from '@/assets/team-meeting.jpg';
@@ -155,25 +156,30 @@ const AboutSection = () => {
 
           {/* About Content */}
           <div>
-            <h3 className="text-3xl font-bold text-foreground mb-6">
+            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-6 py-3 mb-6 animate-pulse">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <span className="text-sm font-bold text-primary tracking-wide">NOSSA HISTÓRIA</span>
+            </div>
+            
+            <h3 className="text-4xl md:text-5xl font-black text-gradient mb-8 silver-shine-text">
               Quem Somos
             </h3>
             
-            <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
-              <p>
-                Somos uma <span className="text-primary font-semibold">agência emergente</span> de marketing digital, nascida da paixão por transformar negócios através de estratégias inovadoras e personalizadas.
+            <div className="space-y-6 text-foreground text-xl leading-relaxed">
+              <p className="font-semibold">
+                Somos uma <span className="text-primary font-black text-2xl">agência emergente</span> de marketing digital, nascida da paixão por transformar negócios através de estratégias inovadoras e personalizadas.
               </p>
               
-              <p>
-                Nossa <span className="text-accent font-semibold">energia jovem e fome de resultados</span> nos permite dedicar atenção total a cada cliente, tratando seu projeto como se fosse nosso próprio negócio.
+              <p className="font-medium">
+                Nossa <span className="text-accent font-bold text-xl">energia jovem e fome de resultados</span> nos permite dedicar atenção total a cada cliente, tratando seu projeto como se fosse nosso próprio negócio.
               </p>
               
-              <p>
-                Acreditamos que <span className="text-primary font-semibold">grandes conquistas começam com primeiros passos corajosos</span> - e estamos aqui para dar esse passo junto com você.
+              <p className="font-medium">
+                Acreditamos que <span className="text-primary font-bold text-xl">grandes conquistas começam com primeiros passos corajosos</span> - e estamos aqui para dar esse passo junto com você.
               </p>
               
-              <p>
-                <span className="text-accent font-semibold">Crescendo juntos</span> - enquanto impulsionamos seu negócio, também evoluímos, criando uma parceria genuína para o sucesso mútuo.
+              <p className="font-semibold text-lg">
+                <span className="text-accent font-black text-2xl">Crescendo juntos</span> - enquanto impulsionamos seu negócio, também evoluímos, criando uma parceria genuína para o sucesso mútuo.
               </p>
             </div>
 
@@ -235,83 +241,61 @@ const AboutSection = () => {
               </p>
             </div>
 
-          {/* Modern Values Display */}
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Modern Values Display - Only Auto-Rotating Card */}
+          <div className="max-w-2xl mx-auto">
             {/* Rotating Messages */}
             <div className="relative">
-              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-8 min-h-[300px] flex items-center justify-center">
+              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-12 min-h-[400px] flex items-center justify-center">
                 <div className="text-center">
-                  <div className={`text-6xl mb-6 transition-all duration-500 ${
+                  <div className={`text-8xl mb-8 transition-all duration-500 ${
                     currentValueIndex === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                   }`} style={{ display: currentValueIndex === 0 ? 'block' : 'none' }}>
                     🚀
                   </div>
-                  <div className={`text-6xl mb-6 transition-all duration-500 ${
+                  <div className={`text-8xl mb-8 transition-all duration-500 ${
                     currentValueIndex === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                   }`} style={{ display: currentValueIndex === 1 ? 'block' : 'none' }}>
                     📈
                   </div>
-                  <div className={`text-6xl mb-6 transition-all duration-500 ${
+                  <div className={`text-8xl mb-8 transition-all duration-500 ${
                     currentValueIndex === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                   }`} style={{ display: currentValueIndex === 2 ? 'block' : 'none' }}>
                     ❤️
                   </div>
-                  <div className={`text-6xl mb-6 transition-all duration-500 ${
+                  <div className={`text-8xl mb-8 transition-all duration-500 ${
                     currentValueIndex === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                   }`} style={{ display: currentValueIndex === 3 ? 'block' : 'none' }}>
                     ⚡
                   </div>
                   
-                  <h4 className="text-2xl font-bold text-foreground mb-4">
+                  <h4 className="text-3xl font-bold text-foreground mb-6">
                     {values[currentValueIndex].title}
                   </h4>
                   
-                  <p className="text-lg text-primary font-semibold mb-4">
+                  <p className="text-xl text-primary font-semibold mb-6">
                     {values[currentValueIndex].message}
                   </p>
                   
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-lg text-muted-foreground leading-relaxed">
                     {values[currentValueIndex].description}
                   </p>
                 </div>
               </div>
               
               {/* Value Indicators */}
-              <div className="flex justify-center gap-3 mt-6">
+              <div className="flex justify-center gap-3 mt-8">
                 {values.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentValueIndex(index)}
                     className={`w-3 h-3 rounded-full transition-all duration-300 ${
                       index === currentValueIndex 
-                        ? 'bg-primary w-8' 
+                        ? 'bg-primary w-12' 
                         : 'bg-muted-foreground/30 hover:bg-primary/50'
                     }`}
                   />
                 ))}
               </div>
-            </div>
-
-            {/* Values Grid - Simplified */}
-            <div className="grid grid-cols-2 gap-6">
-              {values.map((value, index) => (
-                <div 
-                  key={index}
-                  className={`p-6 rounded-2xl cursor-pointer transition-all duration-500 ${
-                    index === currentValueIndex
-                      ? 'bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/30 scale-105'
-                      : 'bg-card/20 border border-border/30 hover:border-primary/20 hover:bg-card/40'
-                  }`}
-                  onClick={() => setCurrentValueIndex(index)}
-                >
-                  <h5 className="font-bold text-foreground mb-2">
-                    {value.title}
-                  </h5>
-                  <div className="text-sm text-muted-foreground">
-                    {value.message}
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>

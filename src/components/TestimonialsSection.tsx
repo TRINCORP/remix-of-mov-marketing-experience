@@ -88,19 +88,19 @@ const TestimonialsSection = () => {
         {/* Section Header */}
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 bg-secondary/10 border border-secondary/20 rounded-full px-6 py-3 mb-8">
-            <Award className="w-5 h-5 text-secondary animate-pulse" />
-            <span className="text-sm font-semibold text-secondary">HISTÓRIAS DE SUCESSO</span>
+            <Quote className="w-5 h-5 text-secondary animate-pulse" />
+            <span className="text-sm font-semibold text-secondary">DEPOIMENTOS</span>
           </div>
           
           <h2 className="text-4xl md:text-6xl font-black mb-6">
-            <span className="text-gradient">CLIENTES QUE</span>
+            <span className="text-gradient silver-shine-text">O QUE NOSSOS</span>
             <br />
-            <span className="text-foreground">VIRARAM LENDAS</span>
+            <span className="text-foreground">CLIENTES FALAM</span>
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Cada cliente é uma história de transformação. Veja como empresas 
-            <span className="text-secondary font-bold"> revolucionaram seus mercados</span> com nossas estratégias.
+            Histórias reais de transformação e sucesso. 
+            <span className="text-secondary font-bold"> Resultados que falam por si</span>.
           </p>
         </div>
 
