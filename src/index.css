@@ -204,78 +204,23 @@
     @apply text-sm font-medium tracking-wide uppercase;
   }
 
-  /* Shine Animation Keyframes */
-  @keyframes silver-shine {
-    0% {
-      background-position: -200% center;
-    }
-    100% {
-      background-position: 200% center;
-    }
-  }
-
-  /* Silver Shine Text */
+  /* Silver Shine Effect */
   .silver-shine-text {
     background: linear-gradient(
       90deg,
-      hsl(var(--foreground)) 25%,
-      hsl(220 20% 75%) 50%,
-      hsl(var(--foreground)) 75%
+      transparent 0%,
+      transparent 40%,
+      hsl(0 0% 80%) 50%,
+      transparent 60%,
+      transparent 100%
     );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
+    background-size: 200% 100%;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: silver-shine 3s linear infinite;
-  }
-
-  /* Glow Effects */
-  .drop-shadow-glow {
-    filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.4)) drop-shadow(0 0 40px hsl(var(--primary) / 0.2));
-  }
-
-  .glow-border {
-    box-shadow: 
-      0 0 20px hsl(var(--primary) / 0.3),
-      0 0 40px hsl(var(--primary) / 0.1),
-      inset 0 0 20px hsl(var(--primary) / 0.1);
-  }
-
-  /* Advanced Animations */
-  @keyframes energy-pulse {
-    0%, 100% { 
-      transform: scale(1); 
-      opacity: 0.8; 
-    }
-    50% { 
-      transform: scale(1.05); 
-      opacity: 1; 
-    }
-  }
-
-  @keyframes magnetic-float {
-    0%, 100% { 
-      transform: translateY(0px) rotate(0deg); 
-    }
-    33% { 
-      transform: translateY(-8px) rotate(1deg); 
-    }
-    66% { 
-      transform: translateY(-4px) rotate(-1deg); 
-    }
-  }
-
-  .energy-pulse {
-    animation: energy-pulse 2s ease-in-out infinite;
-  }
-
-  .magnetic-float {
-    animation: magnetic-float 4s ease-in-out infinite;
-  }
-
-  /* Text Reveal Animation */
-  .text-reveal {
-    position: relative;
+    -webkit-background-clip: text;
+    animation: silver-shine 2.5s linear infinite;
+    background-repeat: no-repeat;
+    color: hsl(0 0% 85%);
+    font-weight: bold;
   }
 
   /* Background Effects Premium */
@@ -470,45 +415,6 @@
   to { 
     opacity: 1; 
     transform: translateY(0); 
-  }
-}
-
-@keyframes reflection-sweep {
-  0% { 
-    transform: translateX(-100%) skewX(12deg); 
-    opacity: 0; 
-  }
-  50% { 
-    opacity: 1; 
-  }
-  100% { 
-    transform: translateX(300%) skewX(12deg); 
-    opacity: 0; 
-  }
-}
-
-@keyframes shimmer-wave {
-  0% { 
-    transform: translateX(-150%) skewX(-12deg); 
-    opacity: 0; 
-  }
-  40% { 
-    opacity: 0.8; 
-  }
-  100% { 
-    transform: translateX(250%) skewX(-12deg); 
-    opacity: 0; 
-  }
-}
-
-@keyframes sparkle {
-  0%, 100% { 
-    opacity: 0; 
-    transform: scale(0); 
-  }
-  50% { 
-    opacity: 1; 
-    transform: scale(1); 
   }
 }
 

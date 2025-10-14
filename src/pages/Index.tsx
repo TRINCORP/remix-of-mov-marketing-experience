@@ -9,12 +9,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PinnedSection from '@/components/PinnedSection';
 import TrustIndicators from '@/components/TrustIndicators';
-import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
 
 const Index = () => {
-  // Initialize GSAP navigation and animations
-  useGSAPNavigation();
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

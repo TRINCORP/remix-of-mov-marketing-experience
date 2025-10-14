@@ -7,14 +7,11 @@ import {
   ArrowRight,
   TrendingUp,
   Heart,
-  Zap,
-  Sparkles
+  Zap
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import teamMeeting from '@/assets/team-meeting.jpg';
 import workspace from '@/assets/workspace.jpg';
-import { EnergyField } from '@/components/animations/EnergyField';
-import { MagneticNumber } from '@/components/animations/MagneticNumbers';
 
 const AboutSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -85,13 +82,10 @@ const AboutSection = () => {
     <section 
       ref={sectionRef}
       id="about"
-      className="section-animate py-32 relative overflow-hidden"
+      className="py-32 relative overflow-hidden"
     >
-      {/* Three.js Energy Background */}
-      <EnergyField className="opacity-30" intensity={0.3} />
-      
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-background to-primary/5 parallax-element" />
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-background to-primary/5" />
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -100,18 +94,18 @@ const AboutSection = () => {
         <div className={`text-center mb-20 transition-all duration-1000 transform ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-6 py-3 mb-6 magnetic-float glow-border">
-            <Users className="w-5 h-5 text-accent drop-shadow-glow" />
+          <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-6 py-3 mb-6">
+            <Users className="w-5 h-5 text-accent" />
             <span className="text-sm font-semibold text-accent">QUEM SOMOS</span>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black text-gradient mb-8 text-reveal">
+          <h2 className="text-4xl md:text-6xl font-black text-gradient mb-8">
             Sobre Nós
             <br />
             <span className="text-foreground silver-shine-text">MOV Marketing</span>
           </h2>
           
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed parallax-element">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Uma <span className="silver-shine-text">nova força</span> no marketing digital, focada em <span className="silver-shine-text">resultados reais</span> para o seu negócio.
           </p>
         </div>
@@ -150,36 +144,31 @@ const AboutSection = () => {
             </div>
             
             {/* Floating Elements */}
-            <div className="absolute -top-6 -right-6 w-20 h-20 bg-primary/10 rounded-full blur-xl animate-pulse-slow energy-pulse" />
-            <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-accent/10 rounded-full blur-xl animate-float magnetic-float" />
+            <div className="absolute -top-6 -right-6 w-20 h-20 bg-primary/10 rounded-full blur-xl animate-pulse-slow" />
+            <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-accent/10 rounded-full blur-xl animate-float" />
           </div>
 
           {/* About Content */}
           <div>
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-6 py-3 mb-6 animate-pulse">
-              <Sparkles className="w-5 h-5 text-primary" />
-              <span className="text-sm font-bold text-primary tracking-wide">NOSSA HISTÓRIA</span>
-            </div>
-            
-            <h3 className="text-4xl md:text-5xl font-black text-gradient mb-8 silver-shine-text">
+            <h3 className="text-3xl font-bold text-foreground mb-6">
               Quem Somos
             </h3>
             
-            <div className="space-y-6 text-foreground text-xl leading-relaxed">
-              <p className="font-semibold">
-                Somos uma <span className="text-primary font-black text-2xl">agência emergente</span> de marketing digital, nascida da paixão por transformar negócios através de estratégias inovadoras e personalizadas.
+            <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
+              <p>
+                Somos uma <span className="text-primary font-semibold">agência emergente</span> de marketing digital, nascida da paixão por transformar negócios através de estratégias inovadoras e personalizadas.
               </p>
               
-              <p className="font-medium">
-                Nossa <span className="text-accent font-bold text-xl">energia jovem e fome de resultados</span> nos permite dedicar atenção total a cada cliente, tratando seu projeto como se fosse nosso próprio negócio.
+              <p>
+                Nossa <span className="text-accent font-semibold">energia jovem e fome de resultados</span> nos permite dedicar atenção total a cada cliente, tratando seu projeto como se fosse nosso próprio negócio.
               </p>
               
-              <p className="font-medium">
-                Acreditamos que <span className="text-primary font-bold text-xl">grandes conquistas começam com primeiros passos corajosos</span> - e estamos aqui para dar esse passo junto com você.
+              <p>
+                Acreditamos que <span className="text-primary font-semibold">grandes conquistas começam com primeiros passos corajosos</span> - e estamos aqui para dar esse passo junto com você.
               </p>
               
-              <p className="font-semibold text-lg">
-                <span className="text-accent font-black text-2xl">Crescendo juntos</span> - enquanto impulsionamos seu negócio, também evoluímos, criando uma parceria genuína para o sucesso mútuo.
+              <p>
+                <span className="text-accent font-semibold">Crescendo juntos</span> - enquanto impulsionamos seu negócio, também evoluímos, criando uma parceria genuína para o sucesso mútuo.
               </p>
             </div>
 
@@ -198,11 +187,11 @@ const AboutSection = () => {
             </div>
 
               <Button 
-              className="btn-hero group mt-8 glow-border energy-pulse"
+              className="btn-hero group mt-8"
               onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
             >
-              <span className="text-reveal">Vamos Conversar</span>
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform drop-shadow-glow" />
+              <span>Vamos Conversar</span>
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
         </div>
@@ -232,70 +221,92 @@ const AboutSection = () => {
         <div className={`transition-all duration-1000 transform ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-            <div className="text-center mb-16">
-              <h3 className="text-4xl font-black text-foreground mb-4 text-reveal">
-                Nossos <span className="text-gradient silver-shine-text">Valores</span>
-              </h3>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto parallax-element">
-                Os princípios que nos guiam em cada projeto e relacionamento.
-              </p>
-            </div>
+          <div className="text-center mb-16">
+            <h3 className="text-4xl font-black text-foreground mb-4">
+              Nossos <span className="text-gradient silver-shine-text">Valores</span>
+            </h3>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Os princípios que nos guiam em cada projeto e relacionamento.
+            </p>
+          </div>
 
-          {/* Modern Values Display - Only Auto-Rotating Card */}
-          <div className="max-w-2xl mx-auto">
+          {/* Modern Values Display */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Rotating Messages */}
             <div className="relative">
-              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-12 min-h-[400px] flex items-center justify-center">
+              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-8 min-h-[300px] flex items-center justify-center">
                 <div className="text-center">
-                  <div className={`text-8xl mb-8 transition-all duration-500 ${
+                  <div className={`text-6xl mb-6 transition-all duration-500 ${
                     currentValueIndex === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                   }`} style={{ display: currentValueIndex === 0 ? 'block' : 'none' }}>
                     🚀
                   </div>
-                  <div className={`text-8xl mb-8 transition-all duration-500 ${
+                  <div className={`text-6xl mb-6 transition-all duration-500 ${
                     currentValueIndex === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                   }`} style={{ display: currentValueIndex === 1 ? 'block' : 'none' }}>
                     📈
                   </div>
-                  <div className={`text-8xl mb-8 transition-all duration-500 ${
+                  <div className={`text-6xl mb-6 transition-all duration-500 ${
                     currentValueIndex === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                   }`} style={{ display: currentValueIndex === 2 ? 'block' : 'none' }}>
                     ❤️
                   </div>
-                  <div className={`text-8xl mb-8 transition-all duration-500 ${
+                  <div className={`text-6xl mb-6 transition-all duration-500 ${
                     currentValueIndex === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                   }`} style={{ display: currentValueIndex === 3 ? 'block' : 'none' }}>
                     ⚡
                   </div>
                   
-                  <h4 className="text-3xl font-bold text-foreground mb-6">
+                  <h4 className="text-2xl font-bold text-foreground mb-4">
                     {values[currentValueIndex].title}
                   </h4>
                   
-                  <p className="text-xl text-primary font-semibold mb-6">
+                  <p className="text-lg text-primary font-semibold mb-4">
                     {values[currentValueIndex].message}
                   </p>
                   
-                  <p className="text-lg text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed">
                     {values[currentValueIndex].description}
                   </p>
                 </div>
               </div>
               
               {/* Value Indicators */}
-              <div className="flex justify-center gap-3 mt-8">
+              <div className="flex justify-center gap-3 mt-6">
                 {values.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentValueIndex(index)}
                     className={`w-3 h-3 rounded-full transition-all duration-300 ${
                       index === currentValueIndex 
-                        ? 'bg-primary w-12' 
+                        ? 'bg-primary w-8' 
                         : 'bg-muted-foreground/30 hover:bg-primary/50'
                     }`}
                   />
                 ))}
               </div>
+            </div>
+
+            {/* Values Grid - Simplified */}
+            <div className="grid grid-cols-2 gap-6">
+              {values.map((value, index) => (
+                <div 
+                  key={index}
+                  className={`p-6 rounded-2xl cursor-pointer transition-all duration-500 ${
+                    index === currentValueIndex
+                      ? 'bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/30 scale-105'
+                      : 'bg-card/20 border border-border/30 hover:border-primary/20 hover:bg-card/40'
+                  }`}
+                  onClick={() => setCurrentValueIndex(index)}
+                >
+                  <h5 className="font-bold text-foreground mb-2">
+                    {value.title}
+                  </h5>
+                  <div className="text-sm text-muted-foreground">
+                    {value.message}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -304,8 +315,8 @@ const AboutSection = () => {
         <div className={`text-center mt-20 transition-all duration-1000 transform ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 rounded-3xl p-12 glow-border">
-            <h3 className="text-3xl font-bold text-foreground mb-4 text-reveal">
+          <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 rounded-3xl p-12">
+            <h3 className="text-3xl font-bold text-foreground mb-4">
               Vamos Crescer Juntos?
             </h3>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -314,16 +325,16 @@ const AboutSection = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="btn-hero group energy-pulse glow-border"
+                className="btn-hero group"
                 onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
               >
-                <span className="text-reveal">Começar Agora</span>
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform drop-shadow-glow" />
+                <span>Começar Agora</span>
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               
               <Button 
                 variant="outline" 
-                className="btn-secondary magnetic-float"
+                className="btn-secondary"
                 onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
               >
                 <span>Falar no WhatsApp</span>
