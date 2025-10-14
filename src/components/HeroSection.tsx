@@ -3,12 +3,22 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, Zap, TrendingUp, Play, MousePointer } from 'lucide-react';
 import heroImage from '@/assets/hero-bg.jpg';
+import { ParticleField } from '@/components/animations/ParticleField';
+import { MagneticNumber } from '@/components/animations/MagneticNumbers';
+import { BrilliantReflection } from '@/components/animations/BrilliantReflection';
+import { RotatingRectangle } from '@/components/animations/RotatingRectangle';
+import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
+import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
+  
+  // Initialize GSAP animations and performance monitoring
+  useGSAPNavigation();
+  const { getCurrentFPS } = usePerformanceMonitor();
 
   useEffect(() => {
     setIsVisible(true);
@@ -46,8 +56,11 @@ const HeroSection = () => {
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero"
+      className="section-animate relative min-h-screen flex items-center justify-center overflow-hidden bg-hero"
     >
+      {/* Three.js Particle Field - Performance Optimized */}
+      <ParticleField className={`transition-opacity duration-1000 ${getCurrentFPS() > 30 ? 'opacity-60' : 'opacity-30'}`} />
+      
       {/* Dynamic Background Image with Parallax */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000"
@@ -68,38 +81,25 @@ const HeroSection = () => {
       
       {/* Premium Animated Background Elements */}
       <div className="absolute inset-0">
-        {/* Main Orbs */}
+        {/* Smaller subtle orbs */}
         <div 
-          className="absolute w-96 h-96 bg-gradient-to-r from-primary/20 to-secondary/10 rounded-full blur-3xl animate-float transition-transform duration-1000"
+          className="absolute w-64 h-64 bg-gradient-to-r from-primary/10 to-secondary/5 rounded-full blur-3xl animate-float transition-transform duration-1000"
           style={{
-            top: '10%',
-            left: '5%',
-            transform: `translate(${mousePosition.x * 30}px, ${mousePosition.y * 20}px)`
+            top: '15%',
+            left: '10%',
+            transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 15}px)`
           }}
         />
         
         <div 
-          className="absolute w-80 h-80 bg-gradient-to-r from-accent/15 to-primary/10 rounded-full blur-3xl animate-float animation-delay-1000 transition-transform duration-1000"
+          className="absolute w-48 h-48 bg-gradient-to-r from-accent/8 to-primary/5 rounded-full blur-3xl animate-float animation-delay-1000 transition-transform duration-1000"
           style={{
-            bottom: '15%',
-            right: '8%',
-            transform: `translate(${-mousePosition.x * 25}px, ${-mousePosition.y * 15}px)`
+            bottom: '20%',
+            right: '15%',
+            transform: `translate(${-mousePosition.x * 15}px, ${-mousePosition.y * 10}px)`
           }}
         />
 
-        {/* Floating Particles - Sem interação do mouse */}
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-primary rounded-full animate-float opacity-60"
-            style={{
-              top: `${20 + (i * 12)}%`,
-              left: `${10 + (i * 11)}%`,
-              animationDelay: `${i * 800}ms`,
-              animationDuration: `${4 + (i % 3)}s`
-            }}
-          />
-        ))}
 
         {/* Interactive Grid Lines */}
         <div 
@@ -126,26 +126,39 @@ const HeroSection = () => {
           <span className="text-sm text-primary font-semibold tracking-wide">ASSESSORIA DE MARKETING</span>
         </div>
 
-        {/* Hero Headlines with Staggered Animation */}
-        <div className="space-y-4 mb-12">
-          <h1 className="text-display leading-none">
-            <span className="block text-gradient animate-slide-up gradient-shift silver-shine-text">MOV</span>
-            <span className="block text-foreground text-6xl md:text-7xl lg:text-8xl font-bold animate-slide-up animation-delay-300">
+        {/* Hero Headlines with Staggered Animation and Brilliant Reflection */}
+        <div className="space-y-2 mb-12 relative">
+          <BrilliantReflection className="z-0" />
+          <h1 className="relative z-10 text-display leading-tight">
+            <span className="block text-7xl md:text-8xl lg:text-9xl font-black animate-slide-up tracking-tighter" style={{ color: 'hsl(var(--accent))' }}>
+              MOV
+            </span>
+            <span className="block text-5xl md:text-6xl lg:text-7xl font-bold text-foreground animate-slide-up animation-delay-300 tracking-tight">
               REVOLUCIONA
             </span>
-            <span className="block text-gradient animate-slide-up animation-delay-600 gradient-shift silver-shine-text">
+            <span className="block text-6xl md:text-7xl lg:text-8xl font-black text-gradient animate-slide-up animation-delay-600 gradient-shift silver-shine-text tracking-tighter">
               SEU MARKETING
             </span>
           </h1>
         </div>
 
-        {/* Enhanced Subtitle */}
-        <div className="animate-slide-up animation-delay-900 mb-16">
-          <p className="text-body-large text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Transformamos marcas em <span className="silver-shine-text">fenômenos digitais</span> com estratégias inovadoras e resultados comprovados.
+        {/* Enhanced Subtitle with Rotating Rectangle Highlight */}
+        <div className="animate-slide-up animation-delay-900 mb-16 relative">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
+            Transformamos marcas em <span className="silver-shine-text font-semibold">fenômenos digitais</span> com estratégias inovadoras e resultados comprovados.
           </p>
           
-          <div className="flex items-center justify-center gap-6 mt-8 text-sm text-muted-foreground">
+          {/* Rotating Rectangle with Key Message */}
+          <div className="flex justify-center mb-8">
+            <RotatingRectangle size="md" speed="slow" className="animate-slide-up animation-delay-1000">
+              <div className="text-center">
+                <div className="text-sm font-bold text-primary mb-1">GARANTIA EXCLUSIVA</div>
+                <div className="text-xs text-muted-foreground">Resultados em 30 dias ou seu dinheiro de volta</div>
+              </div>
+            </RotatingRectangle>
+          </div>
+          
+          <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               <span>Resultados em 30 dias</span>
@@ -164,66 +177,58 @@ const HeroSection = () => {
         {/* Premium CTA Section */}
         <div className="flex flex-col lg:flex-row gap-8 justify-center items-center animate-slide-up animation-delay-1200 mb-20">
           <Button 
-            className="btn-hero group text-xl px-12 py-6 relative overflow-hidden"
+            className="btn-hero group text-xl px-12 py-6 relative overflow-hidden glow-border energy-pulse"
             onClick={handleCTAClick}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             <span className="relative z-10 flex items-center">
-              <Sparkles className="mr-3 w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
-              Começar Revolução
+              <Sparkles className="mr-3 w-6 h-6 group-hover:rotate-12 transition-transform duration-300 drop-shadow-glow" />
+              <span className="text-reveal">Começar Revolução</span>
               <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
             </span>
             
-            {/* Hover Effect */}
-            <div className={`absolute inset-0 bg-gradient-to-r from-secondary to-primary transition-opacity duration-300 ${
-              isHovered ? 'opacity-20' : 'opacity-0'
+            {/* Enhanced Hover Effect */}
+            <div className={`absolute inset-0 bg-gradient-to-r from-secondary to-primary transition-all duration-300 ${
+              isHovered ? 'opacity-20 scale-105' : 'opacity-0 scale-100'
             }`} />
           </Button>
           
           <div className="flex items-center gap-4">
             <Button 
               variant="outline" 
-              className="btn-secondary group px-8 py-6"
+              className="group px-8 py-6 bg-background hover:bg-primary/10 border-2 border-primary/30 hover:border-primary/50 text-foreground hover:text-foreground transition-all duration-300"
               onClick={handleVideoPlay}
             >
               <Play className="mr-3 w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span>Ver Demo</span>
+              <span className="font-semibold">Ver Demo</span>
             </Button>
             
-            <Button variant="ghost" className="btn-ghost">
+            <Button 
+              variant="ghost" 
+              className="px-8 py-6 text-foreground hover:text-primary hover:bg-primary/5 transition-all duration-300"
+            >
               <Zap className="mr-2 w-5 h-5" />
-              <span>Cases de Sucesso</span>
+              <span className="font-semibold">Cases de Sucesso</span>
             </Button>
           </div>
         </div>
 
-        {/* Premium Stats with Enhanced Animation */}
+        {/* Premium Stats with Magnetic Animation */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 animate-slide-up animation-delay-1500">
           {[
             { value: "500+", label: "Marcas Transformadas", icon: TrendingUp },
             { value: "300%", label: "Crescimento Médio", icon: Zap },
             { value: "98%", label: "Satisfação dos Clientes", icon: Sparkles }
-          ].map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <div 
-                key={index}
-                className="group cursor-pointer"
-                style={{ animationDelay: `${(index + 15) * 100}ms` }}
-              >
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <Icon className="w-8 h-8 text-primary group-hover:scale-110 transition-transform" />
-                  <div className="text-5xl md:text-6xl font-black text-gradient group-hover:scale-110 transition-transform">
-                    {stat.value}
-                  </div>
-                </div>
-                <div className="text-muted-foreground font-semibold text-lg">
-                  {stat.label}
-                </div>
-              </div>
-            );
-          })}
+          ].map((stat, index) => (
+            <MagneticNumber
+              key={index}
+              value={stat.value}
+              label={stat.label}
+              icon={stat.icon}
+              delay={index * 200}
+            />
+          ))}
         </div>
 
         {/* Interactive Mouse Follower */}

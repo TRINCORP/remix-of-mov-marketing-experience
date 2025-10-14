@@ -15,6 +15,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import servicesImage from '@/assets/services-bg.jpg';
+import { SmokeEffect } from '@/components/animations/SmokeEffect';
 
 const services = [
   {
@@ -129,34 +130,37 @@ const ServicesSection = () => {
   };
 
   return (
-    <section className="py-24 px-6 relative overflow-hidden">
+    <section className="section-animate py-24 px-6 relative overflow-hidden">
       {/* Background */}
       <div 
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 opacity-5 parallax-element"
         style={{ backgroundImage: `url(${servicesImage})` }}
       />
       
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 left-20 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-float" />
+        <div className="absolute top-20 right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse-slow energy-pulse" />
+        <div className="absolute bottom-20 left-20 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-float magnetic-float" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-6 py-3 mb-8">
-            <Rocket className="w-5 h-5 text-primary animate-pulse" />
+        <div className="text-center mb-16 section-animate">
+          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-6 py-3 mb-8 magnetic-float">
+            <Rocket className="w-5 h-5 text-primary animate-pulse drop-shadow-glow" />
             <span className="text-sm font-semibold text-primary">NOSSOS SUPERPODERES</span>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black mb-6">
-            <span className="text-gradient silver-shine-text">SERVIÇOS QUE</span>
-            <br />
-            <span className="text-foreground">TRANSFORMAM NEGÓCIOS</span>
-          </h2>
+          <div className="relative inline-block">
+            <SmokeEffect />
+            <h2 className="text-4xl md:text-6xl font-black mb-6 text-reveal relative z-10">
+              <span className="text-gradient silver-shine-text drop-shadow-[0_0_30px_rgba(255,193,7,0.5)] animate-pulse">SERVIÇOS QUE</span>
+              <br />
+              <span className="text-foreground drop-shadow-[0_0_20px_rgba(255,193,7,0.3)]">TRANSFORMAM NEGÓCIOS</span>
+            </h2>
+          </div>
           
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed parallax-element">
             Estratégia, criatividade e tecnologia combinadas para gerar <span className="silver-shine-text">resultados extraordinários</span> para sua marca.
           </p>
         </div>
@@ -269,16 +273,23 @@ const ServicesSection = () => {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-16 section-animate">
           <div className="inline-flex flex-col sm:flex-row gap-6">
-            <button className="btn-hero group">
-              <span>Descobrir Mais Serviços</span>
-              <Rocket className="ml-2 w-5 h-5 group-hover:translate-y-[-2px] transition-transform" />
-            </button>
+            <Button 
+              className="btn-hero group glow-border energy-pulse"
+              onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+            >
+              <span className="text-reveal">Descobrir Mais Serviços</span>
+              <Rocket className="ml-2 w-5 h-5 group-hover:translate-y-[-2px] transition-transform drop-shadow-glow" />
+            </Button>
             
-            <button className="btn-secondary">
-              Falar com Especialista
-            </button>
+            <Button 
+              variant="outline"
+              className="group px-8 py-6 bg-background hover:bg-primary/10 border-2 border-primary/30 hover:border-primary/50 text-foreground hover:text-foreground transition-all duration-300"
+              onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+            >
+              <span className="font-semibold">Falar com Especialista</span>
+            </Button>
           </div>
         </div>
       </div>
