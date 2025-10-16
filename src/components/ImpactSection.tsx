@@ -77,6 +77,15 @@ const BrazilMap = () => {
     triggerOnce: true,
   });
 
+  // Regional numbers
+  const regionalNumbers = [
+    { number: '+45', label: 'Norte', x: '42%', y: '18%' },
+    { number: '+78', label: 'Nordeste', x: '62%', y: '30%' },
+    { number: '+52', label: 'Centro-Oeste', x: '42%', y: '44%' },
+    { number: '+156', label: 'Sudeste', x: '58%', y: '56%' },
+    { number: '+189', label: 'Sul', x: '52%', y: '80%' },
+  ];
+
   // Brazil map coordinates for pins - distributed across regions
   const pinLocations = [
     // Norte (espalhado)
@@ -141,6 +150,30 @@ const BrazilMap = () => {
           style={{ filter: 'brightness(0.95) contrast(1.1)' }}
         />
         
+        {/* Regional Numbers */}
+        {regionalNumbers.map((region, index) => (
+          <div
+            key={`region-${index}`}
+            className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ${
+              inView ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+            }`}
+            style={{ 
+              left: region.x,
+              top: region.y,
+              transitionDelay: `${600 + index * 100}ms`,
+            }}
+          >
+            <div className="flex flex-col items-center gap-1 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg border border-[hsl(0,84%,60%)]/20 shadow-lg">
+              <span className="text-2xl md:text-3xl font-black text-[hsl(0,84%,60%)]">
+                {region.number}
+              </span>
+              <span className="text-xs font-medium text-foreground/70 whitespace-nowrap">
+                {region.label}
+              </span>
+            </div>
+          </div>
+        ))}
+
         {/* Pins */}
         {pinLocations.map((pin, index) => (
           <div
