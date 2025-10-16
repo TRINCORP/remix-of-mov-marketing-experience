@@ -59,8 +59,8 @@ const AnimatedMetric = ({ value, label, delay = 0 }: MetricProps) => {
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="flex items-center gap-2">
-        <TrendingUp className="w-6 h-6 text-primary" />
-        <span className="text-4xl md:text-5xl lg:text-6xl font-black text-primary">
+        <TrendingUp className="w-6 h-6" style={{ color: 'hsl(0, 84%, 60%)' }} />
+        <span className="text-4xl md:text-5xl lg:text-6xl font-black" style={{ color: 'hsl(0, 84%, 60%)' }}>
           {displayValue}
         </span>
       </div>
@@ -77,66 +77,82 @@ const BrazilMap = () => {
     triggerOnce: true,
   });
 
-  // Simplified Brazil map coordinates for pins
+  // Brazil map coordinates for pins - distributed across regions
   const pinLocations = [
-    { x: '45%', y: '15%' }, // Norte
-    { x: '52%', y: '22%' }, // Norte
-    { x: '38%', y: '28%' }, // Nordeste
-    { x: '45%', y: '32%' }, // Nordeste
-    { x: '50%', y: '35%' }, // Nordeste
-    { x: '55%', y: '38%' }, // Nordeste
-    { x: '42%', y: '45%' }, // Centro-Oeste
-    { x: '48%', y: '48%' }, // Centro-Oeste
-    { x: '55%', y: '52%' }, // Sudeste
-    { x: '58%', y: '55%' }, // Sudeste
-    { x: '62%', y: '58%' }, // Sudeste
-    { x: '52%', y: '62%' }, // Sul
-    { x: '55%', y: '68%' }, // Sul
-    { x: '58%', y: '72%' }, // Sul
+    // Norte (espalhado)
+    { x: '35%', y: '12%' }, { x: '42%', y: '14%' }, { x: '48%', y: '16%' },
+    { x: '38%', y: '18%' }, { x: '45%', y: '20%' }, { x: '52%', y: '19%' },
+    
+    // Nordeste (distribuído)
+    { x: '58%', y: '22%' }, { x: '62%', y: '24%' }, { x: '56%', y: '26%' },
+    { x: '60%', y: '28%' }, { x: '64%', y: '30%' }, { x: '58%', y: '32%' },
+    { x: '62%', y: '34%' }, { x: '66%', y: '32%' }, { x: '54%', y: '30%' },
+    
+    // Centro-Oeste (médio)
+    { x: '38%', y: '38%' }, { x: '42%', y: '40%' }, { x: '46%', y: '42%' },
+    { x: '40%', y: '44%' }, { x: '44%', y: '46%' }, { x: '48%', y: '44%' },
+    
+    // Sudeste (alta concentração)
+    { x: '52%', y: '52%' }, { x: '56%', y: '54%' }, { x: '60%', y: '56%' },
+    { x: '54%', y: '56%' }, { x: '58%', y: '58%' }, { x: '62%', y: '60%' },
+    { x: '56%', y: '60%' }, { x: '60%', y: '62%' }, { x: '64%', y: '58%' },
+    { x: '52%', y: '58%' }, { x: '58%', y: '52%' }, { x: '62%', y: '54%' },
+    { x: '54%', y: '50%' }, { x: '58%', y: '50%' }, { x: '62%', y: '52%' },
+    { x: '66%', y: '56%' }, { x: '64%', y: '60%' }, { x: '60%', y: '64%' },
+    
+    // Sul (muito alta concentração)
+    { x: '48%', y: '68%' }, { x: '52%', y: '70%' }, { x: '56%', y: '72%' },
+    { x: '50%', y: '72%' }, { x: '54%', y: '74%' }, { x: '58%', y: '76%' },
+    { x: '52%', y: '76%' }, { x: '56%', y: '78%' }, { x: '60%', y: '74%' },
+    { x: '48%', y: '74%' }, { x: '52%', y: '78%' }, { x: '56%', y: '80%' },
+    { x: '50%', y: '80%' }, { x: '54%', y: '82%' }, { x: '58%', y: '82%' },
+    { x: '52%', y: '84%' }, { x: '56%', y: '84%' }, { x: '60%', y: '80%' },
+    { x: '48%', y: '78%' }, { x: '54%', y: '86%' }, { x: '58%', y: '86%' },
+    { x: '50%', y: '86%' }, { x: '56%', y: '88%' }, { x: '52%', y: '88%' },
   ];
 
   return (
     <div ref={ref} className="relative w-full h-full flex items-center justify-center">
       {/* Brazil Map Image */}
-      <div className="relative w-full h-full max-w-md">
+      <div className="relative w-full h-auto">
         <img 
           src={mapaBrasil}
           alt="Mapa do Brasil"
-          className={`w-full h-full object-contain transition-all duration-1000 ${
+          className={`w-full h-auto object-contain transition-all duration-1000 ${
             inView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`}
-          style={{ filter: 'drop-shadow(0 0 30px rgba(252, 211, 77, 0.15))' }}
+          style={{ filter: 'brightness(0.95) contrast(1.1)' }}
         />
         
         {/* Pins */}
         {pinLocations.map((pin, index) => (
           <div
             key={index}
-            className={`absolute transition-all duration-500 ${
+            className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${
               inView ? 'opacity-100' : 'opacity-0'
             }`}
             style={{ 
               left: pin.x,
               top: pin.y,
-              transitionDelay: `${800 + index * 50}ms`,
+              transitionDelay: `${400 + index * 20}ms`,
             }}
           >
             <div className="relative">
               <div
-                className="w-3 h-3 rounded-full bg-[hsl(0,84%,60%)] animate-pulse"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="w-2 h-2 rounded-full bg-[hsl(0,84%,60%)]"
+                style={{ 
+                  animationDelay: `${index * 50}ms`,
+                  boxShadow: '0 0 8px rgba(239, 68, 68, 0.6)'
+                }}
               />
               <div
-                className="absolute inset-0 w-3 h-3 rounded-full bg-[hsl(0,84%,60%)] opacity-30 animate-ping"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="absolute inset-0 w-2 h-2 rounded-full bg-[hsl(0,84%,60%)] opacity-40 animate-ping"
+                style={{ animationDelay: `${index * 50}ms` }}
               />
             </div>
           </div>
         ))}
       </div>
-      
-      {/* Glow effect behind map */}
-      <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent blur-3xl" />
     </div>
   );
 };
@@ -214,12 +230,10 @@ const ImpactSection = () => {
               inView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
             }`}
           >
-            <div className="relative aspect-[4/5] w-full max-w-lg mx-auto">
-              <BrazilMap />
-              
-              {/* Decorative elements */}
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl animate-pulse animation-delay-500" />
+            <div className="relative w-full h-full flex items-center justify-end">
+              <div className="relative w-full max-w-2xl">
+                <BrazilMap />
+              </div>
             </div>
           </div>
         </div>
