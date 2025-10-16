@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { TrendingUp, MapPin } from 'lucide-react';
+import mapaBrasil from '@/assets/mapa-brasil.png';
 
 interface MetricProps {
   value: string;
@@ -96,62 +97,43 @@ const BrazilMap = () => {
 
   return (
     <div ref={ref} className="relative w-full h-full flex items-center justify-center">
-      {/* Brazil SVG simplified outline */}
-      <svg 
-        viewBox="0 0 200 240" 
-        className={`w-full h-full max-w-md transition-all duration-1000 ${
-          inView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-        }`}
-        style={{ filter: 'drop-shadow(0 0 30px rgba(252, 211, 77, 0.15))' }}
-      >
-        {/* Brazil outline path */}
-        <path
-          d="M100,20 L120,25 L135,35 L145,50 L150,65 L155,85 L158,105 L160,125 L158,145 L155,160 L150,175 L145,190 L135,205 L120,215 L105,220 L90,218 L75,210 L65,195 L58,180 L55,165 L52,145 L50,125 L52,105 L55,85 L60,70 L70,55 L80,40 L90,30 Z"
-          fill="rgba(255, 255, 255, 0.05)"
-          stroke="rgba(252, 211, 77, 0.3)"
-          strokeWidth="1"
-          className="transition-all duration-1000"
-        />
-        
-        {/* Regional states - simplified */}
-        <path
-          d="M100,20 L120,25 L135,35 L145,50 L140,60 L130,65 L115,62 L105,55 L95,45 L90,30 Z"
-          fill="rgba(255, 255, 255, 0.02)"
-          stroke="rgba(252, 211, 77, 0.15)"
-          strokeWidth="0.5"
+      {/* Brazil Map Image */}
+      <div className="relative w-full h-full max-w-md">
+        <img 
+          src={mapaBrasil}
+          alt="Mapa do Brasil"
+          className={`w-full h-full object-contain transition-all duration-1000 ${
+            inView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}
+          style={{ filter: 'drop-shadow(0 0 30px rgba(252, 211, 77, 0.15))' }}
         />
         
         {/* Pins */}
         {pinLocations.map((pin, index) => (
-          <g 
+          <div
             key={index}
-            className={`transition-all duration-500 ${
+            className={`absolute transition-all duration-500 ${
               inView ? 'opacity-100' : 'opacity-0'
             }`}
             style={{ 
+              left: pin.x,
+              top: pin.y,
               transitionDelay: `${800 + index * 50}ms`,
             }}
           >
-            <circle
-              cx={pin.x}
-              cy={pin.y}
-              r="2"
-              fill="hsl(0, 84%, 60%)"
-              className="animate-pulse"
-              style={{ animationDelay: `${index * 100}ms` }}
-            />
-            <circle
-              cx={pin.x}
-              cy={pin.y}
-              r="4"
-              fill="hsl(0, 84%, 60%)"
-              opacity="0.3"
-              className="animate-ping"
-              style={{ animationDelay: `${index * 100}ms` }}
-            />
-          </g>
+            <div className="relative">
+              <div
+                className="w-3 h-3 rounded-full bg-[hsl(0,84%,60%)] animate-pulse"
+                style={{ animationDelay: `${index * 100}ms` }}
+              />
+              <div
+                className="absolute inset-0 w-3 h-3 rounded-full bg-[hsl(0,84%,60%)] opacity-30 animate-ping"
+                style={{ animationDelay: `${index * 100}ms` }}
+              />
+            </div>
+          </div>
         ))}
-      </svg>
+      </div>
       
       {/* Glow effect behind map */}
       <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent blur-3xl" />
