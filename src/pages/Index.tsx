@@ -9,6 +9,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PinnedSection from '@/components/PinnedSection';
 import TrustIndicators from '@/components/TrustIndicators';
+import ImpactSection from '@/components/ImpactSection';
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
 
 const Index = () => {
@@ -25,6 +26,7 @@ const Index = () => {
         <ParallaxSection />
         <PinnedSection />
         <TrustIndicators />
+        <ImpactSection />
         <section id="about">
           <AboutSection />
         </section>
