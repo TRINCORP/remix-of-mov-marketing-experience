@@ -78,10 +78,7 @@ const AboutSection = () => {
         
         {/* Header */}
         <div className={`text-center mb-20 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          <div className="inline-flex items-center gap-2 border border-accent/20 rounded-full px-6 py-3 mb-6 magnetic-float glow-border bg-black/[0.18]">
-            <Users className="w-5 h-5 text-accent drop-shadow-glow" />
-            <span className="text-sm font-semibold text-accent">QUEM SOMOS</span>
-          </div>
+          
           
           <h2 className="text-4xl md:text-6xl font-black text-gradient mb-8 text-reveal">
             Sobre Nós
