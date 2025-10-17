@@ -10,7 +10,11 @@ const testimonials = [
     rating: 5,
     text: "A MOV transformou completamente nossa presença digital. Em 6 meses, aumentamos nosso faturamento em 300% e nos tornamos referência no setor.",
     results: "300% aumento no faturamento",
-    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=face",
+    metrics: [
+      { label: "ROI", before: "25%", after: "85%" },
+      { label: "Conversão", before: "1.2%", after: "4.8%" }
+    ]
   },
   {
     name: "Carlos Mendes",
@@ -19,7 +23,11 @@ const testimonials = [
     rating: 5,
     text: "Estratégias inovadoras que realmente funcionam. A equipe da MOV não apenas entende de marketing, eles respiram inovação.",
     results: "250% mais leads qualificados",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
+    metrics: [
+      { label: "Leads/mês", before: "120", after: "420" },
+      { label: "Ticket Médio", before: "R$ 350", after: "R$ 890" }
+    ]
   },
   {
     name: "Ana Costa",
@@ -28,7 +36,11 @@ const testimonials = [
     rating: 5,
     text: "ROI impressionante! A MOV conseguiu escalar nossa marca de forma sustentável e com resultados mensuráveis em cada campanha.",
     results: "500% ROI em campanhas",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
+    metrics: [
+      { label: "ROAS", before: "1.8x", after: "6.2x" },
+      { label: "CAC", before: "R$ 180", after: "R$ 45" }
+    ]
   },
   {
     name: "Ricardo Santos",
@@ -37,7 +49,11 @@ const testimonials = [
     rating: 5,
     text: "Parceria estratégica que vai além do marketing. A MOV se tornou uma extensão da nossa equipe, sempre trazendo insights valiosos.",
     results: "1M+ usuários adquiridos",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
+    metrics: [
+      { label: "Usuários", before: "15K", after: "1.2M" },
+      { label: "Engajamento", before: "12%", after: "48%" }
+    ]
   },
   {
     name: "Juliana Oliveira",
@@ -46,7 +62,11 @@ const testimonials = [
     rating: 5,
     text: "Criatividade sem limites! Cada campanha da MOV supera nossas expectativas e gera buzz genuíno no mercado.",
     results: "150% crescimento orgânico",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face",
+    metrics: [
+      { label: "Tráfego Orgânico", before: "5K/mês", after: "18K/mês" },
+      { label: "Taxa Retenção", before: "35%", after: "72%" }
+    ]
   },
   {
     name: "Pedro Almeida",
@@ -55,7 +75,11 @@ const testimonials = [
     rating: 5,
     text: "A MOV não apenas executa, eles inovam. Transformaram nossa visão em realidade digital com resultados que superaram todos os KPIs.",
     results: "400% aumento em conversões",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop&crop=face",
+    metrics: [
+      { label: "MRR", before: "R$ 45K", after: "R$ 220K" },
+      { label: "Churn", before: "8%", after: "2.1%" }
+    ]
   }
 ];
 
@@ -148,19 +172,22 @@ const TestimonialsSection = () => {
 
           {/* Stats & Navigation */}
           <div className="space-y-8">
-            {/* Impact Stats */}
+            {/* Dynamic Impact Stats - Before/After for each client */}
             <div className="grid grid-cols-2 gap-6">
-              <div className="text-center p-6 bg-primary/5 border border-primary/10 rounded-2xl">
-                <TrendingUp className="w-8 h-8 text-primary mx-auto mb-3" />
-                <div className="text-3xl font-black text-gradient">500+</div>
-                <div className="text-sm text-muted-foreground font-semibold">Projetos Concluídos</div>
-              </div>
-              
-              <div className="text-center p-6 bg-secondary/5 border border-secondary/10 rounded-2xl">
-                <Users className="w-8 h-8 text-secondary mx-auto mb-3" />
-                <div className="text-3xl font-black text-gradient">98%</div>
-                <div className="text-sm text-muted-foreground font-semibold">Taxa de Satisfação</div>
-              </div>
+              {currentTestimonial.metrics.map((metric, index) => (
+                <div key={index} className="text-center p-6 bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10 rounded-2xl">
+                  <TrendingUp className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <div className="text-sm text-muted-foreground font-semibold mb-2">{metric.label}</div>
+                  <div className="space-y-1">
+                    <div className="text-lg text-muted-foreground line-through opacity-60">
+                      {metric.before}
+                    </div>
+                    <div className="text-3xl font-black text-gradient">
+                      {metric.after}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Navigation Dots */}

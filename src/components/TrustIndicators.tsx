@@ -1,5 +1,5 @@
-
 import { useState, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { Card } from '@/components/ui/card';
 import { 
   Shield, 
@@ -59,6 +59,61 @@ const certifications = [
   }
 ];
 
+const AnimatedMetric = ({ value, label, description, index }: { value: string, label: string, description: string, index: number }) => {
+  const [displayValue, setDisplayValue] = useState("0");
+  const { ref, inView } = useInView({
+    threshold: 0.3,
+    triggerOnce: true
+  });
+
+  useEffect(() => {
+    if (inView) {
+      const numericMatch = value.match(/\d+/);
+      if (!numericMatch) {
+        setDisplayValue(value);
+        return;
+      }
+
+      const numericValue = parseInt(numericMatch[0]);
+      const suffix = value.replace(/\d+/, '');
+      let current = 0;
+      const increment = numericValue / 50;
+
+      const counter = setInterval(() => {
+        current += increment;
+        if (current >= numericValue) {
+          setDisplayValue(value);
+          clearInterval(counter);
+        } else {
+          setDisplayValue(Math.floor(current) + suffix);
+        }
+      }, 30);
+
+      return () => clearInterval(counter);
+    }
+  }, [inView, value]);
+
+  return (
+    <Card
+      ref={ref}
+      className={`card-premium text-center group cursor-pointer animate-scale-in`}
+      style={{ animationDelay: `${index * 150}ms` }}
+    >
+      <div className="text-4xl font-black text-gradient mb-2 group-hover:scale-110 transition-transform">
+        {displayValue}
+      </div>
+      
+      <div className="font-semibold text-foreground mb-2">
+        {label}
+      </div>
+      
+      <div className="text-sm text-muted-foreground">
+        {description}
+      </div>
+    </Card>
+  );
+};
+
 const TrustIndicators = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -88,28 +143,15 @@ const TrustIndicators = () => {
 
         {/* Trust Metrics Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {trustMetrics.map((metric, index) => {
-            const Icon = metric.icon;
-            return (
-              <Card
-                key={index}
-                className={`card-premium text-center group cursor-pointer animate-scale-in`}
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="text-4xl font-black text-gradient mb-2 group-hover:scale-110 transition-transform">
-                  {metric.value}
-                </div>
-                
-                <div className="font-semibold text-foreground mb-2">
-                  {metric.label}
-                </div>
-                
-                <div className="text-sm text-muted-foreground">
-                  {metric.description}
-                </div>
-              </Card>
-            );
-          })}
+          {trustMetrics.map((metric, index) => (
+            <AnimatedMetric
+              key={index}
+              value={metric.value}
+              label={metric.label}
+              description={metric.description}
+              index={index}
+            />
+          ))}
         </div>
 
         {/* Certifications */}

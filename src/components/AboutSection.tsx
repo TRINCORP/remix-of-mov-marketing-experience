@@ -14,7 +14,7 @@ const AboutSection = () => {
         setIsVisible(true);
       }
     }, {
-      threshold: 0.1
+      threshold: 0.05
     });
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
@@ -97,7 +97,15 @@ const AboutSection = () => {
           {/* Logo and Brand */}
           <div className="relative">
             <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-8 text-center">
-              <img src="/lovable-uploads/daaf83ad-eb48-42e2-9743-321ad5ce7cd6.png" alt="MOV Marketing Logo" className="w-32 h-auto mx-auto mb-6 hover:scale-105 transition-transform duration-500" />
+              <img 
+                src="/lovable-uploads/daaf83ad-eb48-42e2-9743-321ad5ce7cd6.png" 
+                alt="MOV Marketing Logo" 
+                className={`w-32 h-auto mx-auto mb-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-20'}`}
+                style={{
+                  animation: isVisible ? 'drop-bounce 1s ease-out forwards' : 'none',
+                  animationDelay: '300ms'
+                }}
+              />
               <h3 className="text-2xl font-black text-gradient mb-4">MOV MARKETING</h3>
               <p className="text-muted-foreground text-lg mb-6">
                 Assessoria de Marketing

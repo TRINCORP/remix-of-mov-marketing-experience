@@ -106,9 +106,9 @@ const HeroSection = () => {
         <div className="space-y-2 mb-12 relative">
           <BrilliantReflection className="z-0" />
           <h1 className="relative z-10 text-display leading-tight">
-            <span style={{
-            color: 'hsl(var(--accent))'
-          }} className="block text-7xl md:text-8xl font-black animate-slide-up tracking-tighter text-amber-300 lg:text-9xl">
+            <span className="block text-7xl md:text-8xl font-black animate-slide-up tracking-tighter lg:text-9xl" style={{
+            color: 'hsl(0, 84%, 60%)'
+          }}>
               MOV
             </span>
             <span className="block text-5xl md:text-6xl lg:text-7xl font-bold text-foreground animate-slide-up animation-delay-300 tracking-tight">
