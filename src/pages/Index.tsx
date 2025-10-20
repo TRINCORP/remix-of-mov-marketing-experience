@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import PinnedSection from '@/components/PinnedSection';
 import TrustIndicators from '@/components/TrustIndicators';
 import ImpactSection from '@/components/ImpactSection';
+import ClientsPartnersSection from '@/components/ClientsPartnersSection';
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
 
 const Index = () => {
@@ -30,6 +31,7 @@ const Index = () => {
         <section id="about">
           <AboutSection />
         </section>
+        <ClientsPartnersSection />
         <section id="services">
           <ServicesSection />
         </section>
