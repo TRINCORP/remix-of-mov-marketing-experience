@@ -459,13 +459,16 @@ const BrazilMap = () => {
       }} />
 
         {/* Regional Numbers */}
-        {regionalNumbers.map((region, index) => <div key={`region-${index}`} className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ${inView ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 translate-y-10'}`} style={{
+        {regionalNumbers.map((region, index) => <div key={`region-${index}`} className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-1000 ease-out ${inView ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-90 translate-y-4'}`} style={{
         left: region.x,
         top: region.y,
-        transitionDelay: `${200 + index * 150}ms`,
+        transitionDelay: `${400 + index * 200}ms`,
         zIndex: 10
       }}>
-            <div className="flex flex-col items-center gap-1 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg border border-[hsl(45,96%,64%)]/30 shadow-lg hover:scale-110 transition-transform cursor-pointer">
+            <div className="flex flex-col items-center gap-1 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg border border-[hsl(45,96%,64%)]/30 shadow-lg hover:scale-110 transition-transform cursor-pointer animate-fade-in" style={{
+              animationDelay: `${400 + index * 200}ms`,
+              animationFillMode: 'backwards'
+            }}>
               <span className="text-2xl md:text-3xl font-black text-[hsl(45,96%,64%)]">
                 {region.number}
               </span>
