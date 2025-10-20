@@ -1,8 +1,11 @@
 import { useEffect, useRef } from 'react';
+import { useCarouselColorEffect } from '@/hooks/useCarouselColorEffect';
 
 const ClientsPartnersSection = () => {
   const scrollRef1 = useRef<HTMLDivElement>(null);
-  const scrollRef2 = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  useCarouselColorEffect(containerRef);
 
   // Fictional client/partner logos - placeholder data
   const clients = [
@@ -22,7 +25,6 @@ const ClientsPartnersSection = () => {
 
   useEffect(() => {
     const scroll1 = scrollRef1.current;
-    const scroll2 = scrollRef2.current;
 
     if (scroll1) {
       const scrollWidth = scroll1.scrollWidth / 2;
@@ -39,27 +41,6 @@ const ClientsPartnersSection = () => {
       
       const animation1 = requestAnimationFrame(animate1);
       return () => cancelAnimationFrame(animation1);
-    }
-  }, []);
-
-  useEffect(() => {
-    const scroll2 = scrollRef2.current;
-
-    if (scroll2) {
-      const scrollWidth = scroll2.scrollWidth / 2;
-      let position2 = 0;
-      
-      const animate2 = () => {
-        position2 += 0.5;
-        if (position2 >= scrollWidth) {
-          position2 = 0;
-        }
-        scroll2.style.transform = `translateX(${position2}px)`;
-        requestAnimationFrame(animate2);
-      };
-      
-      const animation2 = requestAnimationFrame(animate2);
-      return () => cancelAnimationFrame(animation2);
     }
   }, []);
 
@@ -84,26 +65,14 @@ const ClientsPartnersSection = () => {
         </div>
       </div>
 
-      {/* First carousel - left to right */}
-      <div className="relative mb-8 md:mb-12 carousel-container">
+      {/* Carousel */}
+      <div className="relative carousel-container" ref={containerRef}>
         <div className="carousel-gradient-left"></div>
         <div className="carousel-gradient-right"></div>
         <div className="flex" ref={scrollRef1}>
           {/* Duplicate for infinite scroll */}
-          {[...clients, ...clients].map((client, index) => (
-            <LogoCard key={`row1-${index}`} name={client.name} color={client.color} />
-          ))}
-        </div>
-      </div>
-
-      {/* Second carousel - right to left */}
-      <div className="relative carousel-container">
-        <div className="carousel-gradient-left"></div>
-        <div className="carousel-gradient-right"></div>
-        <div className="flex" ref={scrollRef2} style={{ transform: 'translateX(0)' }}>
-          {/* Duplicate for infinite scroll */}
-          {[...clients.slice().reverse(), ...clients.slice().reverse()].map((client, index) => (
-            <LogoCard key={`row2-${index}`} name={client.name} color={client.color} />
+          {[...clients, ...clients, ...clients].map((client, index) => (
+            <LogoCard key={`carousel-${index}`} name={client.name} color={client.color} />
           ))}
         </div>
       </div>
@@ -132,7 +101,7 @@ const ClientsPartnersSection = () => {
           position: absolute;
           top: 0;
           bottom: 0;
-          width: 20%;
+          width: 25%;
           z-index: 10;
           pointer-events: none;
         }
@@ -148,47 +117,56 @@ const ClientsPartnersSection = () => {
         }
 
         .logo-card {
-          transition: all 0.3s ease;
+          position: relative;
         }
 
         .logo-text {
           filter: grayscale(100%);
           color: hsl(var(--muted-foreground));
-          transition: all 0.3s ease;
+          transition: filter 0.6s ease, color 0.6s ease;
         }
 
-        .carousel-container:hover .logo-card:hover .logo-text {
-          filter: grayscale(0%);
-          color: var(--logo-color);
-          transform: scale(1.1);
+        /* Color appears at edges as logos pass through */
+        .carousel-container {
+          position: relative;
         }
 
-        /* Color effect at edges */
-        @keyframes colorReveal {
-          0%, 40% {
-            filter: grayscale(100%);
-            color: hsl(var(--muted-foreground));
+        .carousel-container::before,
+        .carousel-container::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 300px;
+          z-index: 5;
+          pointer-events: none;
+        }
+
+        .carousel-container::before {
+          left: 0;
+          background: linear-gradient(
+            to right,
+            hsla(var(--background), 1) 0%,
+            hsla(var(--background), 0.8) 20%,
+            transparent 100%
+          );
+        }
+
+        .carousel-container::after {
+          right: 0;
+          background: linear-gradient(
+            to left,
+            hsla(var(--background), 1) 0%,
+            hsla(var(--background), 0.8) 20%,
+            transparent 100%
+          );
+        }
+
+        @media (min-width: 768px) {
+          .carousel-container::before,
+          .carousel-container::after {
+            width: 400px;
           }
-          50% {
-            filter: grayscale(0%);
-          }
-          60%, 100% {
-            filter: grayscale(100%);
-            color: hsl(var(--muted-foreground));
-          }
-        }
-
-        .carousel-container .logo-card:nth-child(1) .logo-text,
-        .carousel-container .logo-card:nth-child(2) .logo-text,
-        .carousel-container .logo-card:nth-last-child(1) .logo-text,
-        .carousel-container .logo-card:nth-last-child(2) .logo-text {
-          animation: colorReveal 3s ease-in-out infinite;
-        }
-
-        .carousel-container .logo-card:nth-child(1) .logo-text,
-        .carousel-container .logo-card:nth-last-child(1) .logo-text {
-          filter: grayscale(0%);
-          color: var(--logo-color);
         }
       `}</style>
     </section>
