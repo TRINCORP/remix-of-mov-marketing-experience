@@ -52,7 +52,7 @@ const AnimatedMetric = ({
   }}>
       <div className="flex items-center gap-2">
         <TrendingUp className="w-6 h-6" style={{
-        color: 'hsl(0, 84%, 60%)'
+        color: 'hsl(45, 96%, 64%)'
       }} />
         
       </div>
@@ -457,32 +457,16 @@ const BrazilMap = () => {
         filter: 'brightness(0.95) contrast(1.1)',
         transform: inView ? 'rotateY(0deg)' : 'rotateY(-15deg)'
       }} />
-        
-        {/* Pins - aparecem primeiro */}
-        {pinLocations.map((pin, index) => <div key={index} className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${inView ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`} style={{
-        left: pin.x,
-        top: pin.y,
-        transitionDelay: `${200 + index * 15}ms`
-      }}>
-            <div className="relative">
-              <div className="w-2 h-2 rounded-full bg-[hsl(0,84%,60%)]" style={{
-            boxShadow: '0 0 8px rgba(239, 68, 68, 0.6)'
-          }} />
-              <div className="absolute inset-0 w-2 h-2 rounded-full bg-[hsl(0,84%,60%)] opacity-40 animate-ping" style={{
-            animationDelay: `${index * 30}ms`
-          }} />
-            </div>
-          </div>)}
 
-        {/* Regional Numbers - aparecem depois e cobrem os pins */}
+        {/* Regional Numbers */}
         {regionalNumbers.map((region, index) => <div key={`region-${index}`} className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ${inView ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 translate-y-10'}`} style={{
         left: region.x,
         top: region.y,
-        transitionDelay: `${2500 + index * 150}ms`,
+        transitionDelay: `${200 + index * 150}ms`,
         zIndex: 10
       }}>
-            <div className="flex flex-col items-center gap-1 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg border border-[hsl(0,84%,60%)]/20 shadow-lg hover:scale-110 transition-transform cursor-pointer">
-              <span className="text-2xl md:text-3xl font-black text-[hsl(0,84%,60%)]">
+            <div className="flex flex-col items-center gap-1 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg border border-[hsl(45,96%,64%)]/30 shadow-lg hover:scale-110 transition-transform cursor-pointer">
+              <span className="text-2xl md:text-3xl font-black text-[hsl(45,96%,64%)]">
                 {region.number}
               </span>
               <span className="text-xs font-medium text-foreground/70 whitespace-nowrap">
