@@ -209,16 +209,16 @@ const PinnedSection = () => {
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                         <div className="text-center p-4">
-                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-2 animate-glow">+500%</div>
-                          <div className="text-muted-foreground font-medium text-xs sm:text-sm md:text-base">ROI Médio dos Clientes</div>
+                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-2 animate-glow">3</div>
+                          <div className="text-muted-foreground font-medium text-xs sm:text-sm md:text-base">Presente em 3 Estados</div>
                         </div>
                         <div className="text-center p-4">
-                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-secondary mb-2 animate-glow">15+</div>
-                          <div className="text-muted-foreground font-medium text-xs sm:text-sm md:text-base">Anos Transformando Marcas</div>
+                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-secondary mb-2 animate-glow">30+</div>
+                          <div className="text-muted-foreground font-medium text-xs sm:text-sm md:text-base">Clientes Atendidos</div>
                         </div>
                         <div className="text-center p-4 sm:col-span-2 md:col-span-1">
-                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gradient mb-2">200+</div>
-                          <div className="text-muted-foreground font-medium text-xs sm:text-sm md:text-base">Projetos de Sucesso</div>
+                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gradient mb-2">100%</div>
+                          <div className="text-muted-foreground font-medium text-xs sm:text-sm md:text-base">Atendimento Personalizado</div>
                         </div>
                       </div>
                     </div>

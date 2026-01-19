@@ -38,34 +38,6 @@ const AboutSection = () => {
     label: "Agilidade",
     description: "Entrega rápida sem perder qualidade"
   }];
-  const values = [{
-    title: "Fome de Crescimento",
-    description: "Cada projeto é uma oportunidade de provar nosso potencial e superar expectativas.",
-    message: "🚀 Determinação para transformar seu negócio",
-    gradient: "from-blue-500 to-purple-600"
-  }, {
-    title: "Dedicação Total",
-    description: "Atenção personalizada que apenas uma agência focada pode oferecer.",
-    message: "📈 Seu sucesso é nossa maior conquista",
-    gradient: "from-green-500 to-emerald-600"
-  }, {
-    title: "Energia Criativa",
-    description: "Ideias frescas e soluções inovadoras para destacar sua marca.",
-    message: "❤️ Paixão genuína em cada estratégia",
-    gradient: "from-red-500 to-pink-600"
-  }, {
-    title: "Parceria Verdadeira",
-    description: "Crescemos junto com nossos clientes, criando relacionamentos duradouros.",
-    message: "⚡ Juntos somos mais fortes",
-    gradient: "from-yellow-500 to-orange-600"
-  }];
-  const [currentValueIndex, setCurrentValueIndex] = useState(0);
-  useEffect(() => {
-    const valueInterval = setInterval(() => {
-      setCurrentValueIndex(prev => (prev + 1) % values.length);
-    }, 3000);
-    return () => clearInterval(valueInterval);
-  }, []);
   return <section ref={sectionRef} id="about" className="section-animate py-32 relative overflow-hidden">
       {/* Three.js Energy Background */}
       <EnergyField className="opacity-30" intensity={0.3} />
@@ -176,65 +148,6 @@ const AboutSection = () => {
         {/* Company Values */}
         
 
-        {/* Values - Modern Approach */}
-        <div className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            <div className="text-center mb-16">
-              <h3 className="text-4xl font-black text-foreground mb-4 text-reveal">
-                Nossos <span className="text-gradient silver-shine-text">Valores</span>
-              </h3>
-              <p className="text-muted-foreground max-w-3xl mx-auto parallax-element text-2xl">
-                Os princípios que nos guiam em cada projeto e relacionamento.
-              </p>
-            </div>
-
-          {/* Modern Values Display - Only Auto-Rotating Card */}
-          <div className="max-w-2xl mx-auto">
-            {/* Rotating Messages */}
-            <div className="relative">
-              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-12 min-h-[400px] flex items-center justify-center">
-                <div className="text-center">
-                  <div className={`text-8xl mb-8 transition-all duration-500 ${currentValueIndex === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{
-                  display: currentValueIndex === 0 ? 'block' : 'none'
-                }}>
-                    🚀
-                  </div>
-                  <div className={`text-8xl mb-8 transition-all duration-500 ${currentValueIndex === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{
-                  display: currentValueIndex === 1 ? 'block' : 'none'
-                }}>
-                    📈
-                  </div>
-                  <div className={`text-8xl mb-8 transition-all duration-500 ${currentValueIndex === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{
-                  display: currentValueIndex === 2 ? 'block' : 'none'
-                }}>
-                    ❤️
-                  </div>
-                  <div className={`text-8xl mb-8 transition-all duration-500 ${currentValueIndex === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{
-                  display: currentValueIndex === 3 ? 'block' : 'none'
-                }}>
-                    ⚡
-                  </div>
-                  
-                  <h4 className="text-3xl font-bold text-foreground mb-6">
-                    {values[currentValueIndex].title}
-                  </h4>
-                  
-                  <p className="text-xl text-primary font-semibold mb-6">
-                    {values[currentValueIndex].message}
-                  </p>
-                  
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    {values[currentValueIndex].description}
-                  </p>
-                </div>
-              </div>
-              
-              {/* Value Indicators */}
-              <div className="flex justify-center gap-3 mt-8">
-                {values.map((_, index) => <button key={index} onClick={() => setCurrentValueIndex(index)} className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentValueIndex ? 'bg-primary w-12' : 'bg-muted-foreground/30 hover:bg-primary/50'}`} />)}
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* CTA */}
         <div className={`text-center mt-20 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
