@@ -1,26 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { Rocket, Zap, Target, TrendingUp, Sparkles, Star, Heart } from 'lucide-react';
 
-const LoadingAnimation = ({ onComplete }: { onComplete: () => void }) => {
+interface LoadingAnimationProps {
+  onComplete: () => void;
+}
+
+const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
   const [phase, setPhase] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const animationRef = useRef<number>();
+  const confettiRef = useRef<any[]>([]);
+  const [letterStates, setLetterStates] = useState({
+    m: { visible: false, bouncing: false },
+    o: { visible: false, spinning: false, winking: false },
+    v: { visible: false, bouncing: false }
+  });
 
-  interface Particle {
-    x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    opacity: number;
-    life: number;
-    maxLife: number;
-    color: string;
-    type: 'spark' | 'glow' | 'trail';
-  }
-
-  // Particle system for golden sparks
+  // Confetti particle system
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -28,358 +24,474 @@ const LoadingAnimation = ({ onComplete }: { onComplete: () => void }) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     const colors = [
       'hsl(45, 96%, 64%)',   // Primary gold
-      'hsl(45, 96%, 74%)',   // Light gold
       'hsl(42, 89%, 68%)',   // Secondary gold
-      'hsl(45, 96%, 84%)',   // Bright gold
-      'hsl(35, 90%, 60%)',   // Deep gold
+      'hsl(0, 84%, 60%)',    // Red
+      'hsl(280, 84%, 60%)',  // Purple
+      'hsl(180, 84%, 60%)',  // Cyan
+      'hsl(120, 84%, 50%)',  // Green
+      'hsl(200, 84%, 60%)',  // Blue
     ];
 
-    const createParticle = (centerX: number, centerY: number, type: Particle['type'] = 'spark'): Particle => {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = type === 'spark' ? 2 + Math.random() * 4 : 0.5 + Math.random() * 2;
-      
+    const shapes = ['circle', 'square', 'triangle', 'star'];
+
+    const createConfetti = () => {
+      const shape = shapes[Math.floor(Math.random() * shapes.length)];
       return {
-        x: centerX + (Math.random() - 0.5) * 100,
-        y: centerY + (Math.random() - 0.5) * 100,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        size: type === 'glow' ? 20 + Math.random() * 40 : 2 + Math.random() * 4,
-        opacity: type === 'glow' ? 0.1 + Math.random() * 0.2 : 0.6 + Math.random() * 0.4,
-        life: 0,
-        maxLife: 60 + Math.random() * 120,
+        x: Math.random() * canvas.width,
+        y: -20,
+        size: Math.random() * 12 + 6,
         color: colors[Math.floor(Math.random() * colors.length)],
-        type
+        speedY: Math.random() * 4 + 2,
+        speedX: (Math.random() - 0.5) * 4,
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 10,
+        shape,
+        wobble: Math.random() * Math.PI * 2,
+        wobbleSpeed: Math.random() * 0.1 + 0.05,
       };
     };
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
+    const drawShape = (particle: any) => {
+      ctx.save();
+      ctx.translate(particle.x, particle.y);
+      ctx.rotate((particle.rotation * Math.PI) / 180);
+      ctx.fillStyle = particle.color;
 
-      // Add new particles based on phase
-      if (phase >= 1 && phase < 4) {
-        for (let i = 0; i < 3; i++) {
-          particlesRef.current.push(createParticle(centerX, centerY, 'spark'));
-        }
-        if (Math.random() > 0.7) {
-          particlesRef.current.push(createParticle(centerX, centerY, 'glow'));
-        }
-      }
-
-      // Explosion of particles on phase 2
-      if (phase === 2 && particlesRef.current.length < 100) {
-        for (let i = 0; i < 20; i++) {
-          particlesRef.current.push(createParticle(centerX, centerY, 'spark'));
-        }
-      }
-
-      // Update and draw particles
-      particlesRef.current = particlesRef.current.filter(p => {
-        p.life++;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.02; // Subtle gravity
-        p.vx *= 0.99; // Friction
-        p.vy *= 0.99;
-
-        const lifeRatio = 1 - (p.life / p.maxLife);
-        const currentOpacity = p.opacity * lifeRatio;
-
-        if (p.type === 'glow') {
-          const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
-          gradient.addColorStop(0, p.color.replace(')', `, ${currentOpacity})`).replace('hsl', 'hsla'));
-          gradient.addColorStop(1, 'transparent');
-          ctx.fillStyle = gradient;
+      switch (particle.shape) {
+        case 'circle':
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.arc(0, 0, particle.size / 2, 0, Math.PI * 2);
           ctx.fill();
-        } else {
-          // Draw spark with glow effect
-          ctx.save();
-          ctx.globalAlpha = currentOpacity;
-          ctx.shadowBlur = 15;
-          ctx.shadowColor = p.color;
-          ctx.fillStyle = p.color;
+          break;
+        case 'square':
+          ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+          break;
+        case 'triangle':
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * lifeRatio, 0, Math.PI * 2);
+          ctx.moveTo(0, -particle.size / 2);
+          ctx.lineTo(particle.size / 2, particle.size / 2);
+          ctx.lineTo(-particle.size / 2, particle.size / 2);
+          ctx.closePath();
           ctx.fill();
-          ctx.restore();
-
-          // Trail effect
-          ctx.save();
-          ctx.globalAlpha = currentOpacity * 0.3;
-          ctx.strokeStyle = p.color;
-          ctx.lineWidth = p.size * 0.5 * lifeRatio;
+          break;
+        case 'star':
           ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p.x - p.vx * 5, p.y - p.vy * 5);
-          ctx.stroke();
-          ctx.restore();
-        }
-
-        return p.life < p.maxLife;
-      });
-
-      // Draw central glow
-      if (phase >= 1) {
-        const glowIntensity = phase === 2 ? 0.4 : 0.2;
-        const glowSize = phase === 2 ? 300 : 200;
-        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, glowSize);
-        gradient.addColorStop(0, `hsla(45, 96%, 64%, ${glowIntensity})`);
-        gradient.addColorStop(0.5, `hsla(45, 96%, 64%, ${glowIntensity * 0.5})`);
-        gradient.addColorStop(1, 'transparent');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+          for (let i = 0; i < 5; i++) {
+            const angle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
+            const r = i % 2 === 0 ? particle.size / 2 : particle.size / 4;
+            if (i === 0) ctx.moveTo(Math.cos(angle) * r, Math.sin(angle) * r);
+            else ctx.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
+          }
+          ctx.closePath();
+          ctx.fill();
+          break;
       }
-
-      animationRef.current = requestAnimationFrame(animate);
+      ctx.restore();
     };
 
-    animate();
+    let animationId: number;
+    let lastConfettiTime = 0;
+
+    const animate = (timestamp: number) => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Add confetti based on phase
+      if (phase >= 4 && timestamp - lastConfettiTime > 30) {
+        for (let i = 0; i < 5; i++) {
+          confettiRef.current.push(createConfetti());
+        }
+        lastConfettiTime = timestamp;
+      }
+
+      // Update and draw confetti
+      confettiRef.current = confettiRef.current.filter((p) => {
+        p.y += p.speedY;
+        p.x += p.speedX + Math.sin(p.wobble) * 2;
+        p.wobble += p.wobbleSpeed;
+        p.rotation += p.rotationSpeed;
+        p.speedY += 0.1; // Gravity
+
+        if (p.y < canvas.height + 50) {
+          drawShape(p);
+          return true;
+        }
+        return false;
+      });
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
     };
   }, [phase]);
 
-  // Phase progression - Extended timings for more impact
+  // Phase progression with letter animations
   useEffect(() => {
-    const timings = [
-      { delay: 200, nextPhase: 1 },    // Start particles
-      { delay: 1200, nextPhase: 2 },   // MOV reveal
-      { delay: 2500, nextPhase: 3 },   // Tagline reveal
-      { delay: 4000, nextPhase: 4 },   // Final message
-      { delay: 6000, nextPhase: 5 },   // Begin exit
+    const sequence = [
+      { delay: 300, action: () => setPhase(1) },
+      { delay: 800, action: () => {
+        setLetterStates(prev => ({ ...prev, m: { visible: true, bouncing: true } }));
+      }},
+      { delay: 1200, action: () => {
+        setLetterStates(prev => ({ ...prev, o: { visible: true, spinning: true, winking: false } }));
+      }},
+      { delay: 1600, action: () => {
+        setLetterStates(prev => ({ ...prev, v: { visible: true, bouncing: true } }));
+      }},
+      { delay: 2200, action: () => {
+        setLetterStates(prev => ({ ...prev, o: { ...prev.o, spinning: false, winking: true } }));
+        setPhase(2);
+      }},
+      { delay: 2800, action: () => setPhase(3) },
+      { delay: 3500, action: () => setPhase(4) },
+      { delay: 4500, action: () => setPhase(5) },
+      { delay: 6000, action: () => {
+        setIsExiting(true);
+        setTimeout(onComplete, 1000);
+      }},
     ];
 
-    const timers: NodeJS.Timeout[] = [];
-
-    timings.forEach(({ delay, nextPhase }) => {
-      const timer = setTimeout(() => {
-        if (nextPhase === 5) {
-          setIsExiting(true);
-          setTimeout(() => {
-            onComplete();
-          }, 1000);
-        } else {
-          setPhase(nextPhase);
-        }
-      }, delay);
-      timers.push(timer);
-    });
+    const timers = sequence.map(({ delay, action }) => 
+      setTimeout(action, delay)
+    );
 
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
 
+  const floatingIcons = [
+    { Icon: Rocket, delay: 0, position: 'top-[15%] left-[10%]' },
+    { Icon: Zap, delay: 200, position: 'top-[20%] right-[15%]' },
+    { Icon: Target, delay: 400, position: 'bottom-[25%] left-[15%]' },
+    { Icon: TrendingUp, delay: 600, position: 'bottom-[20%] right-[10%]' },
+    { Icon: Sparkles, delay: 100, position: 'top-[40%] left-[5%]' },
+    { Icon: Star, delay: 300, position: 'top-[35%] right-[8%]' },
+    { Icon: Heart, delay: 500, position: 'bottom-[40%] right-[5%]' },
+  ];
+
   return (
     <div 
       className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden transition-all duration-1000 ${
-        isExiting ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
+        isExiting ? 'opacity-0 scale-110' : 'opacity-100 scale-100'
       }`}
-      style={{
-        backgroundColor: 'hsl(var(--background))',
-      }}
+      style={{ backgroundColor: 'hsl(0 0% 2%)' }}
     >
-      {/* Particle Canvas */}
+      {/* Confetti Canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 1 }}
+        className="absolute inset-0 pointer-events-none z-20"
       />
 
-      {/* Animated Background Gradients */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Rotating gradient orbs */}
-        <div 
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full transition-all duration-1000 ${
-            phase >= 1 ? 'opacity-30 scale-100' : 'opacity-0 scale-50'
+      {/* Animated Background Gradient */}
+      <div 
+        className={`absolute inset-0 transition-all duration-1000 ${
+          phase >= 1 ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{
+          background: `
+            radial-gradient(circle at 30% 30%, hsl(45 96% 64% / 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 70% 70%, hsl(42 89% 68% / 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 50% 50%, hsl(280 84% 60% / 0.05) 0%, transparent 70%)
+          `,
+        }}
+      />
+
+      {/* Spotlight Effect */}
+      <div 
+        className={`absolute inset-0 transition-all duration-700 ${
+          phase >= 2 ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{
+          background: 'radial-gradient(ellipse 80% 60% at 50% 50%, hsl(45 96% 64% / 0.2) 0%, transparent 60%)',
+        }}
+      />
+
+      {/* Floating Marketing Icons */}
+      {floatingIcons.map(({ Icon, delay, position }, index) => (
+        <div
+          key={index}
+          className={`absolute ${position} transition-all duration-700 ${
+            phase >= 3 ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
-            background: 'radial-gradient(circle, hsl(45 96% 64% / 0.3) 0%, transparent 70%)',
-            animation: 'spin 20s linear infinite',
+            transform: phase >= 3 ? 'scale(1) rotate(0deg)' : 'scale(0) rotate(-180deg)',
+            transitionDelay: `${delay}ms`,
           }}
-        />
-        <div 
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full transition-all duration-1000 ${
-            phase >= 2 ? 'opacity-40 scale-100' : 'opacity-0 scale-50'
-          }`}
-          style={{
-            background: 'radial-gradient(circle, hsl(42 89% 68% / 0.4) 0%, transparent 60%)',
-            animation: 'spin 15s linear infinite reverse',
-          }}
-        />
-
-        {/* Light rays */}
-        {phase >= 2 && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            {[...Array(12)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute h-[200vh] w-[2px] origin-center animate-pulse"
-                style={{
-                  background: `linear-gradient(to top, transparent, hsl(45 96% 64% / ${0.1 + (i % 3) * 0.05}), transparent)`,
-                  transform: `rotate(${i * 30}deg)`,
-                  animationDelay: `${i * 100}ms`,
-                  animationDuration: '2s',
-                }}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Main Content */}
-      <div className="relative z-10 text-center px-6">
-        
-        {/* Decorative golden rings around MOV */}
-        <div className="relative">
-          <div 
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full border-2 border-primary/20 transition-all duration-1000 ${
-              phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-            }`}
+        >
+          <Icon 
+            className="text-primary animate-bounce" 
+            size={28}
             style={{
-              animation: phase >= 2 ? 'spin 20s linear infinite' : 'none',
-            }}
-          />
-          <div 
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] md:w-[650px] md:h-[650px] rounded-full border border-primary/10 transition-all duration-1000 ${
-              phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-            }`}
-            style={{
-              animation: phase >= 2 ? 'spin 30s linear infinite reverse' : 'none',
-              animationDelay: '500ms',
+              animationDelay: `${delay}ms`,
+              animationDuration: `${2 + index * 0.3}s`,
+              filter: 'drop-shadow(0 0 10px hsl(45 96% 64% / 0.5))',
             }}
           />
         </div>
+      ))}
 
-        {/* MOV Text with dramatic reveal */}
-        <div className="overflow-hidden mb-4">
-          <h1 
-            className={`text-8xl md:text-9xl lg:text-[12rem] font-black transition-all duration-1000 ease-out ${
-              phase >= 2 ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+      {/* Main Content Container */}
+      <div className="relative z-10 text-center">
+        
+        {/* Decorative Circles */}
+        <div 
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full border-2 border-primary/30 transition-all duration-1000 ${
+            phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+          }`}
+          style={{
+            animation: phase >= 2 ? 'spin 15s linear infinite' : 'none',
+          }}
+        />
+        <div 
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[550px] md:h-[550px] rounded-full border border-primary/15 transition-all duration-1000 ${
+            phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+          }`}
+          style={{
+            animation: phase >= 2 ? 'spin 25s linear infinite reverse' : 'none',
+            animationDelay: '300ms',
+          }}
+        />
+
+        {/* FUN MOV Letters with Individual Animations */}
+        <div className="relative flex items-center justify-center gap-2 md:gap-4 mb-8">
+          {/* M */}
+          <span
+            className={`text-8xl md:text-[12rem] font-black transition-all inline-block ${
+              letterStates.m.visible ? 'opacity-100' : 'opacity-0'
             }`}
             style={{
-              background: 'linear-gradient(135deg, hsl(45, 96%, 64%) 0%, hsl(45, 96%, 74%) 50%, hsl(42, 89%, 68%) 100%)',
+              background: 'linear-gradient(135deg, hsl(45 96% 64%), hsl(42 89% 68%))',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              textShadow: phase >= 2 ? '0 0 80px hsl(45 96% 64% / 0.5)' : 'none',
-              letterSpacing: '-0.05em',
+              textShadow: '0 0 60px hsl(45 96% 64% / 0.5)',
+              transform: letterStates.m.visible 
+                ? 'translateY(0) rotate(0deg)' 
+                : 'translateY(-200px) rotate(-30deg)',
+              animation: letterStates.m.bouncing ? 'letterBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)' : 'none',
+              transitionDuration: '600ms',
             }}
           >
-            MOV
-          </h1>
-        </div>
+            M
+          </span>
 
-        {/* Tagline */}
-        <div className="overflow-hidden mb-8">
-          <p 
-            className={`text-xl md:text-2xl lg:text-3xl font-light tracking-[0.3em] uppercase transition-all duration-700 ${
-              phase >= 3 ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+          {/* O - The Star of the Show */}
+          <span
+            className={`text-8xl md:text-[12rem] font-black transition-all inline-block relative ${
+              letterStates.o.visible ? 'opacity-100' : 'opacity-0'
             }`}
             style={{
-              color: 'hsl(var(--muted-foreground))',
-              transitionDelay: '200ms',
+              background: letterStates.o.winking 
+                ? 'linear-gradient(135deg, hsl(0 84% 60%), hsl(45 96% 64%))'
+                : 'linear-gradient(135deg, hsl(45 96% 64%), hsl(42 89% 68%))',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textShadow: letterStates.o.winking 
+                ? '0 0 80px hsl(0 84% 60% / 0.6)'
+                : '0 0 60px hsl(45 96% 64% / 0.5)',
+              transform: letterStates.o.visible 
+                ? `scale(${letterStates.o.winking ? 1.2 : 1}) ${letterStates.o.spinning ? 'rotate(360deg)' : 'rotate(0deg)'}`
+                : 'scale(0)',
+              transitionDuration: letterStates.o.spinning ? '500ms' : '300ms',
+              transitionTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
             }}
           >
-            Assessoria de Marketing
-          </p>
-        </div>
+            O
+            {/* Wink effect - closing eye line */}
+            {letterStates.o.winking && (
+              <span 
+                className="absolute inset-0 flex items-center justify-center"
+                style={{
+                  animation: 'wink 0.3s ease-in-out',
+                }}
+              >
+                <span 
+                  className="w-12 md:w-20 h-1 md:h-2 bg-gradient-to-r from-primary via-secondary to-primary rounded-full"
+                  style={{
+                    boxShadow: '0 0 20px hsl(45 96% 64% / 0.8)',
+                  }}
+                />
+              </span>
+            )}
+          </span>
 
-        {/* Animated divider */}
-        <div 
-          className={`h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-8 transition-all duration-1000 ${
-            phase >= 3 ? 'w-64 md:w-96 opacity-100' : 'w-0 opacity-0'
-          }`}
-          style={{ transitionDelay: '400ms' }}
-        />
-
-        {/* Impact message */}
-        <div className="overflow-hidden">
-          <p 
-            className={`text-lg md:text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed transition-all duration-700 ${
-              phase >= 4 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+          {/* V */}
+          <span
+            className={`text-8xl md:text-[12rem] font-black transition-all inline-block ${
+              letterStates.v.visible ? 'opacity-100' : 'opacity-0'
             }`}
             style={{
-              color: 'hsl(var(--foreground) / 0.8)',
+              background: 'linear-gradient(135deg, hsl(45 96% 64%), hsl(42 89% 68%))',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textShadow: '0 0 60px hsl(45 96% 64% / 0.5)',
+              transform: letterStates.v.visible 
+                ? 'translateY(0) rotate(0deg)' 
+                : 'translateY(200px) rotate(30deg)',
+              animation: letterStates.v.bouncing ? 'letterBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)' : 'none',
+              transitionDuration: '600ms',
             }}
           >
-            <span className="text-primary font-bold">Transformamos</span> sua marca em{' '}
-            <span className="text-primary font-bold">referência digital</span>
-          </p>
+            V
+          </span>
         </div>
 
-        {/* Loading indicator */}
+        {/* Fun Tagline with Typewriter-ish Effect */}
         <div 
-          className={`mt-12 flex flex-col items-center gap-4 transition-all duration-500 ${
-            phase >= 1 && phase < 4 ? 'opacity-100' : 'opacity-0'
+          className={`transition-all duration-700 ${
+            phase >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <div className="flex gap-2">
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="w-2 h-2 rounded-full bg-primary"
-                style={{
-                  animation: 'pulse 1s ease-in-out infinite',
-                  animationDelay: `${i * 200}ms`,
-                }}
-              />
-            ))}
+          <p 
+            className="text-xl md:text-3xl font-bold mb-4"
+            style={{
+              background: 'linear-gradient(90deg, hsl(var(--foreground)), hsl(45 96% 64%), hsl(var(--foreground)))',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              animation: phase >= 3 ? 'shimmer-text 2s linear infinite' : 'none',
+            }}
+          >
+            ✨ Marketing que MOVimenta! ✨
+          </p>
+        </div>
+
+        {/* Energetic Subtitle */}
+        <div 
+          className={`transition-all duration-700 ${
+            phase >= 4 ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+          }`}
+        >
+          <p className="text-lg md:text-xl text-muted-foreground mb-2">
+            Prepare-se para decolar 🚀
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <span className="text-2xl animate-bounce" style={{ animationDelay: '0ms' }}>💡</span>
+            <span className="text-2xl animate-bounce" style={{ animationDelay: '100ms' }}>🎯</span>
+            <span className="text-2xl animate-bounce" style={{ animationDelay: '200ms' }}>📈</span>
+            <span className="text-2xl animate-bounce" style={{ animationDelay: '300ms' }}>🔥</span>
+            <span className="text-2xl animate-bounce" style={{ animationDelay: '400ms' }}>⭐</span>
           </div>
         </div>
 
-        {/* Enter prompt */}
+        {/* Loading indicator with fun animation */}
         <div 
-          className={`mt-8 transition-all duration-700 ${
-            phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+          className={`mt-12 transition-all duration-700 ${
+            phase >= 5 ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <p className="text-sm text-muted-foreground animate-pulse">
-            Preparando sua experiência...
-          </p>
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-foreground/70 text-sm">Carregando a magia</span>
+            <span className="flex gap-1">
+              <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Corner decorative elements */}
+      {/* Corner decorations */}
       <div 
-        className={`absolute top-0 left-0 w-32 h-32 transition-all duration-1000 ${
-          phase >= 2 ? 'opacity-100' : 'opacity-0'
+        className={`absolute top-8 left-8 transition-all duration-500 ${
+          phase >= 4 ? 'opacity-100' : 'opacity-0'
         }`}
-        style={{
-          background: 'linear-gradient(135deg, hsl(45 96% 64% / 0.1) 0%, transparent 50%)',
-        }}
-      />
+      >
+        <div className="w-16 h-16 border-l-2 border-t-2 border-primary/50 rounded-tl-xl" />
+      </div>
       <div 
-        className={`absolute bottom-0 right-0 w-32 h-32 transition-all duration-1000 ${
-          phase >= 2 ? 'opacity-100' : 'opacity-0'
+        className={`absolute top-8 right-8 transition-all duration-500 ${
+          phase >= 4 ? 'opacity-100' : 'opacity-0'
         }`}
+      >
+        <div className="w-16 h-16 border-r-2 border-t-2 border-primary/50 rounded-tr-xl" />
+      </div>
+      <div 
+        className={`absolute bottom-8 left-8 transition-all duration-500 ${
+          phase >= 4 ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <div className="w-16 h-16 border-l-2 border-b-2 border-primary/50 rounded-bl-xl" />
+      </div>
+      <div 
+        className={`absolute bottom-8 right-8 transition-all duration-500 ${
+          phase >= 4 ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <div className="w-16 h-16 border-r-2 border-b-2 border-primary/50 rounded-br-xl" />
+      </div>
+
+      {/* Vignette */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-30"
         style={{
-          background: 'linear-gradient(315deg, hsl(45 96% 64% / 0.1) 0%, transparent 50%)',
+          background: 'radial-gradient(ellipse at center, transparent 40%, hsl(0 0% 2% / 0.6) 100%)',
         }}
       />
 
-      {/* Vignette overlay */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)) 100%)',
-          opacity: 0.5,
-        }}
-      />
+      {/* Custom Animations */}
+      <style>{`
+        @keyframes letterBounce {
+          0% {
+            transform: translateY(-200px) rotate(-20deg) scale(0.5);
+          }
+          50% {
+            transform: translateY(20px) rotate(5deg) scale(1.1);
+          }
+          70% {
+            transform: translateY(-10px) rotate(-2deg) scale(0.95);
+          }
+          85% {
+            transform: translateY(5px) rotate(1deg) scale(1.02);
+          }
+          100% {
+            transform: translateY(0) rotate(0deg) scale(1);
+          }
+        }
+        
+        @keyframes wink {
+          0%, 100% {
+            opacity: 0;
+            transform: scaleY(0);
+          }
+          50% {
+            opacity: 1;
+            transform: scaleY(1);
+          }
+        }
+        
+        @keyframes shimmer-text {
+          0% {
+            background-position: -200% center;
+          }
+          100% {
+            background-position: 200% center;
+          }
+        }
+        
+        @keyframes spin {
+          from {
+            transform: translate(-50%, -50%) rotate(0deg);
+          }
+          to {
+            transform: translate(-50%, -50%) rotate(360deg);
+          }
+        }
+      `}</style>
     </div>
   );
 };
