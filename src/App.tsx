@@ -32,11 +32,15 @@ const App = () => {
   };
 
   if (showLoading) {
-    return <LoadingAnimation onComplete={handleLoadingComplete} />;
+    return (
+      <div className="min-h-screen bg-background">
+        <LoadingAnimation onComplete={handleLoadingComplete} />
+      </div>
+    );
   }
 
   if (!isInitialized) {
-    return null;
+    return <div className="min-h-screen bg-background" />;
   }
 
   return (

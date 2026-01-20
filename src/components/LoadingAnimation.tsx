@@ -156,14 +156,14 @@ const LoadingAnimation = ({ onComplete }: { onComplete: () => void }) => {
     };
   }, [phase]);
 
-  // Phase progression
+  // Phase progression - Extended timings for more impact
   useEffect(() => {
     const timings = [
-      { delay: 100, nextPhase: 1 },   // Start particles
-      { delay: 800, nextPhase: 2 },   // Logo reveal
-      { delay: 1600, nextPhase: 3 },  // Text reveal
-      { delay: 2800, nextPhase: 4 },  // Final message
-      { delay: 4200, nextPhase: 5 },  // Begin exit
+      { delay: 200, nextPhase: 1 },    // Start particles
+      { delay: 1200, nextPhase: 2 },   // MOV reveal
+      { delay: 2500, nextPhase: 3 },   // Tagline reveal
+      { delay: 4000, nextPhase: 4 },   // Final message
+      { delay: 6000, nextPhase: 5 },   // Begin exit
     ];
 
     const timers: NodeJS.Timeout[] = [];
@@ -172,7 +172,9 @@ const LoadingAnimation = ({ onComplete }: { onComplete: () => void }) => {
       const timer = setTimeout(() => {
         if (nextPhase === 5) {
           setIsExiting(true);
-          setTimeout(onComplete, 800);
+          setTimeout(() => {
+            onComplete();
+          }, 1000);
         } else {
           setPhase(nextPhase);
         }
@@ -185,9 +187,12 @@ const LoadingAnimation = ({ onComplete }: { onComplete: () => void }) => {
 
   return (
     <div 
-      className={`fixed inset-0 z-50 bg-background flex items-center justify-center overflow-hidden transition-all duration-800 ${
-        isExiting ? 'opacity-0 scale-110' : 'opacity-100 scale-100'
+      className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden transition-all duration-1000 ${
+        isExiting ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
       }`}
+      style={{
+        backgroundColor: 'hsl(var(--background))',
+      }}
     >
       {/* Particle Canvas */}
       <canvas
@@ -240,40 +245,23 @@ const LoadingAnimation = ({ onComplete }: { onComplete: () => void }) => {
       {/* Main Content */}
       <div className="relative z-10 text-center px-6">
         
-        {/* Logo Reveal */}
-        <div 
-          className={`relative mb-8 transition-all duration-1000 ${
-            phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-          }`}
-        >
-          {/* Golden ring around logo */}
+        {/* Decorative golden rings around MOV */}
+        <div className="relative">
           <div 
-            className={`absolute -inset-8 rounded-full border-2 border-primary/30 transition-all duration-700 ${
-              phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-150'
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full border-2 border-primary/20 transition-all duration-1000 ${
+              phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
             }`}
             style={{
-              animation: phase >= 2 ? 'spin 10s linear infinite' : 'none',
+              animation: phase >= 2 ? 'spin 20s linear infinite' : 'none',
             }}
           />
           <div 
-            className={`absolute -inset-16 rounded-full border border-primary/20 transition-all duration-700 ${
-              phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-150'
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] md:w-[650px] md:h-[650px] rounded-full border border-primary/10 transition-all duration-1000 ${
+              phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
             }`}
             style={{
-              animation: phase >= 2 ? 'spin 15s linear infinite reverse' : 'none',
+              animation: phase >= 2 ? 'spin 30s linear infinite reverse' : 'none',
               animationDelay: '500ms',
-            }}
-          />
-          
-          {/* Logo image */}
-          <img 
-            src="/lovable-uploads/daaf83ad-eb48-42e2-9743-321ad5ce7cd6.png" 
-            alt="MOV Marketing Logo" 
-            className={`w-24 h-24 md:w-32 md:h-32 mx-auto transition-all duration-700 ${
-              phase >= 2 ? 'opacity-100 translate-y-0 rotate-0' : 'opacity-0 -translate-y-10 -rotate-12'
-            }`}
-            style={{
-              filter: phase >= 2 ? 'drop-shadow(0 0 30px hsl(45 96% 64% / 0.6))' : 'none',
             }}
           />
         </div>
