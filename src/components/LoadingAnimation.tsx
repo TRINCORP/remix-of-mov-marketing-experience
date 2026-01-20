@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { Rocket, Zap, Target, TrendingUp, Sparkles, Star, Heart } from 'lucide-react';
 
 interface LoadingAnimationProps {
   onComplete: () => void;
@@ -9,14 +8,9 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
   const [phase, setPhase] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const confettiRef = useRef<any[]>([]);
-  const [letterStates, setLetterStates] = useState({
-    m: { visible: false, bouncing: false },
-    o: { visible: false, spinning: false, winking: false },
-    v: { visible: false, bouncing: false }
-  });
+  const particlesRef = useRef<any[]>([]);
 
-  // Confetti particle system
+  // Energy particle system
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -27,101 +21,141 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const colors = [
-      'hsl(45, 96%, 64%)',   // Primary gold
-      'hsl(42, 89%, 68%)',   // Secondary gold
-      'hsl(0, 84%, 60%)',    // Red
-      'hsl(280, 84%, 60%)',  // Purple
-      'hsl(180, 84%, 60%)',  // Cyan
-      'hsl(120, 84%, 50%)',  // Green
-      'hsl(200, 84%, 60%)',  // Blue
-    ];
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
 
-    const shapes = ['circle', 'square', 'triangle', 'star'];
-
-    const createConfetti = () => {
-      const shape = shapes[Math.floor(Math.random() * shapes.length)];
+    const createParticle = (burst = false) => {
+      const angle = Math.random() * Math.PI * 2;
+      const distance = burst ? Math.random() * 50 : Math.random() * 300 + 200;
+      const speed = burst ? Math.random() * 8 + 4 : Math.random() * 2 + 0.5;
+      
       return {
-        x: Math.random() * canvas.width,
-        y: -20,
-        size: Math.random() * 12 + 6,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        speedY: Math.random() * 4 + 2,
-        speedX: (Math.random() - 0.5) * 4,
-        rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 10,
-        shape,
-        wobble: Math.random() * Math.PI * 2,
-        wobbleSpeed: Math.random() * 0.1 + 0.05,
+        x: centerX + Math.cos(angle) * distance,
+        y: centerY + Math.sin(angle) * distance,
+        targetX: centerX,
+        targetY: centerY,
+        size: Math.random() * 3 + 1,
+        speed,
+        alpha: Math.random() * 0.8 + 0.2,
+        angle,
+        burst,
+        burstAngle: angle,
+        burstSpeed: Math.random() * 15 + 10,
+        life: 1,
+        decay: Math.random() * 0.02 + 0.01,
       };
     };
 
-    const drawShape = (particle: any) => {
-      ctx.save();
-      ctx.translate(particle.x, particle.y);
-      ctx.rotate((particle.rotation * Math.PI) / 180);
-      ctx.fillStyle = particle.color;
-
-      switch (particle.shape) {
-        case 'circle':
-          ctx.beginPath();
-          ctx.arc(0, 0, particle.size / 2, 0, Math.PI * 2);
-          ctx.fill();
-          break;
-        case 'square':
-          ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
-          break;
-        case 'triangle':
-          ctx.beginPath();
-          ctx.moveTo(0, -particle.size / 2);
-          ctx.lineTo(particle.size / 2, particle.size / 2);
-          ctx.lineTo(-particle.size / 2, particle.size / 2);
-          ctx.closePath();
-          ctx.fill();
-          break;
-        case 'star':
-          ctx.beginPath();
-          for (let i = 0; i < 5; i++) {
-            const angle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
-            const r = i % 2 === 0 ? particle.size / 2 : particle.size / 4;
-            if (i === 0) ctx.moveTo(Math.cos(angle) * r, Math.sin(angle) * r);
-            else ctx.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
-          }
-          ctx.closePath();
-          ctx.fill();
-          break;
-      }
-      ctx.restore();
-    };
-
     let animationId: number;
-    let lastConfettiTime = 0;
+    let lastTime = 0;
 
     const animate = (timestamp: number) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const delta = timestamp - lastTime;
+      lastTime = timestamp;
 
-      // Add confetti based on phase
-      if (phase >= 4 && timestamp - lastConfettiTime > 30) {
-        for (let i = 0; i < 5; i++) {
-          confettiRef.current.push(createConfetti());
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add particles based on phase
+      if (phase >= 1 && phase < 3) {
+        for (let i = 0; i < 3; i++) {
+          particlesRef.current.push(createParticle(false));
         }
-        lastConfettiTime = timestamp;
       }
 
-      // Update and draw confetti
-      confettiRef.current = confettiRef.current.filter((p) => {
-        p.y += p.speedY;
-        p.x += p.speedX + Math.sin(p.wobble) * 2;
-        p.wobble += p.wobbleSpeed;
-        p.rotation += p.rotationSpeed;
-        p.speedY += 0.1; // Gravity
-
-        if (p.y < canvas.height + 50) {
-          drawShape(p);
-          return true;
+      // Burst particles when MOV appears
+      if (phase === 3 && particlesRef.current.filter(p => p.burst).length < 100) {
+        for (let i = 0; i < 50; i++) {
+          particlesRef.current.push(createParticle(true));
         }
-        return false;
+      }
+
+      // Update and draw particles
+      particlesRef.current = particlesRef.current.filter((p) => {
+        if (p.burst) {
+          // Explode outward
+          p.x += Math.cos(p.burstAngle) * p.burstSpeed;
+          p.y += Math.sin(p.burstAngle) * p.burstSpeed;
+          p.burstSpeed *= 0.96;
+          p.life -= p.decay;
+          p.alpha = p.life;
+        } else {
+          // Move toward center
+          const dx = p.targetX - p.x;
+          const dy = p.targetY - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist > 5) {
+            p.x += (dx / dist) * p.speed;
+            p.y += (dy / dist) * p.speed;
+          } else {
+            p.life -= 0.05;
+          }
+          p.alpha = Math.min(p.life, p.alpha);
+        }
+
+        if (p.life <= 0) return false;
+
+        // Draw particle with glow
+        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
+        gradient.addColorStop(0, `hsla(45, 96%, 64%, ${p.alpha})`);
+        gradient.addColorStop(0.5, `hsla(42, 89%, 58%, ${p.alpha * 0.5})`);
+        gradient.addColorStop(1, 'transparent');
+        
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        // Core
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(45, 96%, 74%, ${p.alpha})`;
+        ctx.fill();
+
+        return true;
       });
+
+      // Draw energy lines converging to center
+      if (phase >= 1 && phase < 3) {
+        for (let i = 0; i < 8; i++) {
+          const angle = (i / 8) * Math.PI * 2 + timestamp * 0.001;
+          const startDist = 400 + Math.sin(timestamp * 0.003 + i) * 50;
+          const endDist = 100 + Math.sin(timestamp * 0.005 + i) * 30;
+          
+          const startX = centerX + Math.cos(angle) * startDist;
+          const startY = centerY + Math.sin(angle) * startDist;
+          const endX = centerX + Math.cos(angle) * endDist;
+          const endY = centerY + Math.sin(angle) * endDist;
+
+          const lineGradient = ctx.createLinearGradient(startX, startY, endX, endY);
+          lineGradient.addColorStop(0, 'transparent');
+          lineGradient.addColorStop(0.5, 'hsla(45, 96%, 64%, 0.3)');
+          lineGradient.addColorStop(1, 'hsla(45, 96%, 64%, 0.6)');
+
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(endX, endY);
+          ctx.strokeStyle = lineGradient;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+      }
+
+      // Central glow
+      if (phase >= 2) {
+        const glowSize = phase >= 3 ? 250 : 150;
+        const glowAlpha = phase >= 3 ? 0.4 : 0.2;
+        const centralGlow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, glowSize);
+        centralGlow.addColorStop(0, `hsla(45, 96%, 64%, ${glowAlpha})`);
+        centralGlow.addColorStop(0.5, `hsla(45, 96%, 54%, ${glowAlpha * 0.5})`);
+        centralGlow.addColorStop(1, 'transparent');
+        
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, glowSize, 0, Math.PI * 2);
+        ctx.fillStyle = centralGlow;
+        ctx.fill();
+      }
 
       animationId = requestAnimationFrame(animate);
     };
@@ -141,29 +175,15 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
     };
   }, [phase]);
 
-  // Phase progression with letter animations
+  // Phase progression
   useEffect(() => {
     const sequence = [
-      { delay: 300, action: () => setPhase(1) },
-      { delay: 800, action: () => {
-        setLetterStates(prev => ({ ...prev, m: { visible: true, bouncing: true } }));
-      }},
-      { delay: 1200, action: () => {
-        setLetterStates(prev => ({ ...prev, o: { visible: true, spinning: true, winking: false } }));
-      }},
-      { delay: 1600, action: () => {
-        setLetterStates(prev => ({ ...prev, v: { visible: true, bouncing: true } }));
-      }},
-      { delay: 2200, action: () => {
-        setLetterStates(prev => ({ ...prev, o: { ...prev.o, spinning: false, winking: true } }));
-        setPhase(2);
-      }},
-      { delay: 2800, action: () => setPhase(3) },
-      { delay: 3500, action: () => setPhase(4) },
-      { delay: 4500, action: () => setPhase(5) },
-      { delay: 6000, action: () => {
+      { delay: 100, action: () => setPhase(1) },  // Start particles
+      { delay: 1500, action: () => setPhase(2) }, // Build energy
+      { delay: 2500, action: () => setPhase(3) }, // MOV appears with burst
+      { delay: 4500, action: () => {
         setIsExiting(true);
-        setTimeout(onComplete, 1000);
+        setTimeout(onComplete, 800);
       }},
     ];
 
@@ -174,322 +194,154 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
 
-  const floatingIcons = [
-    { Icon: Rocket, delay: 0, position: 'top-[15%] left-[10%]' },
-    { Icon: Zap, delay: 200, position: 'top-[20%] right-[15%]' },
-    { Icon: Target, delay: 400, position: 'bottom-[25%] left-[15%]' },
-    { Icon: TrendingUp, delay: 600, position: 'bottom-[20%] right-[10%]' },
-    { Icon: Sparkles, delay: 100, position: 'top-[40%] left-[5%]' },
-    { Icon: Star, delay: 300, position: 'top-[35%] right-[8%]' },
-    { Icon: Heart, delay: 500, position: 'bottom-[40%] right-[5%]' },
-  ];
-
   return (
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden transition-all duration-1000 ${
-        isExiting ? 'opacity-0 scale-110' : 'opacity-100 scale-100'
+      className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden transition-all duration-800 ${
+        isExiting ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
       }`}
       style={{ backgroundColor: 'hsl(0 0% 2%)' }}
     >
-      {/* Confetti Canvas */}
+      {/* Particle Canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 pointer-events-none z-20"
+        className="absolute inset-0 pointer-events-none"
       />
 
-      {/* Animated Background Gradient */}
+      {/* Ambient light rays */}
       <div 
-        className={`absolute inset-0 transition-all duration-1000 ${
-          phase >= 1 ? 'opacity-100' : 'opacity-0'
-        }`}
-        style={{
-          background: `
-            radial-gradient(circle at 30% 30%, hsl(45 96% 64% / 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 70% 70%, hsl(42 89% 68% / 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 50% 50%, hsl(280 84% 60% / 0.05) 0%, transparent 70%)
-          `,
-        }}
-      />
-
-      {/* Spotlight Effect */}
-      <div 
-        className={`absolute inset-0 transition-all duration-700 ${
+        className={`absolute inset-0 transition-opacity duration-1000 ${
           phase >= 2 ? 'opacity-100' : 'opacity-0'
         }`}
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 50%, hsl(45 96% 64% / 0.2) 0%, transparent 60%)',
+          background: `
+            conic-gradient(from 0deg at 50% 50%, 
+              transparent 0deg,
+              hsla(45, 96%, 64%, 0.03) 10deg,
+              transparent 20deg,
+              hsla(45, 96%, 64%, 0.05) 30deg,
+              transparent 40deg,
+              hsla(45, 96%, 64%, 0.03) 50deg,
+              transparent 60deg,
+              hsla(45, 96%, 64%, 0.04) 70deg,
+              transparent 80deg
+            )
+          `,
+          animation: phase >= 2 ? 'slowSpin 20s linear infinite' : 'none',
         }}
       />
 
-      {/* Floating Marketing Icons */}
-      {floatingIcons.map(({ Icon, delay, position }, index) => (
-        <div
-          key={index}
-          className={`absolute ${position} transition-all duration-700 ${
-            phase >= 3 ? 'opacity-100' : 'opacity-0'
-          }`}
+      {/* Central energy ring */}
+      <div 
+        className={`absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full transition-all duration-700 ${
+          phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+        }`}
+        style={{
+          border: '1px solid hsla(45, 96%, 64%, 0.2)',
+          boxShadow: phase >= 3 
+            ? '0 0 60px hsla(45, 96%, 64%, 0.3), inset 0 0 60px hsla(45, 96%, 64%, 0.1)'
+            : '0 0 30px hsla(45, 96%, 64%, 0.15)',
+          animation: phase >= 2 ? 'pulse-ring 2s ease-in-out infinite' : 'none',
+        }}
+      />
+
+      {/* Secondary ring */}
+      <div 
+        className={`absolute w-[400px] h-[400px] md:w-[650px] md:h-[650px] rounded-full transition-all duration-1000 ${
+          phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+        }`}
+        style={{
+          border: '1px solid hsla(45, 96%, 64%, 0.1)',
+          animation: phase >= 2 ? 'pulse-ring 3s ease-in-out infinite reverse' : 'none',
+          animationDelay: '500ms',
+        }}
+      />
+
+      {/* MOV Text - The Star */}
+      <div 
+        className={`relative z-10 transition-all duration-700 ${
+          phase >= 3 ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{
+          transform: phase >= 3 
+            ? 'scale(1) translateY(0)' 
+            : 'scale(0.5) translateY(50px)',
+          transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        }}
+      >
+        <h1 
+          className="text-[6rem] md:text-[12rem] lg:text-[16rem] font-black tracking-tight"
           style={{
-            transform: phase >= 3 ? 'scale(1) rotate(0deg)' : 'scale(0) rotate(-180deg)',
-            transitionDelay: `${delay}ms`,
+            background: 'linear-gradient(135deg, hsl(45, 96%, 70%) 0%, hsl(45, 96%, 64%) 30%, hsl(42, 89%, 58%) 70%, hsl(38, 92%, 50%) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            filter: phase >= 3 ? 'drop-shadow(0 0 40px hsla(45, 96%, 64%, 0.6)) drop-shadow(0 0 80px hsla(45, 96%, 64%, 0.4))' : 'none',
+            animation: phase >= 3 ? 'text-glow 2s ease-in-out infinite alternate' : 'none',
           }}
         >
-          <Icon 
-            className="text-primary animate-bounce" 
-            size={28}
-            style={{
-              animationDelay: `${delay}ms`,
-              animationDuration: `${2 + index * 0.3}s`,
-              filter: 'drop-shadow(0 0 10px hsl(45 96% 64% / 0.5))',
-            }}
-          />
-        </div>
-      ))}
+          MOV
+        </h1>
 
-      {/* Main Content Container */}
-      <div className="relative z-10 text-center">
-        
-        {/* Decorative Circles */}
+        {/* Underline accent */}
         <div 
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full border-2 border-primary/30 transition-all duration-1000 ${
-            phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+          className={`absolute -bottom-2 left-1/2 h-1 bg-gradient-to-r from-transparent via-primary to-transparent transition-all duration-700 ${
+            phase >= 3 ? 'w-3/4 opacity-100' : 'w-0 opacity-0'
           }`}
           style={{
-            animation: phase >= 2 ? 'spin 15s linear infinite' : 'none',
+            transform: 'translateX(-50%)',
+            boxShadow: '0 0 20px hsla(45, 96%, 64%, 0.8)',
           }}
         />
-        <div 
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[550px] md:h-[550px] rounded-full border border-primary/15 transition-all duration-1000 ${
-            phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-          }`}
-          style={{
-            animation: phase >= 2 ? 'spin 25s linear infinite reverse' : 'none',
-            animationDelay: '300ms',
-          }}
-        />
-
-        {/* FUN MOV Letters with Individual Animations */}
-        <div className="relative flex items-center justify-center gap-2 md:gap-4 mb-8">
-          {/* M */}
-          <span
-            className={`text-8xl md:text-[12rem] font-black transition-all inline-block ${
-              letterStates.m.visible ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              background: 'linear-gradient(135deg, hsl(45 96% 64%), hsl(42 89% 68%))',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: '0 0 60px hsl(45 96% 64% / 0.5)',
-              transform: letterStates.m.visible 
-                ? 'translateY(0) rotate(0deg)' 
-                : 'translateY(-200px) rotate(-30deg)',
-              animation: letterStates.m.bouncing ? 'letterBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)' : 'none',
-              transitionDuration: '600ms',
-            }}
-          >
-            M
-          </span>
-
-          {/* O - The Star of the Show */}
-          <span
-            className={`text-8xl md:text-[12rem] font-black transition-all inline-block relative ${
-              letterStates.o.visible ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              background: letterStates.o.winking 
-                ? 'linear-gradient(135deg, hsl(0 84% 60%), hsl(45 96% 64%))'
-                : 'linear-gradient(135deg, hsl(45 96% 64%), hsl(42 89% 68%))',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: letterStates.o.winking 
-                ? '0 0 80px hsl(0 84% 60% / 0.6)'
-                : '0 0 60px hsl(45 96% 64% / 0.5)',
-              transform: letterStates.o.visible 
-                ? `scale(${letterStates.o.winking ? 1.2 : 1}) ${letterStates.o.spinning ? 'rotate(360deg)' : 'rotate(0deg)'}`
-                : 'scale(0)',
-              transitionDuration: letterStates.o.spinning ? '500ms' : '300ms',
-              transitionTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-            }}
-          >
-            O
-            {/* Wink effect - closing eye line */}
-            {letterStates.o.winking && (
-              <span 
-                className="absolute inset-0 flex items-center justify-center"
-                style={{
-                  animation: 'wink 0.3s ease-in-out',
-                }}
-              >
-                <span 
-                  className="w-12 md:w-20 h-1 md:h-2 bg-gradient-to-r from-primary via-secondary to-primary rounded-full"
-                  style={{
-                    boxShadow: '0 0 20px hsl(45 96% 64% / 0.8)',
-                  }}
-                />
-              </span>
-            )}
-          </span>
-
-          {/* V */}
-          <span
-            className={`text-8xl md:text-[12rem] font-black transition-all inline-block ${
-              letterStates.v.visible ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              background: 'linear-gradient(135deg, hsl(45 96% 64%), hsl(42 89% 68%))',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: '0 0 60px hsl(45 96% 64% / 0.5)',
-              transform: letterStates.v.visible 
-                ? 'translateY(0) rotate(0deg)' 
-                : 'translateY(200px) rotate(30deg)',
-              animation: letterStates.v.bouncing ? 'letterBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)' : 'none',
-              transitionDuration: '600ms',
-            }}
-          >
-            V
-          </span>
-        </div>
-
-        {/* Fun Tagline with Typewriter-ish Effect */}
-        <div 
-          className={`transition-all duration-700 ${
-            phase >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
-        >
-          <p 
-            className="text-xl md:text-3xl font-bold mb-4"
-            style={{
-              background: 'linear-gradient(90deg, hsl(var(--foreground)), hsl(45 96% 64%), hsl(var(--foreground)))',
-              backgroundSize: '200% auto',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              animation: phase >= 3 ? 'shimmer-text 2s linear infinite' : 'none',
-            }}
-          >
-            ✨ Marketing que MOVimenta! ✨
-          </p>
-        </div>
-
-        {/* Energetic Subtitle */}
-        <div 
-          className={`transition-all duration-700 ${
-            phase >= 4 ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-          }`}
-        >
-          <p className="text-lg md:text-xl text-muted-foreground mb-2">
-            Prepare-se para decolar 🚀
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <span className="text-2xl animate-bounce" style={{ animationDelay: '0ms' }}>💡</span>
-            <span className="text-2xl animate-bounce" style={{ animationDelay: '100ms' }}>🎯</span>
-            <span className="text-2xl animate-bounce" style={{ animationDelay: '200ms' }}>📈</span>
-            <span className="text-2xl animate-bounce" style={{ animationDelay: '300ms' }}>🔥</span>
-            <span className="text-2xl animate-bounce" style={{ animationDelay: '400ms' }}>⭐</span>
-          </div>
-        </div>
-
-        {/* Loading indicator with fun animation */}
-        <div 
-          className={`mt-12 transition-all duration-700 ${
-            phase >= 5 ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-foreground/70 text-sm">Carregando a magia</span>
-            <span className="flex gap-1">
-              <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-              <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-              <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-            </span>
-          </div>
-        </div>
       </div>
 
-      {/* Corner decorations */}
+      {/* Impact flash */}
       <div 
-        className={`absolute top-8 left-8 transition-all duration-500 ${
-          phase >= 4 ? 'opacity-100' : 'opacity-0'
+        className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
+          phase === 3 ? 'opacity-100' : 'opacity-0'
         }`}
-      >
-        <div className="w-16 h-16 border-l-2 border-t-2 border-primary/50 rounded-tl-xl" />
-      </div>
-      <div 
-        className={`absolute top-8 right-8 transition-all duration-500 ${
-          phase >= 4 ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <div className="w-16 h-16 border-r-2 border-t-2 border-primary/50 rounded-tr-xl" />
-      </div>
-      <div 
-        className={`absolute bottom-8 left-8 transition-all duration-500 ${
-          phase >= 4 ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <div className="w-16 h-16 border-l-2 border-b-2 border-primary/50 rounded-bl-xl" />
-      </div>
-      <div 
-        className={`absolute bottom-8 right-8 transition-all duration-500 ${
-          phase >= 4 ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <div className="w-16 h-16 border-r-2 border-b-2 border-primary/50 rounded-br-xl" />
-      </div>
+        style={{
+          background: 'radial-gradient(circle at center, hsla(45, 96%, 64%, 0.3) 0%, transparent 70%)',
+          animation: phase === 3 ? 'flash 0.5s ease-out forwards' : 'none',
+        }}
+      />
 
       {/* Vignette */}
       <div 
-        className="absolute inset-0 pointer-events-none z-30"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 40%, hsl(0 0% 2% / 0.6) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 30%, hsl(0 0% 2% / 0.8) 100%)',
         }}
       />
 
       {/* Custom Animations */}
       <style>{`
-        @keyframes letterBounce {
-          0% {
-            transform: translateY(-200px) rotate(-20deg) scale(0.5);
-          }
-          50% {
-            transform: translateY(20px) rotate(5deg) scale(1.1);
-          }
-          70% {
-            transform: translateY(-10px) rotate(-2deg) scale(0.95);
-          }
-          85% {
-            transform: translateY(5px) rotate(1deg) scale(1.02);
-          }
-          100% {
-            transform: translateY(0) rotate(0deg) scale(1);
-          }
+        @keyframes slowSpin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
         
-        @keyframes wink {
-          0%, 100% {
-            opacity: 0;
-            transform: scaleY(0);
-          }
-          50% {
+        @keyframes pulse-ring {
+          0%, 100% { 
+            transform: scale(1);
             opacity: 1;
-            transform: scaleY(1);
+          }
+          50% { 
+            transform: scale(1.05);
+            opacity: 0.7;
           }
         }
         
-        @keyframes shimmer-text {
+        @keyframes text-glow {
           0% {
-            background-position: -200% center;
+            filter: drop-shadow(0 0 40px hsla(45, 96%, 64%, 0.6)) drop-shadow(0 0 80px hsla(45, 96%, 64%, 0.4));
           }
           100% {
-            background-position: 200% center;
+            filter: drop-shadow(0 0 60px hsla(45, 96%, 64%, 0.8)) drop-shadow(0 0 100px hsla(45, 96%, 64%, 0.5));
           }
         }
         
-        @keyframes spin {
-          from {
-            transform: translate(-50%, -50%) rotate(0deg);
-          }
-          to {
-            transform: translate(-50%, -50%) rotate(360deg);
-          }
+        @keyframes flash {
+          0% { opacity: 1; }
+          100% { opacity: 0; }
         }
       `}</style>
     </div>
