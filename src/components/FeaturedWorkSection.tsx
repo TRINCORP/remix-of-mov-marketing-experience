@@ -1,21 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, ArrowRight, Sparkles, X, Volume2, VolumeX } from 'lucide-react';
+import { Play, ArrowUpRight, Zap, TrendingUp, Eye, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface WorkItem {
   id: number;
   title: string;
   client: string;
-  type: 'video' | 'image';
+  category: string;
   thumbnail: string;
+  video?: string;
   color: string;
-  result: string;
-  // Mensagens que aparecem como se fosse um vídeo
-  storyMessages: {
-    text: string;
-    delay: number;
-    style: 'headline' | 'subtext' | 'stat' | 'cta';
-  }[];
+  stats: { label: string; value: string }[];
+  size: 'large' | 'medium' | 'small';
 }
 
 const featuredWork: WorkItem[] = [
@@ -23,307 +19,285 @@ const featuredWork: WorkItem[] = [
     id: 1,
     title: "Explosão Digital",
     client: "TechBrand",
-    type: 'video',
+    category: "Social Media",
     thumbnail: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop",
+    video: "https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4",
     color: "#FF6B35",
-    result: "+340% engajamento",
-    storyMessages: [
-      { text: "O DESAFIO:", delay: 0, style: 'subtext' },
-      { text: "Marca invisível no digital", delay: 800, style: 'headline' },
-      { text: "A ESTRATÉGIA:", delay: 2000, style: 'subtext' },
-      { text: "Conteúdo que viraliza", delay: 2800, style: 'headline' },
-      { text: "+340%", delay: 4000, style: 'stat' },
-      { text: "de engajamento", delay: 4500, style: 'subtext' },
-      { text: "🚀 Próximo case pode ser o seu", delay: 5500, style: 'cta' },
+    stats: [
+      { label: "Engajamento", value: "+340%" },
+      { label: "Alcance", value: "2.5M" },
     ],
+    size: 'large',
   },
   {
     id: 2,
     title: "Campanha Viral",
     client: "FoodCo",
-    type: 'video',
+    category: "Influencer Marketing",
     thumbnail: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=600&fit=crop",
+    video: "https://videos.pexels.com/video-files/5973040/5973040-uhd_2560_1440_24fps.mp4",
     color: "#F59E0B",
-    result: "2.5M visualizações",
-    storyMessages: [
-      { text: "RESTAURANTE LOCAL", delay: 0, style: 'subtext' },
-      { text: "Virou fenômeno nacional", delay: 800, style: 'headline' },
-      { text: "RECEITA DO SUCESSO:", delay: 2000, style: 'subtext' },
-      { text: "Social Media + Influencers", delay: 2800, style: 'headline' },
-      { text: "2.5M", delay: 4000, style: 'stat' },
-      { text: "visualizações orgânicas", delay: 4500, style: 'subtext' },
-      { text: "🍕 Sabor que conecta", delay: 5500, style: 'cta' },
+    stats: [
+      { label: "Views", value: "5.2M" },
+      { label: "ROI", value: "12x" },
     ],
+    size: 'medium',
   },
   {
     id: 3,
     title: "Rebranding Completo",
     client: "StyleBrand",
-    type: 'image',
+    category: "Branding",
     thumbnail: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
     color: "#8B5CF6",
-    result: "+180% vendas",
-    storyMessages: [
-      { text: "ANTES:", delay: 0, style: 'subtext' },
-      { text: "Marca sem identidade", delay: 800, style: 'headline' },
-      { text: "DEPOIS:", delay: 2000, style: 'subtext' },
-      { text: "Referência no mercado", delay: 2800, style: 'headline' },
-      { text: "+180%", delay: 4000, style: 'stat' },
-      { text: "em vendas", delay: 4500, style: 'subtext' },
-      { text: "✨ Estilo que vende", delay: 5500, style: 'cta' },
+    stats: [
+      { label: "Vendas", value: "+180%" },
+      { label: "Awareness", value: "3x" },
     ],
+    size: 'medium',
   },
   {
     id: 4,
-    title: "Lançamento Épico",
+    title: "Lançamento Game",
     client: "GameStudio",
-    type: 'video',
+    category: "Launch Campaign",
     thumbnail: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&h=600&fit=crop",
+    video: "https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4",
     color: "#EC4899",
-    result: "500K downloads",
-    storyMessages: [
-      { text: "GAME INDIE", delay: 0, style: 'subtext' },
-      { text: "Precisava bombar", delay: 800, style: 'headline' },
-      { text: "NOSSA JOGADA:", delay: 2000, style: 'subtext' },
-      { text: "Hype estratégico", delay: 2800, style: 'headline' },
-      { text: "500K", delay: 4000, style: 'stat' },
-      { text: "downloads em 30 dias", delay: 4500, style: 'subtext' },
-      { text: "🎮 Game over pros concorrentes", delay: 5500, style: 'cta' },
+    stats: [
+      { label: "Downloads", value: "500K" },
+      { label: "Trend #1", value: "3 dias" },
     ],
+    size: 'small',
+  },
+  {
+    id: 5,
+    title: "Influencer Hub",
+    client: "BeautyBrand",
+    category: "Creator Economy",
+    thumbnail: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop",
+    video: "https://videos.pexels.com/video-files/4625514/4625514-uhd_2560_1440_30fps.mp4",
+    color: "#06B6D4",
+    stats: [
+      { label: "Creators", value: "150+" },
+      { label: "Impressões", value: "20M" },
+    ],
+    size: 'small',
   },
 ];
 
-// Componente de storytelling interativo
-const StoryPlayer = ({ 
-  item, 
-  isPlaying, 
-  onClose 
-}: { 
-  item: WorkItem; 
-  isPlaying: boolean;
-  onClose: () => void;
-}) => {
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(-1);
-  const [visibleMessages, setVisibleMessages] = useState<number[]>([]);
-  const [progress, setProgress] = useState(0);
-  const [isMuted, setIsMuted] = useState(true);
-  
+// Card de trabalho com hover video
+const WorkCard = ({ item, index }: { item: WorkItem; index: number }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   useEffect(() => {
-    if (!isPlaying) {
-      setCurrentMessageIndex(-1);
-      setVisibleMessages([]);
-      setProgress(0);
-      return;
+    if (videoRef.current) {
+      if (isHovered) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
     }
-    
-    // Inicia a sequência de mensagens
-    item.storyMessages.forEach((msg, index) => {
-      setTimeout(() => {
-        setVisibleMessages(prev => [...prev, index]);
-        setCurrentMessageIndex(index);
-      }, msg.delay);
-    });
-    
-    // Progress bar
-    const totalDuration = 7000;
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + (100 / (totalDuration / 50));
-      });
-    }, 50);
-    
-    // Auto-close após terminar
-    const timeout = setTimeout(() => {
-      onClose();
-    }, totalDuration);
-    
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
-  }, [isPlaying, item.storyMessages, onClose]);
-  
-  if (!isPlaying) return null;
-  
+  }, [isHovered]);
+
+  const sizeClasses = {
+    large: 'col-span-2 row-span-2',
+    medium: 'col-span-1 row-span-2',
+    small: 'col-span-1 row-span-1',
+  };
+
+  const heightClasses = {
+    large: 'h-[500px] md:h-[600px]',
+    medium: 'h-[400px] md:h-[500px]',
+    small: 'h-[250px] md:h-[280px]',
+  };
+
   return (
-    <div className="absolute inset-0 z-20 bg-black/95 flex flex-col items-center justify-center overflow-hidden">
-      {/* Background image with blur */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20 blur-sm"
-        style={{ backgroundImage: `url(${item.thumbnail})` }}
-      />
-      
-      {/* Progress bar at top */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-white/20">
-        <div 
-          className="h-full transition-all duration-100"
-          style={{ 
-            width: `${progress}%`,
-            background: item.color,
-            boxShadow: `0 0 10px ${item.color}`,
-          }}
+    <div 
+      className={`${sizeClasses[item.size]} ${heightClasses[item.size]} relative group cursor-pointer overflow-hidden rounded-2xl md:rounded-3xl`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        animationDelay: `${index * 100}ms`,
+      }}
+    >
+      {/* Background - Image or Video */}
+      <div className="absolute inset-0">
+        <img 
+          src={item.thumbnail} 
+          alt={item.title}
+          className={`w-full h-full object-cover transition-all duration-700 ${
+            isHovered && item.video ? 'opacity-0 scale-110' : 'opacity-100 scale-100'
+          }`}
         />
+        
+        {/* Video overlay on hover */}
+        {item.video && (
+          <video
+            ref={videoRef}
+            src={item.video}
+            muted
+            loop
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        )}
       </div>
-      
-      {/* Controls */}
-      <div className="absolute top-4 right-4 flex gap-2 z-30">
-        <button 
-          onClick={() => setIsMuted(!isMuted)}
-          className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+
+      {/* Gradient overlay */}
+      <div 
+        className={`absolute inset-0 transition-all duration-500 ${
+          isHovered 
+            ? 'bg-gradient-to-t from-black/90 via-black/40 to-transparent' 
+            : 'bg-gradient-to-t from-black/70 via-black/20 to-transparent'
+        }`}
+      />
+
+      {/* Colored accent border on hover */}
+      <div 
+        className={`absolute inset-0 rounded-2xl md:rounded-3xl transition-all duration-500 ${
+          isHovered ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{
+          boxShadow: `inset 0 0 0 3px ${item.color}`,
+        }}
+      />
+
+      {/* Category tag */}
+      <div className="absolute top-4 left-4 z-10">
+        <span 
+          className="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md transition-all duration-300"
+          style={{
+            backgroundColor: `${item.color}20`,
+            color: item.color,
+            border: `1px solid ${item.color}40`,
+          }}
         >
-          {isMuted ? (
-            <VolumeX className="w-5 h-5 text-white" />
-          ) : (
-            <Volume2 className="w-5 h-5 text-white" />
-          )}
-        </button>
-        <button 
-          onClick={onClose}
-          className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
-        >
-          <X className="w-5 h-5 text-white" />
-        </button>
+          {item.category}
+        </span>
       </div>
-      
-      {/* Messages container */}
-      <div className="relative z-10 text-center px-6 max-w-lg">
-        {item.storyMessages.map((msg, index) => {
-          const isVisible = visibleMessages.includes(index);
-          const isCurrent = currentMessageIndex === index;
-          
-          return (
-            <div
-              key={index}
-              className={`transition-all duration-500 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              } ${!isCurrent && isVisible ? 'opacity-40 scale-90' : ''}`}
-              style={{
-                position: isCurrent ? 'relative' : 'absolute',
-                left: '50%',
-                transform: isCurrent ? 'translateX(0)' : 'translateX(-50%)',
-              }}
-            >
-              {msg.style === 'headline' && (
-                <h3 
-                  className="text-3xl md:text-5xl font-black text-white mb-4"
-                  style={{
-                    textShadow: `0 0 30px ${item.color}80`,
-                  }}
-                >
-                  {msg.text}
-                </h3>
-              )}
-              {msg.style === 'subtext' && (
-                <p 
-                  className="text-sm md:text-base text-white/70 uppercase tracking-widest mb-2"
-                  style={{ color: item.color }}
-                >
-                  {msg.text}
-                </p>
-              )}
-              {msg.style === 'stat' && (
-                <div 
-                  className="text-6xl md:text-8xl font-black mb-2"
-                  style={{
-                    color: item.color,
-                    textShadow: `0 0 60px ${item.color}`,
-                  }}
-                >
-                  {msg.text}
-                </div>
-              )}
-              {msg.style === 'cta' && (
-                <div 
-                  className="text-xl md:text-2xl font-bold text-white animate-pulse"
-                >
-                  {msg.text}
-                </div>
-              )}
+
+      {/* Play indicator for video items */}
+      {item.video && (
+        <div className={`absolute top-4 right-4 z-10 transition-all duration-300 ${
+          isHovered ? 'opacity-0 scale-75' : 'opacity-100 scale-100'
+        }`}>
+          <div 
+            className="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md"
+            style={{ backgroundColor: `${item.color}30` }}
+          >
+            <Play className="w-4 h-4 text-white ml-0.5" fill="white" />
+          </div>
+        </div>
+      )}
+
+      {/* Content */}
+      <div className={`absolute inset-x-0 bottom-0 p-5 md:p-6 z-10 transition-all duration-500 ${
+        isHovered ? 'translate-y-0' : 'translate-y-2'
+      }`}>
+        {/* Client */}
+        <span 
+          className="text-xs font-bold tracking-widest uppercase mb-2 block transition-colors duration-300"
+          style={{ color: isHovered ? item.color : 'rgba(255,255,255,0.7)' }}
+        >
+          {item.client}
+        </span>
+
+        {/* Title */}
+        <h3 className={`font-black text-white mb-4 transition-all duration-300 ${
+          item.size === 'large' 
+            ? 'text-3xl md:text-4xl lg:text-5xl' 
+            : item.size === 'medium'
+            ? 'text-2xl md:text-3xl'
+            : 'text-xl md:text-2xl'
+        }`}>
+          {item.title}
+        </h3>
+
+        {/* Stats */}
+        <div className={`flex gap-4 md:gap-6 transition-all duration-500 ${
+          isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}>
+          {item.stats.map((stat, i) => (
+            <div key={i} className="flex flex-col">
+              <span 
+                className="text-2xl md:text-3xl font-black"
+                style={{ color: item.color }}
+              >
+                {stat.value}
+              </span>
+              <span className="text-xs text-white/60 uppercase tracking-wide">
+                {stat.label}
+              </span>
             </div>
-          );
-        })}
+          ))}
+        </div>
+
+        {/* Arrow indicator */}
+        <div className={`absolute right-5 md:right-6 bottom-5 md:bottom-6 transition-all duration-500 ${
+          isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+        }`}>
+          <div 
+            className="w-12 h-12 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: item.color }}
+          >
+            <ArrowUpRight className="w-5 h-5 text-black" />
+          </div>
+        </div>
       </div>
-      
-      {/* Brand watermark */}
-      <div className="absolute bottom-4 left-4 text-white/30 text-sm font-bold">
-        MOV MARKETING
-      </div>
+
+      {/* Glitch effect on hover */}
+      {isHovered && (
+        <div className="absolute inset-0 pointer-events-none">
+          <div 
+            className="absolute inset-0 opacity-10 mix-blend-overlay"
+            style={{
+              backgroundImage: `repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                ${item.color}20 2px,
+                ${item.color}20 4px
+              )`,
+              animation: 'scanline 0.1s linear infinite',
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
-const VideoCard = ({ item, onPlay }: { item: WorkItem; onPlay: () => void }) => {
-  const [isHovered, setIsHovered] = useState(false);
+// Marquee de texto
+const TextMarquee = () => {
+  const phrases = [
+    "SOCIAL FIRST",
+    "CREATOR ECONOMY",
+    "VIRAL CONTENT",
+    "BRAND BUILDING",
+    "INFLUENCER MARKETING",
+    "DIGITAL STRATEGY",
+  ];
 
   return (
-    <div 
-      className="relative w-full h-full cursor-pointer group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onPlay}
-    >
-      {/* Thumbnail */}
-      <img 
-        src={item.thumbnail} 
-        alt={item.title}
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-      
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
-      
-      {/* Play button - sempre visível */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div 
-          className={`w-16 h-16 md:w-20 md:h-20 rounded-full bg-primary flex items-center justify-center transition-all duration-300 ${
-            isHovered ? 'scale-110' : 'scale-100'
-          }`}
-          style={{ 
-            boxShadow: `0 0 30px ${item.color}80`,
-            background: item.color,
-          }}
-        >
-          <Play className="w-7 h-7 md:w-8 md:h-8 text-white ml-1" fill="white" />
-        </div>
+    <div className="overflow-hidden py-4 border-y border-primary/20 bg-primary/5">
+      <div className="flex animate-marquee whitespace-nowrap">
+        {[...phrases, ...phrases, ...phrases].map((phrase, i) => (
+          <span key={i} className="mx-8 text-lg md:text-xl font-black text-primary/60 flex items-center gap-4">
+            <Zap className="w-4 h-4" />
+            {phrase}
+          </span>
+        ))}
       </div>
-
-      {/* Info overlay */}
-      <div className="absolute inset-x-0 bottom-0 p-4 md:p-6">
-        <span 
-          className="text-xs md:text-sm font-bold tracking-wider mb-1 md:mb-2 block"
-          style={{ color: item.color }}
-        >
-          {item.client.toUpperCase()}
-        </span>
-        <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-white mb-1 md:mb-2">
-          {item.title}
-        </h3>
-        <div className="flex items-center gap-2 text-white/80">
-          <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-primary" />
-          <span className="font-semibold text-sm md:text-base">{item.result}</span>
-        </div>
-      </div>
-
-      {/* Hover accent bar */}
-      <div 
-        className={`absolute bottom-0 left-0 h-1 transition-all duration-500 ${
-          isHovered ? 'w-full' : 'w-0'
-        }`}
-        style={{ 
-          background: item.color,
-          boxShadow: `0 0 20px ${item.color}`,
-        }}
-      />
     </div>
   );
 };
 
 const FeaturedWorkSection = () => {
-  const [playingItem, setPlayingItem] = useState<WorkItem | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -345,125 +319,109 @@ const FeaturedWorkSection = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-background">
-      {/* Background pattern */}
+    <section ref={containerRef} className="relative py-16 md:py-24 overflow-hidden bg-background">
+      {/* Animated background grid */}
       <div 
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, hsl(var(--primary)) 1px, transparent 1px)`,
+          backgroundImage: `
+            linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
+          `,
           backgroundSize: '60px 60px',
         }}
       />
 
-      <div className="container mx-auto px-4 md:px-6">
-        {/* Section Header */}
-        <div className={`text-center mb-10 md:mb-16 transition-all duration-1000 ${
+      {/* Marquee */}
+      <TextMarquee />
+
+      <div className="container mx-auto px-4 md:px-6 mt-12 md:mt-16">
+        {/* Section Header - Editorial Style */}
+        <div className={`flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 md:px-6 py-2 mb-4 md:mb-6">
-            <Play className="w-3 h-3 md:w-4 md:h-4 text-primary" />
-            <span className="text-xs md:text-sm font-bold text-primary tracking-wider">CASES QUE BOMBARAM</span>
-          </div>
-          
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 md:mb-6">
-            <span className="text-foreground">Trabalhos que </span>
-            <span className="text-gradient">fazem barulho</span>
-          </h2>
-          
-          <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
-            Clique no play para ver a história de cada projeto. 
-            Cada case é uma jornada de transformação.
-          </p>
-        </div>
-
-        {/* Featured Work Grid - Responsivo */}
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8 mb-10 md:mb-16 transition-all duration-1000 delay-300 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          {/* Large featured item */}
-          <div className="sm:col-span-2 lg:col-span-7 h-[280px] sm:h-[350px] md:h-[400px] lg:h-[500px] rounded-2xl md:rounded-3xl overflow-hidden relative shadow-2xl">
-            <VideoCard item={featuredWork[0]} onPlay={() => setPlayingItem(featuredWork[0])} />
-            <StoryPlayer 
-              item={featuredWork[0]} 
-              isPlaying={playingItem?.id === featuredWork[0].id} 
-              onClose={() => setPlayingItem(null)}
-            />
-          </div>
-
-          {/* Stacked items */}
-          <div className="sm:col-span-2 lg:col-span-5 grid grid-cols-2 lg:grid-cols-1 gap-4 md:gap-6">
-            <div className="h-[180px] sm:h-[200px] md:h-[220px] lg:h-[240px] rounded-2xl md:rounded-3xl overflow-hidden relative shadow-xl">
-              <VideoCard item={featuredWork[1]} onPlay={() => setPlayingItem(featuredWork[1])} />
-              <StoryPlayer 
-                item={featuredWork[1]} 
-                isPlaying={playingItem?.id === featuredWork[1].id} 
-                onClose={() => setPlayingItem(null)}
-              />
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-[2px] bg-primary" />
+              <span className="text-sm font-bold text-primary tracking-widest uppercase">Nosso Trabalho</span>
             </div>
-            <div className="h-[180px] sm:h-[200px] md:h-[220px] lg:h-[240px] rounded-2xl md:rounded-3xl overflow-hidden relative shadow-xl">
-              <VideoCard item={featuredWork[2]} onPlay={() => setPlayingItem(featuredWork[2])} />
-              <StoryPlayer 
-                item={featuredWork[2]} 
-                isPlaying={playingItem?.id === featuredWork[2].id} 
-                onClose={() => setPlayingItem(null)}
-              />
-            </div>
+            
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none">
+              <span className="text-foreground">Cases que</span>
+              <br />
+              <span className="text-gradient">quebram a internet</span>
+            </h2>
           </div>
 
-          {/* Bottom row */}
-          <div className="sm:col-span-1 lg:col-span-5 h-[220px] sm:h-[250px] md:h-[280px] lg:h-[300px] rounded-2xl md:rounded-3xl overflow-hidden relative shadow-xl">
-            <VideoCard item={featuredWork[3]} onPlay={() => setPlayingItem(featuredWork[3])} />
-            <StoryPlayer 
-              item={featuredWork[3]} 
-              isPlaying={playingItem?.id === featuredWork[3].id} 
-              onClose={() => setPlayingItem(null)}
-            />
-          </div>
-
-          {/* Stats card - Responsivo */}
-          <div className="sm:col-span-1 lg:col-span-7 h-[220px] sm:h-[250px] md:h-[280px] lg:h-[300px] relative">
-            <div 
-              className="w-full h-full rounded-2xl md:rounded-3xl p-6 md:p-8 flex flex-col justify-center"
-              style={{
-                background: 'linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(var(--secondary) / 0.1))',
-                border: '1px solid hsl(var(--primary) / 0.3)',
-              }}
-            >
-              <div className="grid grid-cols-3 gap-4 md:gap-6 text-center">
-                <div>
-                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-1 md:mb-2">500+</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Campanhas Criadas</div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-1 md:mb-2">50M+</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Alcance Total</div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-1 md:mb-2">98%</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Clientes Felizes</div>
-                </div>
+          <div className="flex flex-col items-start md:items-end gap-4">
+            <div className="flex items-center gap-6 text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Eye className="w-5 h-5 text-primary" />
+                <span className="font-bold">50M+</span>
+                <span className="text-sm">alcance</span>
               </div>
-
-              {/* Decorative elements */}
-              <div className="absolute top-4 right-4 w-12 h-12 md:w-16 md:h-16 border-2 border-primary/30 rounded-lg rotate-12 hidden sm:block" />
-              <div className="absolute bottom-4 left-4 w-8 h-8 md:w-12 md:h-12 bg-primary/20 rounded-full hidden sm:block" />
+              <div className="flex items-center gap-2">
+                <Heart className="w-5 h-5 text-primary" />
+                <span className="font-bold">98%</span>
+                <span className="text-sm">satisfação</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-primary" />
+                <span className="font-bold">500+</span>
+                <span className="text-sm">campanhas</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* CTA */}
-        <div className={`text-center transition-all duration-1000 delay-500 ${
+        {/* Work Grid - Bento Style */}
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12 transition-all duration-1000 delay-200 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}>
+          {featuredWork.map((item, index) => (
+            <WorkCard key={item.id} item={item} index={index} />
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 transition-all duration-1000 delay-400 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <Button 
-            className="btn-hero group text-base md:text-lg px-8 md:px-10 py-5 md:py-6"
+            className="btn-hero group text-base px-8 py-5"
             onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
           >
-            <span>Ver Todos os Cases</span>
-            <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-2 transition-transform" />
+            <span>Quero resultados assim</span>
+            <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </Button>
+          
+          <p className="text-sm text-muted-foreground">
+            Veja como podemos <span className="text-primary font-bold">transformar sua marca</span>
+          </p>
         </div>
       </div>
+
+      {/* Bottom Marquee */}
+      <div className="mt-16">
+        <TextMarquee />
+      </div>
+
+      {/* Scanline animation */}
+      <style>{`
+        @keyframes scanline {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(4px); }
+        }
+        
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.33%); }
+        }
+        
+        .animate-marquee {
+          animation: marquee 20s linear infinite;
+        }
+      `}</style>
     </section>
   );
 };
