@@ -67,7 +67,7 @@ const AboutSection = () => {
     <section 
       ref={sectionRef} 
       id="about" 
-      className="relative py-20 md:py-32 overflow-hidden bg-background"
+      className="gsap-section relative py-20 md:py-32 overflow-hidden bg-background"
     >
       {/* Subtle grid background - Goat style */}
       <div 
@@ -85,20 +85,16 @@ const AboutSection = () => {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         
         {/* Header - Editorial style */}
-        <div 
-          className={`text-center mb-16 md:mb-24 transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
-        >
-          <div className="inline-flex items-center gap-2 mb-6">
-            <div className="w-12 h-px bg-primary" />
+        <div className="text-center mb-16 md:mb-24">
+          <div className="gsap-badge inline-flex items-center gap-2 mb-6">
+            <div className="gsap-line w-12 h-px bg-primary" />
             <span className="text-xs tracking-[0.3em] text-primary uppercase font-medium">
               Quem Somos
             </span>
-            <div className="w-12 h-px bg-primary" />
+            <div className="gsap-line w-12 h-px bg-primary" />
           </div>
           
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6">
+          <h2 className="gsap-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6">
             <span className="text-foreground">Uma agência </span>
             <span 
               className="inline-block"
@@ -112,23 +108,18 @@ const AboutSection = () => {
             </span>
           </h2>
           
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="gsap-paragraph text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             Nascemos para quebrar padrões. Não somos mais uma agência, 
             somos seu parceiro de crescimento.
           </p>
         </div>
 
         {/* Main Grid - Goat Agency Editorial Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 mb-16 md:mb-24">
+        <div className="gsap-cards-container grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 mb-16 md:mb-24">
           
           {/* Video Card - Large */}
-          <div 
-            className={`lg:col-span-7 relative group transition-all duration-1000 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
-            style={{ transitionDelay: '200ms' }}
-          >
-            <div className="relative aspect-[16/10] rounded-3xl overflow-hidden bg-muted">
+          <div className="gsap-card lg:col-span-7 relative group">
+            <div className="gsap-image relative aspect-[16/10] rounded-3xl overflow-hidden bg-muted">
               <video
                 ref={videoRef}
                 className="absolute inset-0 w-full h-full object-cover"

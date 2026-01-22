@@ -76,7 +76,7 @@ const ShowreelSection = () => {
   return (
     <>
       {/* Preview Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+      <section className="gsap-section relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
         {/* Background Video Preview (muted, looping) */}
         <div className="absolute inset-0">
           <video
@@ -101,7 +101,7 @@ const ShowreelSection = () => {
         {/* Content */}
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
           {/* Label */}
-          <div className="inline-flex items-center gap-2 mb-8">
+          <div className="gsap-badge inline-flex items-center gap-2 mb-8">
             <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
             <span className="text-primary uppercase tracking-[0.3em] text-sm font-medium">
               Showreel 2024
@@ -109,7 +109,7 @@ const ShowreelSection = () => {
           </div>
 
           {/* Main Title */}
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-none">
+          <h2 className="gsap-headline text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-none">
             <span className="text-foreground">VEJA NOSSO</span>
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-300 to-primary">
@@ -118,7 +118,7 @@ const ShowreelSection = () => {
           </h2>
 
           {/* Subtitle */}
-          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-12">
+          <p className="gsap-paragraph text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-12">
             Uma compilação dos nossos melhores momentos, campanhas épicas e resultados 
             que transformaram marcas em fenômenos digitais.
           </p>
@@ -127,7 +127,7 @@ const ShowreelSection = () => {
           <button
             onClick={handlePlay}
             data-cursor="play"
-            className="group relative inline-flex items-center justify-center"
+            className="gsap-rotate-in group relative inline-flex items-center justify-center"
           >
             {/* Outer Ring Animation */}
             <div className="absolute w-40 h-40 md:w-48 md:h-48 rounded-full border border-primary/20 animate-ping" 

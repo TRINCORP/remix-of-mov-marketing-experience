@@ -53,13 +53,13 @@ const ClientsPartnersSection = () => {
   );
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-background via-background/95 to-background overflow-hidden relative">
+    <section className="gsap-section py-16 md:py-24 bg-gradient-to-b from-background via-background/95 to-background overflow-hidden relative">
       <div className="container mx-auto px-4 mb-12 md:mb-16">
         <div className="text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+          <h2 className="gsap-headline text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
             Nossos Clientes e Parceiros
           </h2>
-          <p className="text-muted-foreground text-base md:text-lg">
+          <p className="gsap-paragraph text-muted-foreground text-base md:text-lg">
             Empresas que confiam em nosso trabalho e crescem conosco
           </p>
         </div>

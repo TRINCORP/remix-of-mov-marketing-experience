@@ -96,10 +96,9 @@ const AnimatedMetric = ({ value, label, description, index }: { value: string, l
   return (
     <Card
       ref={ref}
-      className={`card-premium text-center group cursor-pointer animate-scale-in`}
-      style={{ animationDelay: `${index * 150}ms` }}
+      className="gsap-card card-premium text-center group cursor-pointer"
     >
-      <div className="text-4xl font-black text-gradient mb-2 group-hover:scale-110 transition-transform">
+      <div className="gsap-stat text-4xl font-black text-gradient mb-2 group-hover:scale-110 transition-transform">
         {displayValue}
       </div>
       
@@ -122,19 +121,19 @@ const TrustIndicators = () => {
   }, []);
 
   return (
-    <section className="py-20 px-6 relative overflow-hidden">
+    <section className="gsap-section py-20 px-6 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-mesh opacity-30" />
       
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-6 py-3 mb-6">
+          <div className="gsap-badge inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-6 py-3 mb-6">
             <Shield className="w-5 h-5 text-primary animate-pulse" />
             <span className="text-caption text-primary">CONFIANÇA COMPROVADA</span>
           </div>
           
-          <h2 className="text-headline mb-6">
+          <h2 className="gsap-headline text-headline mb-6">
             <span className="text-gradient">Números que</span>
             <br />
             <span className="text-foreground">Falam por Si</span>
@@ -142,7 +141,7 @@ const TrustIndicators = () => {
         </div>
 
         {/* Trust Metrics Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="gsap-cards-container grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {trustMetrics.map((metric, index) => (
             <AnimatedMetric
               key={index}
@@ -155,13 +154,13 @@ const TrustIndicators = () => {
         </div>
 
         {/* Certifications */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="gsap-cards-container grid md:grid-cols-3 gap-8 mb-16">
           {certifications.map((cert, index) => {
             const Icon = cert.icon;
             return (
               <Card 
                 key={index}
-                className="card-premium flex items-center gap-4 group hover:border-primary/30 animate-slide-up"
+                className="gsap-card card-premium flex items-center gap-4 group hover:border-primary/30"
                 style={{ animationDelay: `${(index + 4) * 150}ms` }}
               >
                 <div>

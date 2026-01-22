@@ -116,12 +116,10 @@ const WorkCard = ({ item, index }: { item: WorkItem; index: number }) => {
 
   return (
     <div 
-      className={`${sizeClasses[item.size]} ${heightClasses[item.size]} relative group cursor-pointer overflow-hidden rounded-2xl md:rounded-3xl`}
+      className={`gsap-card ${sizeClasses[item.size]} ${heightClasses[item.size]} relative group cursor-pointer overflow-hidden rounded-2xl md:rounded-3xl`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={{
-        animationDelay: `${index * 100}ms`,
-      }}
+      data-cursor="view"
     >
       {/* Background - Image or Video */}
       <div className="absolute inset-0">
@@ -319,7 +317,7 @@ const FeaturedWorkSection = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative py-16 md:py-24 overflow-hidden bg-background">
+    <section ref={containerRef} className="gsap-section relative py-16 md:py-24 overflow-hidden bg-background">
       {/* Animated background grid */}
       <div 
         className="absolute inset-0 opacity-[0.03]"
@@ -337,35 +335,33 @@ const FeaturedWorkSection = () => {
 
       <div className="container mx-auto px-4 md:px-6 mt-12 md:mt-16">
         {/* Section Header - Editorial Style */}
-        <div className={`flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14 transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-[2px] bg-primary" />
+            <div className="gsap-badge flex items-center gap-3 mb-4">
+              <div className="gsap-line w-12 h-[2px] bg-primary" />
               <span className="text-sm font-bold text-primary tracking-widest uppercase">Nosso Trabalho</span>
             </div>
             
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none">
+            <h2 className="gsap-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none">
               <span className="text-foreground">Cases que</span>
               <br />
               <span className="text-gradient">quebram a internet</span>
             </h2>
           </div>
 
-          <div className="flex flex-col items-start md:items-end gap-4">
+          <div className="gsap-stats flex flex-col items-start md:items-end gap-4">
             <div className="flex items-center gap-6 text-muted-foreground">
-              <div className="flex items-center gap-2">
+              <div className="gsap-stat flex items-center gap-2">
                 <Eye className="w-5 h-5 text-primary" />
                 <span className="font-bold">50M+</span>
                 <span className="text-sm">alcance</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="gsap-stat flex items-center gap-2">
                 <Heart className="w-5 h-5 text-primary" />
                 <span className="font-bold">98%</span>
                 <span className="text-sm">satisfação</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="gsap-stat flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-primary" />
                 <span className="font-bold">500+</span>
                 <span className="text-sm">campanhas</span>
@@ -375,18 +371,14 @@ const FeaturedWorkSection = () => {
         </div>
 
         {/* Work Grid - Bento Style */}
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12 transition-all duration-1000 delay-200 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
+        <div className="gsap-cards-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12">
           {featuredWork.map((item, index) => (
             <WorkCard key={item.id} item={item} index={index} />
           ))}
         </div>
 
         {/* Bottom CTA */}
-        <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 transition-all duration-1000 delay-400 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
+        <div className="gsap-cta flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
           <Button 
             className="btn-hero group text-base px-8 py-5"
             onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
