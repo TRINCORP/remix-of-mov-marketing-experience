@@ -7,10 +7,31 @@ interface LoadingAnimationProps {
 const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
   const [phase, setPhase] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
+  const [counter, setCounter] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<any[]>([]);
 
-  // Energy particle system
+  // Counter animation
+  useEffect(() => {
+    if (phase >= 1 && counter < 100) {
+      const duration = 2500; // 2.5 seconds to reach 100
+      const steps = 100;
+      const interval = duration / steps;
+      
+      const timer = setInterval(() => {
+        setCounter(prev => {
+          if (prev >= 100) {
+            clearInterval(timer);
+            return 100;
+          }
+          return prev + 1;
+        });
+      }, interval);
+
+      return () => clearInterval(timer);
+    }
+  }, [phase]);
+
+  // Canvas animation - Goat Agency inspired with geometric shapes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -24,136 +45,96 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
-    const createParticle = (burst = false) => {
-      const angle = Math.random() * Math.PI * 2;
-      const distance = burst ? Math.random() * 50 : Math.random() * 300 + 200;
-      const speed = burst ? Math.random() * 8 + 4 : Math.random() * 2 + 0.5;
-      
-      return {
-        x: centerX + Math.cos(angle) * distance,
-        y: centerY + Math.sin(angle) * distance,
-        targetX: centerX,
-        targetY: centerY,
-        size: Math.random() * 3 + 1,
-        speed,
-        alpha: Math.random() * 0.8 + 0.2,
-        angle,
-        burst,
-        burstAngle: angle,
-        burstSpeed: Math.random() * 15 + 10,
-        life: 1,
-        decay: Math.random() * 0.02 + 0.01,
-      };
+    // Grid lines for Goat-style editorial feel
+    const drawGrid = (progress: number) => {
+      ctx.strokeStyle = `hsla(45, 96%, 64%, ${0.03 * progress})`;
+      ctx.lineWidth = 1;
+
+      const gridSize = 100;
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
     };
 
+    // Geometric shapes floating
+    const shapes: any[] = [];
+    for (let i = 0; i < 15; i++) {
+      shapes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 60 + 20,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.02,
+        type: ['square', 'triangle', 'circle'][Math.floor(Math.random() * 3)],
+        alpha: Math.random() * 0.15 + 0.05,
+        speed: Math.random() * 0.5 + 0.2,
+      });
+    }
+
     let animationId: number;
-    let lastTime = 0;
 
     const animate = (timestamp: number) => {
-      const delta = timestamp - lastTime;
-      lastTime = timestamp;
-
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.15)';
+      ctx.fillStyle = 'hsl(0 0% 2%)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Add particles based on phase
-      if (phase >= 1 && phase < 3) {
-        for (let i = 0; i < 3; i++) {
-          particlesRef.current.push(createParticle(false));
-        }
+      if (phase >= 1) {
+        drawGrid(Math.min(phase / 2, 1));
       }
 
-      // Burst particles when MOV appears
-      if (phase === 3 && particlesRef.current.filter(p => p.burst).length < 100) {
-        for (let i = 0; i < 50; i++) {
-          particlesRef.current.push(createParticle(true));
-        }
-      }
+      // Draw floating geometric shapes
+      shapes.forEach(shape => {
+        shape.y -= shape.speed;
+        shape.rotation += shape.rotationSpeed;
 
-      // Update and draw particles
-      particlesRef.current = particlesRef.current.filter((p) => {
-        if (p.burst) {
-          // Explode outward
-          p.x += Math.cos(p.burstAngle) * p.burstSpeed;
-          p.y += Math.sin(p.burstAngle) * p.burstSpeed;
-          p.burstSpeed *= 0.96;
-          p.life -= p.decay;
-          p.alpha = p.life;
+        if (shape.y < -100) {
+          shape.y = canvas.height + 100;
+          shape.x = Math.random() * canvas.width;
+        }
+
+        ctx.save();
+        ctx.translate(shape.x, shape.y);
+        ctx.rotate(shape.rotation);
+        ctx.strokeStyle = `hsla(45, 96%, 64%, ${shape.alpha * (phase >= 1 ? 1 : 0)})`;
+        ctx.lineWidth = 1.5;
+
+        if (shape.type === 'square') {
+          ctx.strokeRect(-shape.size / 2, -shape.size / 2, shape.size, shape.size);
+        } else if (shape.type === 'triangle') {
+          ctx.beginPath();
+          ctx.moveTo(0, -shape.size / 2);
+          ctx.lineTo(shape.size / 2, shape.size / 2);
+          ctx.lineTo(-shape.size / 2, shape.size / 2);
+          ctx.closePath();
+          ctx.stroke();
         } else {
-          // Move toward center
-          const dx = p.targetX - p.x;
-          const dy = p.targetY - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist > 5) {
-            p.x += (dx / dist) * p.speed;
-            p.y += (dy / dist) * p.speed;
-          } else {
-            p.life -= 0.05;
-          }
-          p.alpha = Math.min(p.life, p.alpha);
+          ctx.beginPath();
+          ctx.arc(0, 0, shape.size / 2, 0, Math.PI * 2);
+          ctx.stroke();
         }
 
-        if (p.life <= 0) return false;
+        ctx.restore();
+      });
 
-        // Draw particle with glow
-        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
-        gradient.addColorStop(0, `hsla(45, 96%, 64%, ${p.alpha})`);
-        gradient.addColorStop(0.5, `hsla(42, 89%, 58%, ${p.alpha * 0.5})`);
+      // Central glow pulse
+      if (phase >= 2) {
+        const pulseSize = 200 + Math.sin(timestamp * 0.003) * 50;
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, pulseSize);
+        gradient.addColorStop(0, `hsla(45, 96%, 64%, ${phase >= 3 ? 0.3 : 0.15})`);
+        gradient.addColorStop(0.5, `hsla(45, 96%, 64%, ${phase >= 3 ? 0.1 : 0.05})`);
         gradient.addColorStop(1, 'transparent');
         
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
+        ctx.arc(centerX, centerY, pulseSize, 0, Math.PI * 2);
         ctx.fillStyle = gradient;
-        ctx.fill();
-
-        // Core
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(45, 96%, 74%, ${p.alpha})`;
-        ctx.fill();
-
-        return true;
-      });
-
-      // Draw energy lines converging to center
-      if (phase >= 1 && phase < 3) {
-        for (let i = 0; i < 8; i++) {
-          const angle = (i / 8) * Math.PI * 2 + timestamp * 0.001;
-          const startDist = 400 + Math.sin(timestamp * 0.003 + i) * 50;
-          const endDist = 100 + Math.sin(timestamp * 0.005 + i) * 30;
-          
-          const startX = centerX + Math.cos(angle) * startDist;
-          const startY = centerY + Math.sin(angle) * startDist;
-          const endX = centerX + Math.cos(angle) * endDist;
-          const endY = centerY + Math.sin(angle) * endDist;
-
-          const lineGradient = ctx.createLinearGradient(startX, startY, endX, endY);
-          lineGradient.addColorStop(0, 'transparent');
-          lineGradient.addColorStop(0.5, 'hsla(45, 96%, 64%, 0.3)');
-          lineGradient.addColorStop(1, 'hsla(45, 96%, 64%, 0.6)');
-
-          ctx.beginPath();
-          ctx.moveTo(startX, startY);
-          ctx.lineTo(endX, endY);
-          ctx.strokeStyle = lineGradient;
-          ctx.lineWidth = 2;
-          ctx.stroke();
-        }
-      }
-
-      // Central glow
-      if (phase >= 2) {
-        const glowSize = phase >= 3 ? 250 : 150;
-        const glowAlpha = phase >= 3 ? 0.4 : 0.2;
-        const centralGlow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, glowSize);
-        centralGlow.addColorStop(0, `hsla(45, 96%, 64%, ${glowAlpha})`);
-        centralGlow.addColorStop(0.5, `hsla(45, 96%, 54%, ${glowAlpha * 0.5})`);
-        centralGlow.addColorStop(1, 'transparent');
-        
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, glowSize, 0, Math.PI * 2);
-        ctx.fillStyle = centralGlow;
         ctx.fill();
       }
 
@@ -175,15 +156,16 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
     };
   }, [phase]);
 
-  // Phase progression
+  // Phase progression - faster, punchier like Goat
   useEffect(() => {
     const sequence = [
-      { delay: 100, action: () => setPhase(1) },  // Start particles
-      { delay: 1500, action: () => setPhase(2) }, // Build energy
-      { delay: 2500, action: () => setPhase(3) }, // MOV appears with burst
-      { delay: 4500, action: () => {
+      { delay: 100, action: () => setPhase(1) },   // Start counter & grid
+      { delay: 1000, action: () => setPhase(2) },  // Build energy
+      { delay: 2800, action: () => setPhase(3) },  // MOV reveal
+      { delay: 4200, action: () => setPhase(4) },  // Tagline
+      { delay: 5500, action: () => {
         setIsExiting(true);
-        setTimeout(onComplete, 800);
+        setTimeout(onComplete, 600);
       }},
     ];
 
@@ -196,152 +178,202 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
 
   return (
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden transition-all duration-800 ${
-        isExiting ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
+      className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden transition-all duration-600 ${
+        isExiting ? 'opacity-0' : 'opacity-100'
       }`}
       style={{ backgroundColor: 'hsl(0 0% 2%)' }}
     >
-      {/* Particle Canvas */}
+      {/* Canvas background */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none"
       />
 
-      {/* Ambient light rays */}
-      <div 
-        className={`absolute inset-0 transition-opacity duration-1000 ${
-          phase >= 2 ? 'opacity-100' : 'opacity-0'
-        }`}
-        style={{
-          background: `
-            conic-gradient(from 0deg at 50% 50%, 
-              transparent 0deg,
-              hsla(45, 96%, 64%, 0.03) 10deg,
-              transparent 20deg,
-              hsla(45, 96%, 64%, 0.05) 30deg,
-              transparent 40deg,
-              hsla(45, 96%, 64%, 0.03) 50deg,
-              transparent 60deg,
-              hsla(45, 96%, 64%, 0.04) 70deg,
-              transparent 80deg
-            )
-          `,
-          animation: phase >= 2 ? 'slowSpin 20s linear infinite' : 'none',
-        }}
-      />
-
-      {/* Central energy ring */}
-      <div 
-        className={`absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full transition-all duration-700 ${
-          phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-        }`}
-        style={{
-          border: '1px solid hsla(45, 96%, 64%, 0.2)',
-          boxShadow: phase >= 3 
-            ? '0 0 60px hsla(45, 96%, 64%, 0.3), inset 0 0 60px hsla(45, 96%, 64%, 0.1)'
-            : '0 0 30px hsla(45, 96%, 64%, 0.15)',
-          animation: phase >= 2 ? 'pulse-ring 2s ease-in-out infinite' : 'none',
-        }}
-      />
-
-      {/* Secondary ring */}
-      <div 
-        className={`absolute w-[400px] h-[400px] md:w-[650px] md:h-[650px] rounded-full transition-all duration-1000 ${
-          phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-        }`}
-        style={{
-          border: '1px solid hsla(45, 96%, 64%, 0.1)',
-          animation: phase >= 2 ? 'pulse-ring 3s ease-in-out infinite reverse' : 'none',
-          animationDelay: '500ms',
-        }}
-      />
-
-      {/* MOV Text - The Star */}
-      <div 
-        className={`relative z-10 transition-all duration-700 ${
-          phase >= 3 ? 'opacity-100' : 'opacity-0'
-        }`}
-        style={{
-          transform: phase >= 3 
-            ? 'scale(1) translateY(0)' 
-            : 'scale(0.5) translateY(50px)',
-          transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-        }}
-      >
-        <h1 
-          className="text-[6rem] md:text-[12rem] lg:text-[16rem] font-black tracking-tight"
-          style={{
-            background: 'linear-gradient(135deg, hsl(45, 96%, 70%) 0%, hsl(45, 96%, 64%) 30%, hsl(42, 89%, 58%) 70%, hsl(38, 92%, 50%) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            filter: phase >= 3 ? 'drop-shadow(0 0 40px hsla(45, 96%, 64%, 0.6)) drop-shadow(0 0 80px hsla(45, 96%, 64%, 0.4))' : 'none',
-            animation: phase >= 3 ? 'text-glow 2s ease-in-out infinite alternate' : 'none',
-          }}
-        >
-          MOV
-        </h1>
-
-        {/* Underline accent */}
+      {/* Progress bar at top - Goat style */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-muted/20">
         <div 
-          className={`absolute -bottom-2 left-1/2 h-1 bg-gradient-to-r from-transparent via-primary to-transparent transition-all duration-700 ${
-            phase >= 3 ? 'w-3/4 opacity-100' : 'w-0 opacity-0'
-          }`}
-          style={{
-            transform: 'translateX(-50%)',
-            boxShadow: '0 0 20px hsla(45, 96%, 64%, 0.8)',
+          className="h-full bg-primary transition-all duration-100 ease-out"
+          style={{ 
+            width: `${counter}%`,
+            boxShadow: '0 0 20px hsl(var(--primary))',
           }}
         />
       </div>
 
-      {/* Impact flash */}
+      {/* Counter - Large editorial number */}
       <div 
-        className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
-          phase === 3 ? 'opacity-100' : 'opacity-0'
+        className={`absolute top-8 right-8 md:top-12 md:right-12 transition-all duration-500 ${
+          phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
         }`}
-        style={{
-          background: 'radial-gradient(circle at center, hsla(45, 96%, 64%, 0.3) 0%, transparent 70%)',
-          animation: phase === 3 ? 'flash 0.5s ease-out forwards' : 'none',
-        }}
-      />
+      >
+        <span 
+          className="text-6xl md:text-8xl font-black tabular-nums"
+          style={{
+            color: 'hsl(var(--primary))',
+            textShadow: '0 0 40px hsla(45, 96%, 64%, 0.3)',
+          }}
+        >
+          {String(counter).padStart(3, '0')}
+        </span>
+      </div>
+
+      {/* Main content container */}
+      <div className="relative z-10 text-center px-4">
+        
+        {/* Pre-text - Editorial style */}
+        <div 
+          className={`mb-8 transition-all duration-700 ${
+            phase >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <span className="text-sm md:text-base tracking-[0.3em] text-muted-foreground uppercase font-medium">
+            Assessoria de Marketing
+          </span>
+        </div>
+
+        {/* MOV Logo - Glitch-in effect */}
+        <div 
+          className={`relative transition-all duration-700 ${
+            phase >= 3 ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            transform: phase >= 3 ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.9)',
+          }}
+        >
+          {/* Glitch layers */}
+          {phase >= 3 && (
+            <>
+              <h1 
+                className="absolute inset-0 text-[5rem] md:text-[10rem] lg:text-[14rem] font-black tracking-tight animate-glitch-1"
+                style={{
+                  color: 'hsl(var(--primary))',
+                  clipPath: 'inset(0 0 50% 0)',
+                  opacity: 0.8,
+                }}
+              >
+                MOV
+              </h1>
+              <h1 
+                className="absolute inset-0 text-[5rem] md:text-[10rem] lg:text-[14rem] font-black tracking-tight animate-glitch-2"
+                style={{
+                  color: 'hsl(var(--secondary))',
+                  clipPath: 'inset(50% 0 0 0)',
+                  opacity: 0.8,
+                }}
+              >
+                MOV
+              </h1>
+            </>
+          )}
+          
+          <h1 
+            className="text-[5rem] md:text-[10rem] lg:text-[14rem] font-black tracking-tight relative"
+            style={{
+              background: 'linear-gradient(135deg, hsl(45, 96%, 75%) 0%, hsl(45, 96%, 64%) 40%, hsl(38, 92%, 50%) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              filter: phase >= 3 
+                ? 'drop-shadow(0 0 30px hsla(45, 96%, 64%, 0.5))' 
+                : 'none',
+            }}
+          >
+            MOV
+          </h1>
+        </div>
+
+        {/* Tagline - Slide in */}
+        <div 
+          className={`mt-8 transition-all duration-700 ${
+            phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <p className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+            Movemos sua marca para o{' '}
+            <span 
+              className="inline-block"
+              style={{
+                color: 'hsl(var(--primary))',
+                textShadow: '0 0 20px hsla(45, 96%, 64%, 0.4)',
+              }}
+            >
+              próximo nível
+            </span>
+          </p>
+        </div>
+
+        {/* Decorative line */}
+        <div 
+          className={`mt-12 mx-auto transition-all duration-1000 ${
+            phase >= 4 ? 'w-32 opacity-100' : 'w-0 opacity-0'
+          }`}
+        >
+          <div 
+            className="h-px bg-gradient-to-r from-transparent via-primary to-transparent"
+            style={{ boxShadow: '0 0 10px hsl(var(--primary))' }}
+          />
+        </div>
+      </div>
+
+      {/* Corner accents - Editorial style */}
+      <div 
+        className={`absolute bottom-8 left-8 md:bottom-12 md:left-12 transition-all duration-700 ${
+          phase >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-px bg-primary" />
+          <span className="text-xs tracking-[0.2em] text-muted-foreground uppercase">
+            Social First
+          </span>
+        </div>
+      </div>
+
+      <div 
+        className={`absolute bottom-8 right-8 md:bottom-12 md:right-12 transition-all duration-700 ${
+          phase >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-xs tracking-[0.2em] text-muted-foreground uppercase">
+            Results Driven
+          </span>
+          <div className="w-8 h-px bg-primary" />
+        </div>
+      </div>
 
       {/* Vignette */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 30%, hsl(0 0% 2% / 0.8) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 40%, hsl(0 0% 2% / 0.7) 100%)',
         }}
       />
 
       {/* Custom Animations */}
       <style>{`
-        @keyframes slowSpin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+        @keyframes glitch-1 {
+          0%, 100% { transform: translateX(0); }
+          20% { transform: translateX(-3px); }
+          40% { transform: translateX(3px); }
+          60% { transform: translateX(-2px); }
+          80% { transform: translateX(2px); }
         }
         
-        @keyframes pulse-ring {
-          0%, 100% { 
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% { 
-            transform: scale(1.05);
-            opacity: 0.7;
-          }
+        @keyframes glitch-2 {
+          0%, 100% { transform: translateX(0); }
+          20% { transform: translateX(3px); }
+          40% { transform: translateX(-3px); }
+          60% { transform: translateX(2px); }
+          80% { transform: translateX(-2px); }
         }
         
-        @keyframes text-glow {
-          0% {
-            filter: drop-shadow(0 0 40px hsla(45, 96%, 64%, 0.6)) drop-shadow(0 0 80px hsla(45, 96%, 64%, 0.4));
-          }
-          100% {
-            filter: drop-shadow(0 0 60px hsla(45, 96%, 64%, 0.8)) drop-shadow(0 0 100px hsla(45, 96%, 64%, 0.5));
-          }
+        .animate-glitch-1 {
+          animation: glitch-1 0.3s ease-in-out 1;
         }
         
-        @keyframes flash {
-          0% { opacity: 1; }
-          100% { opacity: 0; }
+        .animate-glitch-2 {
+          animation: glitch-2 0.3s ease-in-out 1;
+          animation-delay: 0.05s;
         }
       `}</style>
     </div>
