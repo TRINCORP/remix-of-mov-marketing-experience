@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ArrowDown, Sparkles, Zap, Target, TrendingUp } from 'lucide-react';
+import { ArrowDown, Sparkles, Zap, Target, TrendingUp, Play, Volume2, VolumeX } from 'lucide-react';
 
 // Dados das "slides" com estética Goat Agency
 const slides = [
@@ -44,7 +44,11 @@ const slides = [
 const PinnedSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showFinalReveal, setShowFinalReveal] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoMuted, setVideoMuted] = useState(true);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,9 +76,18 @@ const PinnedSection = () => {
           slides.length - 1
         );
         setCurrentSlide(slideIndex);
+
+        // Trigger final reveal when reaching 100%
+        if (clampedProgress >= 0.98 && !showFinalReveal) {
+          setShowFinalReveal(true);
+        } else if (clampedProgress < 0.95) {
+          setShowFinalReveal(false);
+          setVideoPlaying(false);
+        }
       } else {
         setScrollProgress(0);
         setCurrentSlide(0);
+        setShowFinalReveal(false);
       }
     };
 
@@ -97,7 +110,24 @@ const PinnedSection = () => {
       window.removeEventListener('scroll', optimizedHandleScroll);
       window.removeEventListener('resize', optimizedHandleScroll);
     };
-  }, []);
+  }, [showFinalReveal]);
+
+  // Handle video playback
+  useEffect(() => {
+    if (videoRef.current) {
+      if (videoPlaying) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [videoPlaying]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = videoMuted;
+    }
+  }, [videoMuted]);
 
   const slide = slides[currentSlide];
   const Icon = slide?.icon || Target;
@@ -105,7 +135,7 @@ const PinnedSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative h-[400vh] bg-background"
+      className="relative h-[500vh] bg-background"
     >
       {/* Conteúdo fixo */}
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
@@ -119,16 +149,35 @@ const PinnedSection = () => {
               backgroundImage: `url('${s.image}')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              opacity: currentSlide === index ? 0.4 : 0,
+              opacity: currentSlide === index && !showFinalReveal ? 0.4 : 0,
               transform: `scale(${currentSlide === index ? 1.05 : 1.1})`,
               filter: 'brightness(0.5) contrast(1.1)',
             }}
           />
         ))}
+
+        {/* Video background for final reveal */}
+        <div 
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            showFinalReveal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover"
+            loop
+            playsInline
+            muted={videoMuted}
+            poster="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&h=1080&fit=crop&q=80"
+          >
+            <source src="https://player.vimeo.com/external/434045526.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/40" />
+        </div>
         
         {/* Dynamic gradient overlay */}
         <div 
-          className="absolute inset-0 transition-all duration-700"
+          className={`absolute inset-0 transition-all duration-700 ${showFinalReveal ? 'opacity-0' : 'opacity-100'}`}
           style={{
             background: `linear-gradient(135deg, 
               hsl(var(--background) / 0.9) 0%, 
@@ -139,7 +188,7 @@ const PinnedSection = () => {
 
         {/* Animated grid background */}
         <div 
-          className="absolute inset-0 transition-opacity duration-1000"
+          className={`absolute inset-0 transition-opacity duration-1000 ${showFinalReveal ? 'opacity-0' : 'opacity-100'}`}
           style={{
             backgroundImage: `
               linear-gradient(${slide?.accent || 'hsl(var(--primary))'} 1px, transparent 1px),
@@ -152,7 +201,7 @@ const PinnedSection = () => {
 
         {/* Floating accent shapes */}
         <div 
-          className="absolute top-20 right-20 w-64 h-64 rounded-full blur-3xl transition-all duration-1000"
+          className={`absolute top-20 right-20 w-64 h-64 rounded-full blur-3xl transition-all duration-1000 ${showFinalReveal ? 'opacity-0' : 'opacity-100'}`}
           style={{
             background: slide?.accent || 'hsl(var(--primary))',
             opacity: 0.1 + scrollProgress * 0.1,
@@ -160,7 +209,7 @@ const PinnedSection = () => {
           }}
         />
         <div 
-          className="absolute bottom-20 left-20 w-48 h-48 rounded-full blur-3xl transition-all duration-1000"
+          className={`absolute bottom-20 left-20 w-48 h-48 rounded-full blur-3xl transition-all duration-1000 ${showFinalReveal ? 'opacity-0' : 'opacity-100'}`}
           style={{
             background: 'hsl(var(--secondary))',
             opacity: 0.1 + scrollProgress * 0.1,
@@ -169,7 +218,7 @@ const PinnedSection = () => {
         />
 
         {/* Main content */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6">
+        <div className={`relative z-10 container mx-auto px-4 sm:px-6 transition-all duration-700 ${showFinalReveal ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             
             {/* Left: Text content */}
@@ -318,8 +367,129 @@ const PinnedSection = () => {
           </div>
         </div>
 
+        {/* FINAL REVEAL - "Nós somos 100%" with Video */}
+        <div 
+          className={`absolute inset-0 z-20 flex items-center justify-center transition-all duration-1000 ${
+            showFinalReveal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <div className="container mx-auto px-4">
+            <div className="text-center">
+              {/* "Nós somos" text */}
+              <div 
+                className={`transition-all duration-700 ${
+                  showFinalReveal ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ transitionDelay: '200ms' }}
+              >
+                <span className="text-2xl md:text-4xl font-medium text-foreground/80 tracking-wide">
+                  Nós somos
+                </span>
+              </div>
+
+              {/* Animated 100% moving to the right */}
+              <div 
+                className={`relative mt-4 mb-8 transition-all duration-1000 ${
+                  showFinalReveal ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                <div 
+                  className={`inline-block transition-all duration-1000 ease-out ${
+                    showFinalReveal ? 'translate-x-0 md:translate-x-20 lg:translate-x-32' : 'translate-x-0'
+                  }`}
+                  style={{ transitionDelay: '400ms' }}
+                >
+                  <span 
+                    className="text-8xl md:text-[12rem] lg:text-[16rem] font-black"
+                    style={{
+                      background: 'linear-gradient(135deg, hsl(45, 96%, 75%) 0%, hsl(45, 96%, 64%) 40%, hsl(38, 92%, 50%) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      filter: 'drop-shadow(0 0 40px hsla(45, 96%, 64%, 0.5))',
+                    }}
+                  >
+                    100%
+                  </span>
+                </div>
+              </div>
+
+              {/* Marketing Digital label */}
+              <div 
+                className={`transition-all duration-700 ${
+                  showFinalReveal ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ transitionDelay: '600ms' }}
+              >
+                <span 
+                  className="text-xl md:text-3xl lg:text-4xl font-bold tracking-widest uppercase"
+                  style={{ color: 'hsl(var(--primary))' }}
+                >
+                  Marketing Digital
+                </span>
+              </div>
+
+              {/* Play video button */}
+              <div 
+                className={`mt-12 flex items-center justify-center gap-4 transition-all duration-700 ${
+                  showFinalReveal ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ transitionDelay: '800ms' }}
+              >
+                <button
+                  onClick={() => setVideoPlaying(!videoPlaying)}
+                  className="group relative flex items-center gap-3 px-8 py-4 rounded-full bg-primary/20 border border-primary/40 hover:bg-primary/30 transition-all duration-300"
+                >
+                  <Play 
+                    className={`w-6 h-6 text-primary transition-transform duration-300 ${
+                      videoPlaying ? 'scale-0' : 'scale-100'
+                    }`}
+                    fill="currentColor"
+                  />
+                  <span className="text-foreground font-semibold">
+                    {videoPlaying ? 'Pausar' : 'Ver em ação'}
+                  </span>
+                  
+                  {/* Pulse ring */}
+                  {!videoPlaying && (
+                    <div className="absolute inset-0 rounded-full border-2 border-primary animate-ping opacity-30" />
+                  )}
+                </button>
+
+                {videoPlaying && (
+                  <button
+                    onClick={() => setVideoMuted(!videoMuted)}
+                    className="p-4 rounded-full bg-muted/30 hover:bg-muted/50 transition-all duration-300"
+                  >
+                    {videoMuted ? (
+                      <VolumeX className="w-5 h-5 text-muted-foreground" />
+                    ) : (
+                      <Volume2 className="w-5 h-5 text-primary" />
+                    )}
+                  </button>
+                )}
+              </div>
+
+              {/* Decorative elements */}
+              <div 
+                className={`absolute bottom-20 left-1/2 -translate-x-1/2 transition-all duration-700 ${
+                  showFinalReveal ? 'opacity-100' : 'opacity-0'
+                }`}
+                style={{ transitionDelay: '1000ms' }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-px bg-gradient-to-r from-transparent to-primary" />
+                  <span className="text-xs tracking-[0.3em] text-muted-foreground uppercase">
+                    MOV Marketing
+                  </span>
+                  <div className="w-16 h-px bg-gradient-to-l from-transparent to-primary" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Side progress indicator */}
-        <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20">
+        <div className={`absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 transition-opacity duration-500 ${showFinalReveal ? 'opacity-0' : 'opacity-100'}`}>
           <div className="flex flex-col items-center gap-3">
             {slides.map((_, index) => (
               <div 
