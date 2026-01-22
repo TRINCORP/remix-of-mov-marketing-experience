@@ -28,7 +28,6 @@ const Index = () => {
           <HeroSection />
         </section>
         <VideoHeroBanner />
-        <ParallaxSection />
         <PinnedSection />
         <FeaturedWorkSection />
         <TrustIndicators />
