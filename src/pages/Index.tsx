@@ -12,6 +12,7 @@ import ClientsPartnersSection from '@/components/ClientsPartnersSection';
 import FeaturedWorkSection from '@/components/FeaturedWorkSection';
 import CreativeShowcase from '@/components/CreativeShowcase';
 import VideoHeroBanner from '@/components/VideoHeroBanner';
+import ShowreelSection from '@/components/ShowreelSection';
 import CustomCursor from '@/components/CustomCursor';
 import { DualParallaxText } from '@/components/ParallaxText';
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
@@ -41,6 +42,7 @@ const Index = () => {
         />
         
         <TrustIndicators />
+        <ShowreelSection />
         <CreativeShowcase />
         <ImpactSection />
         
