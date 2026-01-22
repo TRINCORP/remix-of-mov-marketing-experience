@@ -1,4 +1,3 @@
-
 import HeroSection from '@/components/HeroSection';
 import ParallaxSection from '@/components/ParallaxSection';
 import AboutSection from '@/components/AboutSection';
@@ -11,6 +10,10 @@ import PinnedSection from '@/components/PinnedSection';
 import TrustIndicators from '@/components/TrustIndicators';
 import ImpactSection from '@/components/ImpactSection';
 import ClientsPartnersSection from '@/components/ClientsPartnersSection';
+import FeaturedWorkSection from '@/components/FeaturedWorkSection';
+import CreativeShowcase from '@/components/CreativeShowcase';
+import VideoHeroBanner from '@/components/VideoHeroBanner';
+import TeamShowcase from '@/components/TeamShowcase';
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
 
 const Index = () => {
@@ -24,13 +27,17 @@ const Index = () => {
         <section id="home">
           <HeroSection />
         </section>
+        <VideoHeroBanner />
         <ParallaxSection />
         <PinnedSection />
+        <FeaturedWorkSection />
         <TrustIndicators />
+        <CreativeShowcase />
         <ImpactSection />
         <section id="about">
           <AboutSection />
         </section>
+        <TeamShowcase />
         <ClientsPartnersSection />
         <section id="services">
           <ServicesSection />
