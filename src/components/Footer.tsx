@@ -1,142 +1,316 @@
-import { Sparkles, Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin, ArrowRight, Heart } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { 
+  Sparkles, Facebook, Instagram, Linkedin, Twitter, 
+  Mail, Phone, MapPin, ArrowUpRight, Zap
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
+// Big Text Marquee
+const FooterMarquee = () => {
+  return (
+    <div className="overflow-hidden py-8 md:py-12 border-b border-primary/20">
+      <div className="flex animate-marquee-slow whitespace-nowrap">
+        {[1, 2, 3].map((_, i) => (
+          <span 
+            key={i} 
+            className="mx-8 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-transparent tracking-tighter"
+            style={{
+              WebkitTextStroke: '1px hsl(var(--primary) / 0.3)',
+            }}
+          >
+            VAMOS CRIAR ALGO INCRÍVEL JUNTOS
+            <span className="mx-8 text-primary">•</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Footer = () => {
-  return <footer className="relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-      
-      {/* Main Footer Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-8">
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-12 mb-16">
-          
-          {/* Brand Section */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
-                <Sparkles className="w-7 h-7 text-white animate-pulse" />
-              </div>
-              <div className="text-3xl font-black text-gradient">MOV</div>
+  const [isVisible, setIsVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const socialLinks = [
+    { icon: Instagram, href: '#', label: 'Instagram', color: '#E4405F' },
+    { icon: Linkedin, href: '#', label: 'LinkedIn', color: '#0A66C2' },
+    { icon: Facebook, href: '#', label: 'Facebook', color: '#1877F2' },
+    { icon: Twitter, href: '#', label: 'Twitter', color: '#1DA1F2' },
+  ];
+
+  const quickLinks = [
+    { label: 'Sobre', href: '#about' },
+    { label: 'Serviços', href: '#services' },
+    { label: 'Cases', href: '#cases' },
+    { label: 'Contato', href: '#contact' },
+  ];
+
+  const services = [
+    'Estratégia Digital',
+    'Growth Hacking',
+    'Performance',
+    'Social Media',
+    'Branding',
+  ];
+
+  return (
+    <footer ref={containerRef} className="relative overflow-hidden bg-background">
+      {/* Big CTA Section */}
+      <div className="relative py-20 md:py-32">
+        {/* Background pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `radial-gradient(circle at center, hsl(var(--primary)) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+          }}
+        />
+
+        <div className="container mx-auto px-4 md:px-6 text-center">
+          <div className={`transition-all duration-1000 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <Zap className="w-5 h-5 text-primary" />
+              <span className="text-sm font-bold text-primary tracking-widest uppercase">
+                Pronto para começar?
+              </span>
             </div>
-            
-            <p className="text-muted-foreground leading-relaxed mb-6">
-              Transformamos marcas em fenômenos digitais através de estratégias inovadoras, 
-              criatividade sem limites e tecnologia de ponta.
+
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-8 leading-none">
+              <span className="text-foreground">Vamos fazer</span>
+              <br />
+              <span className="text-gradient">sua marca explodir</span>
+            </h2>
+
+            <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10">
+              Não espere mais. O próximo case de sucesso pode ser o seu.
             </p>
 
-            <div className="flex gap-4">
-              {[{
-              icon: Facebook,
-              href: '#',
-              color: 'hover:text-[#1877F2]'
-            }, {
-              icon: Instagram,
-              href: '#',
-              color: 'hover:text-[#E4405F]'
-            }, {
-              icon: Linkedin,
-              href: '#',
-              color: 'hover:text-[#0A66C2]'
-            }, {
-              icon: Twitter,
-              href: '#',
-              color: 'hover:text-[#1DA1F2]'
-            }].map((social, index) => <a key={index} href={social.href} className={`w-10 h-10 bg-muted/20 rounded-full flex items-center justify-center text-muted-foreground hover:scale-110 transition-all duration-300 ${social.color}`}>
-                  <social.icon className="w-5 h-5" />
-                </a>)}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button 
+                className="btn-hero group text-lg px-10 py-6"
+                onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
+              >
+                <span>Iniciar Projeto</span>
+                <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </Button>
+
+              <Button 
+                variant="outline"
+                className="px-10 py-6 text-lg border-2 border-primary/30 hover:border-primary hover:bg-primary/10"
+                onClick={() => window.open('mailto:contato@mov.marketing', '_blank')}
+              >
+                <Mail className="mr-2 w-5 h-5" />
+                Enviar Email
+              </Button>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Services */}
-          <div>
-            <h3 className="text-xl font-bold text-foreground mb-6">Serviços</h3>
-            <ul className="space-y-3">
-              {['Estratégia Digital', 'Growth Hacking', 'Performance Marketing', 'Branding & Design', 'Social Media', 'SEO & Conteúdo'].map((service, index) => <li key={index}>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
-                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <span>{service}</span>
-                  </a>
-                </li>)}
-            </ul>
-          </div>
+      {/* Marquee */}
+      <FooterMarquee />
 
-          {/* Company */}
-          <div>
-            <h3 className="text-xl font-bold text-foreground mb-6">Empresa</h3>
-            <ul className="space-y-3">
-              {['Sobre Nós', 'Nossa Equipe', 'Cases de Sucesso', 'Blog', 'Carreiras', 'Contato'].map((item, index) => <li key={index}>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
-                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <span>{item}</span>
-                  </a>
-                </li>)}
-            </ul>
-          </div>
-
-          {/* Contact & Newsletter */}
-          <div>
-            <h3 className="text-xl font-bold text-foreground mb-6">Contato</h3>
+      {/* Main Footer Content */}
+      <div className="relative py-16 md:py-20">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
             
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <Mail className="w-5 h-5 text-primary" />
-                <span>contato@mov.marketing</span>
+            {/* Brand Column */}
+            <div className={`lg:col-span-1 transition-all duration-700 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}>
+              <div className="flex items-center gap-3 mb-6">
+                <div 
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))',
+                  }}
+                >
+                  <Sparkles className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <span className="text-3xl font-black text-gradient">MOV</span>
               </div>
-              
-              <a href="https://wa.me/5519981134193" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group">
-                <Phone className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
-                <span>(19) 98113-4193</span>
-              </a>
-              
-              <div className="flex items-start gap-3 text-muted-foreground">
-                <MapPin className="w-5 h-5 text-primary mt-0.5" />
-                <span>São Paulo, SP<br />Brasil</span>
-              </div>
-            </div>
 
-            {/* Newsletter */}
-            <div>
-              <h4 className="font-semibold text-foreground mb-3">Newsletter</h4>
-              <p className="text-sm text-muted-foreground mb-4">
-                Receba insights exclusivos sobre marketing digital.
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Marketing que move marcas para resultados extraordinários.
               </p>
+
+              {/* Social Links */}
+              <div className="flex gap-3">
+                {socialLinks.map((social, i) => (
+                  <a
+                    key={i}
+                    href={social.href}
+                    aria-label={social.label}
+                    className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center text-muted-foreground hover:text-white transition-all duration-300 hover:scale-110"
+                    style={{ 
+                      '--hover-bg': social.color,
+                    } as React.CSSProperties}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = social.color;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '';
+                    }}
+                  >
+                    <social.icon className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div className={`transition-all duration-700 delay-100 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}>
+              <h3 className="text-lg font-bold text-foreground mb-6">Navegação</h3>
+              <ul className="space-y-3">
+                {quickLinks.map((link, i) => (
+                  <li key={i}>
+                    <a 
+                      href={link.href}
+                      className="text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center gap-2 group"
+                    >
+                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0" />
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Services */}
+            <div className={`transition-all duration-700 delay-200 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}>
+              <h3 className="text-lg font-bold text-foreground mb-6">Serviços</h3>
+              <ul className="space-y-3">
+                {services.map((service, i) => (
+                  <li key={i}>
+                    <a 
+                      href="#services"
+                      className="text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center gap-2 group"
+                    >
+                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0" />
+                      {service}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact & Newsletter */}
+            <div className={`transition-all duration-700 delay-300 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}>
+              <h3 className="text-lg font-bold text-foreground mb-6">Contato</h3>
               
-              <div className="flex gap-2">
-                <Input placeholder="Seu email" className="bg-background/50 border-border/50 focus:border-primary" />
-                <Button className="bg-primary hover:bg-primary/90 px-4">
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
+              <div className="space-y-4 mb-8">
+                <a 
+                  href="mailto:contato@mov.marketing"
+                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group"
+                >
+                  <Mail className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                  contato@mov.marketing
+                </a>
+                
+                <a 
+                  href="https://wa.me/5519981134193" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group"
+                >
+                  <Phone className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                  (19) 98113-4193
+                </a>
+                
+                <div className="flex items-start gap-3 text-muted-foreground">
+                  <MapPin className="w-5 h-5 text-primary mt-0.5" />
+                  <span>São Paulo, SP - Brasil</span>
+                </div>
+              </div>
+
+              {/* Newsletter */}
+              <div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Receba insights exclusivos
+                </p>
+                <div className="flex gap-2">
+                  <Input 
+                    type="email"
+                    placeholder="Seu email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-muted/30 border-border/50 focus:border-primary" 
+                  />
+                  <Button 
+                    className="px-4 bg-primary hover:bg-primary/90"
+                    onClick={() => {
+                      if (email) {
+                        alert('Obrigado por se inscrever!');
+                        setEmail('');
+                      }
+                    }}
+                  >
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Section */}
-        <div className="border-t border-border/50 pt-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex flex-col md:flex-row items-center gap-6 text-sm text-muted-foreground">
-              <span>© 2024 MOV Marketing. Todos os direitos reservados.</span>
-              <div className="flex gap-6">
-                <a href="#" className="hover:text-primary transition-colors">Privacidade</a>
-                <a href="#" className="hover:text-primary transition-colors">Termos</a>
-                <a href="#" className="hover:text-primary transition-colors">Cookies</a>
-              </div>
-            </div>
+      {/* Bottom Bar */}
+      <div className="border-t border-border/30 py-6">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              © 2024 MOV Marketing. Todos os direitos reservados.
+            </p>
             
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>Feito com</span>
-              <Heart className="w-4 h-4 text-red-500 animate-pulse" />
-              <span>e muito código</span>
+            <div className="flex items-center gap-6 text-sm text-muted-foreground">
+              <a href="#" className="hover:text-primary transition-colors">Privacidade</a>
+              <a href="#" className="hover:text-primary transition-colors">Termos</a>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Floating Action Button */}
-      <div className="fixed bottom-8 right-8 z-50">
+      {/* Animations */}
+      <style>{`
+        @keyframes marquee-slow {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.33%); }
+        }
         
-      </div>
-    </footer>;
+        .animate-marquee-slow {
+          animation: marquee-slow 40s linear infinite;
+        }
+      `}</style>
+    </footer>
+  );
 };
+
 export default Footer;
