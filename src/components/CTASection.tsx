@@ -29,14 +29,14 @@ const CTASection = () => {
   };
 
   return (
-    <section className="py-32 px-6 relative overflow-hidden">
+    <section className="gsap-section py-32 px-6 relative overflow-hidden">
       {/* Dramatic Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
       
       {/* Animated Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float" />
+        <div className="gsap-parallax absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl" data-speed="0.3" />
+        <div className="gsap-parallax absolute bottom-20 right-20 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" data-speed="0.5" />
         <div className="absolute top-1/3 right-1/4 w-4 h-4 bg-accent rounded-full animate-ping" />
         <div className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-primary rounded-full animate-ping animation-delay-1000" />
         <div className="absolute top-2/3 left-1/3 w-3 h-3 bg-secondary rounded-full animate-ping animation-delay-2000" />
@@ -45,24 +45,24 @@ const CTASection = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Main CTA */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 rounded-full px-8 py-4 mb-8 animate-glow">
+          <div className="gsap-badge inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 rounded-full px-8 py-4 mb-8">
             <Rocket className="w-6 h-6 text-primary animate-bounce" />
             <span className="text-lg font-bold text-gradient">PRONTO PARA DECOLAR?</span>
           </div>
           
-          <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
-            <span className="block text-gradient animate-slide-up">VAMOS</span>
-            <span className="block text-foreground animate-slide-up animation-delay-300">REVOLUCIONAR</span>
-            <span className="block text-gradient animate-slide-up animation-delay-600">SEU NEGÓCIO</span>
+          <h2 className="gsap-headline text-5xl md:text-7xl font-black mb-8 leading-tight">
+            <span className="block text-gradient">VAMOS</span>
+            <span className="block text-foreground">REVOLUCIONAR</span>
+            <span className="block text-gradient">SEU NEGÓCIO</span>
           </h2>
           
-          <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12 animate-slide-up animation-delay-900">
+          <p className="gsap-paragraph text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
             Transforme sua marca em um <span className="text-primary font-bold">fenômeno digital</span>. 
             Consultoria gratuita disponível.
           </p>
 
           {/* Benefits */}
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+          <div className="gsap-cards-container grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
             {[
               { icon: Zap, text: "Consultoria Gratuita", color: "primary" },
               { icon: Target, text: "Estratégia Personalizada", color: "secondary" },
@@ -70,8 +70,7 @@ const CTASection = () => {
             ].map((benefit, index) => (
               <div 
                 key={index} 
-                className="flex items-center gap-3 justify-center animate-scale-in"
-                style={{ animationDelay: `${(index + 10) * 100}ms` }}
+                className="gsap-card flex items-center gap-3 justify-center"
               >
                 <benefit.icon className={`w-6 h-6 text-${benefit.color}`} />
                 <span className="font-semibold text-foreground">{benefit.text}</span>
@@ -80,7 +79,7 @@ const CTASection = () => {
           </div>
 
           {/* Quick Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20 animate-slide-up animation-delay-1200">
+          <div className="gsap-cta flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
             <Button 
               className="btn-hero group text-xl px-12 py-6"
               onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
@@ -117,9 +116,9 @@ const CTASection = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="gsap-cards-container grid lg:grid-cols-2 gap-12 items-start">
           {/* Form */}
-          <div className="card-glow">
+          <div className="gsap-card card-glow">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
                 <MessageCircle className="w-6 h-6 text-white" />

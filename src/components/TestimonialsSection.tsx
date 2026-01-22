@@ -100,38 +100,38 @@ const TestimonialsSection = () => {
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <section className="py-32 px-6 relative overflow-hidden">
+    <section className="gsap-section py-32 px-6 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-float" />
+        <div className="gsap-parallax absolute top-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" data-speed="0.3" />
+        <div className="gsap-parallax absolute bottom-20 right-20 w-80 h-80 bg-accent/5 rounded-full blur-3xl" data-speed="0.5" />
         <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-secondary rounded-full animate-ping" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 bg-secondary/10 border border-secondary/20 rounded-full px-6 py-3 mb-8">
+          <div className="gsap-badge inline-flex items-center gap-2 bg-secondary/10 border border-secondary/20 rounded-full px-6 py-3 mb-8">
             <Quote className="w-5 h-5 text-secondary animate-pulse" />
             <span className="text-sm font-semibold text-secondary">DEPOIMENTOS</span>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black mb-6">
+          <h2 className="gsap-headline text-4xl md:text-6xl font-black mb-6">
             <span className="text-gradient silver-shine-text">O QUE NOSSOS</span>
             <br />
             <span className="text-foreground">CLIENTES FALAM</span>
           </h2>
           
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="gsap-paragraph text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Histórias reais de transformação e sucesso. 
             <span className="text-secondary font-bold"> Resultados que falam por si</span>.
           </p>
         </div>
 
         {/* Main Testimonial Display */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
+        <div className="gsap-cards-container grid lg:grid-cols-2 gap-12 items-center mb-20">
           {/* Testimonial Card */}
-          <Card className="card-glow relative overflow-hidden">
+          <Card className="gsap-card card-glow relative overflow-hidden">
             <div className="absolute top-6 left-6">
               <Quote className="w-12 h-12 text-primary/20" />
             </div>
@@ -173,9 +173,9 @@ const TestimonialsSection = () => {
           {/* Stats & Navigation */}
           <div className="space-y-8">
             {/* Dynamic Impact Stats - Before/After for each client */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="gsap-cards-container grid grid-cols-2 gap-6">
               {currentTestimonial.metrics.map((metric, index) => (
-                <div key={index} className="text-center p-6 bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10 rounded-2xl">
+                <div key={index} className="gsap-card text-center p-6 bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10 rounded-2xl">
                   <TrendingUp className="w-8 h-8 text-primary mx-auto mb-3" />
                   <div className="text-sm text-muted-foreground font-semibold mb-2">{metric.label}</div>
                   <div className="space-y-1">
@@ -235,7 +235,7 @@ const TestimonialsSection = () => {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-16">
+        <div className="gsap-cta text-center mt-16">
           <button className="btn-hero group">
             <span>Seja o Próximo Case de Sucesso</span>
             <TrendingUp className="ml-2 w-5 h-5 group-hover:translate-y-[-2px] transition-transform" />
