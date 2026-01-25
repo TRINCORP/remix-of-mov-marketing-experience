@@ -51,9 +51,9 @@ const Navbar = () => {
             className="flex items-center gap-2 px-4 py-1 group cursor-pointer"
           >
             <img 
-              src="/lovable-uploads/5b1fbcd6-b921-46de-81cc-192aea869e0f.png" 
+              src="/lovable-uploads/mov-logo-gold.png" 
               alt="MOV Logo" 
-              className="w-8 h-8 group-hover:scale-110 transition-transform duration-300"
+              className="h-8 w-auto group-hover:scale-110 transition-transform duration-300"
             />
             <span className="text-xl font-black text-white hidden sm:block">MOV</span>
           </a>
