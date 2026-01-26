@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
+import heroBg from '@/assets/hero-bg.jpg';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,185 +24,162 @@ const HeroSection = () => {
     <section 
       ref={heroRef} 
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ backgroundColor: 'hsl(0 0% 2%)' }}
     >
-      {/* Clean Gradient Background */}
+      {/* Background Image with Overlay */}
       <div 
-        className="absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--primary) / 0.15), transparent),
-            radial-gradient(ellipse 60% 40% at 80% 50%, hsl(var(--primary) / 0.08), transparent),
-            radial-gradient(ellipse 50% 30% at 20% 80%, hsl(var(--primary) / 0.05), transparent)
-          `,
-        }}
-      />
-
-      {/* Subtle Noise Texture */}
-      <div 
-        className="absolute inset-0 opacity-[0.015]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* Animated Line Accent */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-px h-32 overflow-hidden">
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${heroBg})` }}
+      >
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-background/85" />
+        
+        {/* Gradient Overlays */}
         <div 
-          className={`w-full h-full bg-gradient-to-b from-transparent via-primary to-transparent transition-transform duration-1000 ${
-            isVisible ? 'translate-y-0' : '-translate-y-full'
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--primary) / 0.2), transparent),
+              radial-gradient(ellipse 60% 40% at 80% 50%, hsl(var(--primary) / 0.1), transparent),
+              radial-gradient(ellipse 50% 30% at 20% 80%, hsl(var(--primary) / 0.08), transparent)
+            `,
+          }}
+        />
+      </div>
+
+      {/* Animated Glow Orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div 
+          className={`absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] transition-all duration-[2000ms] ${
+            isVisible ? 'opacity-60 scale-100' : 'opacity-0 scale-50'
           }`}
-          style={{ transitionDelay: '800ms' }}
+          style={{ animationDelay: '200ms' }}
+        />
+        <div 
+          className={`absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/15 rounded-full blur-[100px] transition-all duration-[2500ms] ${
+            isVisible ? 'opacity-50 scale-100' : 'opacity-0 scale-50'
+          }`}
+          style={{ animationDelay: '400ms' }}
         />
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 text-center">
+        <div className="max-w-4xl mx-auto space-y-8">
           
-          {/* Left Content */}
-          <div className="lg:col-span-7 space-y-8">
-            
-            {/* Eyebrow */}
-            <div 
-              className={`transition-all duration-700 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-              }`}
-            >
-              <span className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.3em] text-primary uppercase">
-                <span className="w-8 h-px bg-primary" />
-                Marketing Digital de Alta Performance
-              </span>
-            </div>
-
-            {/* Main Headline */}
-            <div className="space-y-2">
-              <h1 
-                className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter transition-all duration-700 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ transitionDelay: '150ms' }}
-              >
-                <span 
-                  className="block"
-                  style={{
-                    background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(45, 96%, 64%) 50%, hsl(38, 92%, 50%) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  Transforme
-                </span>
-                <span className="block text-foreground">sua marca em</span>
-                <span 
-                  className="block"
-                  style={{
-                    background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(45, 96%, 64%) 50%, hsl(38, 92%, 50%) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  referência.
-                </span>
-              </h1>
-            </div>
-
-            {/* Subheadline */}
-            <p 
-              className={`text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed transition-all duration-700 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-              }`}
-              style={{ transitionDelay: '300ms' }}
-            >
-              Estratégias de marketing digital que geram resultados reais. 
-              Mais de 500 marcas já confiam em nosso método exclusivo.
-            </p>
-
-            {/* CTA Buttons */}
-            <div 
-              className={`flex flex-col sm:flex-row gap-4 transition-all duration-700 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-              }`}
-              style={{ transitionDelay: '450ms' }}
-            >
-              <Button 
-                onClick={handleCTAClick}
-                className="group relative px-8 py-6 text-lg font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 overflow-hidden"
-              >
-                <span className="relative z-10 flex items-center gap-3">
-                  Agendar Consultoria
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </Button>
-              
-              <Button 
-                variant="ghost"
-                className="group px-8 py-6 text-lg font-medium text-foreground hover:text-primary hover:bg-transparent transition-all duration-300"
-              >
-                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                Ver Showreel
-              </Button>
-            </div>
-
-            {/* Trust Indicators */}
-            <div 
-              className={`flex items-center gap-8 pt-4 transition-all duration-700 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-              }`}
-              style={{ transitionDelay: '600ms' }}
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-sm text-muted-foreground">Resultados em 30 dias</span>
-              </div>
-              <div className="h-4 w-px bg-border" />
-              <div className="text-sm text-muted-foreground">
-                <span className="text-primary font-semibold">98%</span> satisfação
-              </div>
-            </div>
+          {/* Eyebrow Badge */}
+          <div 
+            className={`transition-all duration-700 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-xs font-medium tracking-[0.2em] text-primary uppercase backdrop-blur-sm">
+              <Sparkles className="w-3 h-3" />
+              Marketing que Transforma
+              <Sparkles className="w-3 h-3" />
+            </span>
           </div>
 
-          {/* Right Side - Stats */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <div 
-              className={`grid grid-cols-2 gap-6 transition-all duration-1000 ${
-                isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'
-              }`}
-              style={{ transitionDelay: '500ms' }}
+          {/* Main Headline */}
+          <h1 
+            className={`transition-all duration-1000 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+            }`}
+            style={{ transitionDelay: '200ms' }}
+          >
+            <span 
+              className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.9] tracking-tighter"
+              style={{
+                background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(45, 96%, 64%) 50%, hsl(38, 92%, 50%) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
             >
-              {[
-                { value: '500+', label: 'Marcas' },
-                { value: '300%', label: 'ROI Médio' },
-                { value: '24/7', label: 'Suporte' },
-                { value: '30d', label: 'Resultados' },
-              ].map((stat, index) => (
+              MOV
+            </span>
+            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-2 tracking-tight">
+              REVOLUCIONA SEU
+            </span>
+            <span 
+              className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-1 tracking-tight"
+              style={{
+                background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(45, 96%, 64%) 50%, hsl(38, 92%, 50%) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              MARKETING
+            </span>
+          </h1>
+
+          {/* Subheadline */}
+          <p 
+            className={`text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed transition-all duration-700 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
+            style={{ transitionDelay: '400ms' }}
+          >
+            Estratégias digitais de alta performance que geram resultados reais. 
+            Mais de <span className="text-primary font-semibold">500 marcas</span> já confiam em nosso método exclusivo.
+          </p>
+
+          {/* CTA Button */}
+          <div 
+            className={`flex justify-center transition-all duration-700 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
+            style={{ transitionDelay: '600ms' }}
+          >
+            <Button 
+              onClick={handleCTAClick}
+              size="lg"
+              className="group relative px-10 py-7 text-lg font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-500 overflow-hidden rounded-full shadow-[0_0_40px_rgba(234,179,8,0.3)] hover:shadow-[0_0_60px_rgba(234,179,8,0.5)] hover:scale-105"
+            >
+              {/* Animated Background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-yellow-400 to-primary bg-[length:200%_100%] animate-[shimmer_2s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Button Content */}
+              <span className="relative z-10 flex items-center gap-3">
+                <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+                Começar Revolução
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+              </span>
+
+              {/* Pulse Ring */}
+              <div className="absolute inset-0 rounded-full border-2 border-primary/50 animate-ping opacity-20" />
+            </Button>
+          </div>
+
+          {/* Trust Stats */}
+          <div 
+            className={`flex flex-wrap items-center justify-center gap-8 pt-8 transition-all duration-700 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
+            style={{ transitionDelay: '800ms' }}
+          >
+            {[
+              { value: '500+', label: 'Marcas Atendidas' },
+              { value: '300%', label: 'ROI Médio' },
+              { value: '98%', label: 'Satisfação' },
+            ].map((stat, index) => (
+              <div 
+                key={index}
+                className="text-center group cursor-default"
+              >
                 <div 
-                  key={index}
-                  className="group relative p-6 rounded-2xl border border-primary/10 bg-primary/[0.02] hover:bg-primary/[0.05] hover:border-primary/20 transition-all duration-500"
-                  style={{ 
-                    transitionDelay: `${600 + index * 100}ms`,
+                  className="text-2xl md:text-3xl font-black group-hover:scale-110 transition-transform duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(38, 92%, 50%) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  <div 
-                    className="text-3xl md:text-4xl font-black mb-1"
-                    style={{
-                      background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(38, 92%, 50%) 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                    }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-muted-foreground font-medium">
-                    {stat.label}
-                  </div>
-                  
-                  {/* Hover glow */}
-                  <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+                  {stat.value}
                 </div>
-              ))}
-            </div>
+                <div className="text-sm text-muted-foreground font-medium">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -216,19 +194,19 @@ const HeroSection = () => {
         <span className="text-[10px] font-medium tracking-[0.2em] text-muted-foreground uppercase">
           Scroll
         </span>
-        <div className="w-px h-12 bg-gradient-to-b from-primary/50 to-transparent" />
+        <div className="w-px h-12 bg-gradient-to-b from-primary/50 to-transparent animate-pulse" />
       </div>
 
       {/* Corner Accents */}
       <div 
-        className={`absolute top-8 right-8 w-12 h-12 border-t border-r border-primary/20 transition-all duration-700 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
+        className={`absolute top-8 right-8 w-16 h-16 border-t-2 border-r-2 border-primary/30 transition-all duration-1000 ${
+          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
         }`}
         style={{ transitionDelay: '800ms' }}
       />
       <div 
-        className={`absolute bottom-8 left-8 w-12 h-12 border-b border-l border-primary/20 transition-all duration-700 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
+        className={`absolute bottom-8 left-8 w-16 h-16 border-b-2 border-l-2 border-primary/30 transition-all duration-1000 ${
+          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
         }`}
         style={{ transitionDelay: '800ms' }}
       />
