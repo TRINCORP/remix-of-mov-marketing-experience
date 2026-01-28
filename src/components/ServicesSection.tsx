@@ -21,24 +21,24 @@ const services: Service[] = [
   {
     id: 1,
     icon: Brain,
-    title: "Estratégia Digital",
-    tagline: "Pense grande. Aja maior.",
-    description: "Planejamento baseado em dados e insights comportamentais para maximizar resultados e dominar seu mercado.",
-    features: ["Análise de Mercado", "Personas", "Customer Journey", "Planejamento"],
+    title: "Estratégia",
+    tagline: "Dados que guiam",
+    description: "Insights comportamentais para decisões precisas.",
+    features: ["Mercado", "Personas", "Jornada"],
     image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
     color: "#FFD93D",
     stats: [
-      { value: "+250%", label: "ROI médio" },
+      { value: "+250%", label: "ROI" },
       { value: "98%", label: "satisfação" },
     ],
   },
   {
     id: 2,
     icon: Rocket,
-    title: "Growth Hacking",
-    tagline: "Crescimento exponencial.",
-    description: "Técnicas inovadoras e metodologias ágeis para acelerar o crescimento da sua marca no digital.",
-    features: ["Experimentação", "Otimização", "Escalabilidade", "A/B Testing"],
+    title: "Growth",
+    tagline: "Escale rápido",
+    description: "Metodologias ágeis para crescimento exponencial.",
+    features: ["Testes A/B", "Otimização", "Escala"],
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
     color: "#FF6B6B",
     stats: [
@@ -50,9 +50,9 @@ const services: Service[] = [
     id: 3,
     icon: Target,
     title: "Performance",
-    tagline: "Cada real conta.",
-    description: "Campanhas de alta conversão com ROI mensurável e otimização em tempo real para máximo retorno.",
-    features: ["Meta Ads", "Google Ads", "Analytics", "Remarketing"],
+    tagline: "Cada real conta",
+    description: "Campanhas de alta conversão com ROI mensurável.",
+    features: ["Meta Ads", "Google", "Analytics"],
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
     color: "#4ECDC4",
     stats: [
@@ -64,23 +64,23 @@ const services: Service[] = [
     id: 4,
     icon: Palette,
     title: "Branding",
-    tagline: "Marcas memoráveis.",
-    description: "Identidade visual impactante que conecta emocionalmente com seu público e destaca sua marca.",
-    features: ["Logo Design", "UI/UX", "Brand Book", "Guidelines"],
+    tagline: "Marcas que ficam",
+    description: "Identidade visual que conecta e destaca.",
+    features: ["Logo", "UI/UX", "Guidelines"],
     image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&h=600&fit=crop",
     color: "#A855F7",
     stats: [
       { value: "+180%", label: "awareness" },
-      { value: "50+", label: "marcas criadas" },
+      { value: "50+", label: "marcas" },
     ],
   },
   {
     id: 5,
     icon: Megaphone,
-    title: "Social Media",
-    tagline: "Viralize com propósito.",
-    description: "Presença digital marcante com conteúdo estratégico, engajamento autêntico e alcance massivo.",
-    features: ["Gestão", "Conteúdo", "Influencers", "Community"],
+    title: "Social",
+    tagline: "Viralize certo",
+    description: "Presença digital com engajamento autêntico.",
+    features: ["Gestão", "Conteúdo", "Influencers"],
     image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&h=600&fit=crop",
     color: "#F472B6",
     stats: [
@@ -91,10 +91,10 @@ const services: Service[] = [
   {
     id: 6,
     icon: BarChart3,
-    title: "Analytics & BI",
-    tagline: "Dados que decidem.",
-    description: "Inteligência de dados para decisões estratégicas precisas e otimização contínua de resultados.",
-    features: ["Dashboards", "Reports", "Insights", "Previsões"],
+    title: "Analytics",
+    tagline: "Dados que decidem",
+    description: "Inteligência para decisões estratégicas.",
+    features: ["Dashboards", "Reports", "Insights"],
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
     color: "#06B6D4",
     stats: [
@@ -258,100 +258,102 @@ const ServicesSection = () => {
               return (
                 <div
                   key={`${service.id}-${service.position}`}
-                  className={`absolute w-[320px] md:w-[400px] transition-all duration-500 ease-out cursor-pointer ${
+                  className={`absolute w-[280px] md:w-[360px] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer ${
                     isCenter ? '' : 'pointer-events-none md:pointer-events-auto'
                   }`}
                   style={{
                     transform: `${transform} scale(${scale})`,
                     zIndex,
                     opacity,
+                    filter: isCenter ? 'none' : 'grayscale(30%)',
                   }}
                   onClick={() => !isCenter && goToSlide(services.findIndex(s => s.id === service.id))}
                   onMouseEnter={() => isCenter && setHoveredCard(service.id)}
                   onMouseLeave={() => setHoveredCard(null)}
                 >
                   <div 
-                    className={`relative bg-card rounded-3xl overflow-hidden border transition-all duration-500 ${
+                    className={`relative bg-card/80 backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-500 ${
                       isCenter 
-                        ? 'border-primary/30 shadow-2xl' 
-                        : 'border-border/30'
+                        ? 'border-primary/40' 
+                        : 'border-border/20'
                     }`}
                     style={{
-                      boxShadow: isCenter ? `0 25px 80px ${service.color}30, 0 0 40px ${service.color}10` : undefined,
+                      boxShadow: isCenter ? `0 30px 60px -20px ${service.color}40` : 'none',
                     }}
                   >
-                    {/* Card Image */}
-                    <div className="relative h-48 md:h-56 overflow-hidden">
+                    {/* Card Image - Smaller */}
+                    <div className="relative h-40 md:h-44 overflow-hidden">
                       <img
                         src={service.image}
                         alt={service.title}
-                        className={`w-full h-full object-cover transition-transform duration-700 ${
-                          hoveredCard === service.id ? 'scale-110' : 'scale-100'
+                        className={`w-full h-full object-cover transition-all duration-700 ${
+                          hoveredCard === service.id ? 'scale-110 brightness-110' : 'scale-100'
                         }`}
                       />
                       <div 
-                        className="absolute inset-0"
+                        className="absolute inset-0 transition-opacity duration-500"
                         style={{
-                          background: `linear-gradient(to top, hsl(var(--card)) 0%, ${service.color}20 50%, transparent 100%)`,
+                          background: `linear-gradient(to top, hsl(var(--card)) 5%, ${service.color}15 60%, transparent 100%)`,
                         }}
                       />
                       
-                      {/* Icon Badge */}
+                      {/* Floating Icon */}
                       <div 
-                        className="absolute top-4 left-4 w-14 h-14 rounded-2xl flex items-center justify-center backdrop-blur-sm transition-transform duration-300"
+                        className={`absolute top-4 left-4 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 ${
+                          hoveredCard === service.id ? 'scale-110 rotate-[-8deg]' : ''
+                        }`}
                         style={{ 
-                          backgroundColor: `${service.color}`,
-                          boxShadow: `0 8px 32px ${service.color}60`,
-                          transform: hoveredCard === service.id ? 'scale(1.1) rotate(-5deg)' : 'scale(1)',
+                          backgroundColor: service.color,
+                          boxShadow: `0 8px 24px ${service.color}50`,
                         }}
                       >
-                        <Icon className="w-7 h-7 text-black" />
+                        <Icon className="w-6 h-6 text-black" />
                       </div>
                     </div>
 
-                    {/* Card Content */}
-                    <div className="p-6 md:p-8">
+                    {/* Card Content - Minimal */}
+                    <div className="p-5 md:p-6">
                       {/* Tagline */}
                       <span 
-                        className="text-xs font-bold tracking-widest uppercase mb-2 block"
+                        className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 block transition-colors duration-300"
                         style={{ color: service.color }}
                       >
                         {service.tagline}
                       </span>
 
                       {/* Title */}
-                      <h3 className="text-2xl md:text-3xl font-black text-foreground mb-3">
+                      <h3 className="text-xl md:text-2xl font-black text-foreground mb-2 tracking-tight">
                         {service.title}
                       </h3>
 
-                      {/* Description */}
-                      <p className="text-muted-foreground text-sm md:text-base mb-5 line-clamp-2">
+                      {/* Description - Short */}
+                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
                         {service.description}
                       </p>
 
-                      {/* Features Tags */}
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {service.features.slice(0, 3).map((feature, i) => (
+                      {/* Minimal Feature Pills */}
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {service.features.map((feature, i) => (
                           <span 
                             key={i}
-                            className="px-3 py-1.5 rounded-full text-xs font-semibold bg-muted/50 text-muted-foreground border border-border/50"
+                            className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-muted/40 text-muted-foreground border border-border/30 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
                           >
                             {feature}
                           </span>
                         ))}
                       </div>
 
-                      {/* Stats Row */}
-                      <div className="flex items-center gap-6 pt-5 border-t border-border/50">
+                      {/* Stats - Compact */}
+                      <div className="flex items-center gap-5 pt-4 border-t border-border/30">
                         {service.stats.map((stat, i) => (
-                          <div key={i}>
+                          <div key={i} className="transition-transform duration-300 hover:scale-105">
                             <span 
-                              className="text-2xl md:text-3xl font-black block"
+                              className="text-xl md:text-2xl font-black block transition-colors duration-300"
                               style={{ color: service.color }}
                             >
                               {stat.value}
                             </span>
-                            <span className="text-xs text-muted-foreground uppercase tracking-wide">
+                            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
                               {stat.label}
                             </span>
                           </div>
@@ -359,14 +361,14 @@ const ServicesSection = () => {
                       </div>
                     </div>
 
-                    {/* Hover Glow Effect */}
+                    {/* Animated Border Glow */}
                     {isCenter && (
                       <div 
-                        className={`absolute inset-0 rounded-3xl pointer-events-none transition-opacity duration-500 ${
+                        className={`absolute inset-0 rounded-2xl pointer-events-none transition-all duration-700 ${
                           hoveredCard === service.id ? 'opacity-100' : 'opacity-0'
                         }`}
                         style={{
-                          boxShadow: `inset 0 0 60px ${service.color}20`,
+                          boxShadow: `inset 0 0 40px ${service.color}15, 0 0 60px ${service.color}10`,
                         }}
                       />
                     )}
@@ -376,37 +378,45 @@ const ServicesSection = () => {
             })}
           </div>
 
-          {/* Navigation Controls */}
-          <div className="flex items-center justify-center gap-4 mt-8">
+          {/* Navigation Controls - Refined */}
+          <div className="flex items-center justify-center gap-6 mt-10">
             <button
               onClick={prevSlide}
               disabled={isAnimating}
-              className="w-12 h-12 rounded-full border border-border/50 bg-card/50 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 disabled:opacity-50"
+              className="group w-11 h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all duration-500 disabled:opacity-30"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
             </button>
 
-            {/* Dots Indicator */}
-            <div className="flex items-center gap-2">
-              {services.map((_, index) => (
+            {/* Elegant Dots */}
+            <div className="flex items-center gap-2.5">
+              {services.map((service, index) => (
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    index === currentIndex 
-                      ? 'w-8 bg-primary' 
-                      : 'w-2 bg-muted-foreground/30 hover:bg-primary/50'
-                  }`}
-                />
+                  className="group relative p-1"
+                >
+                  <span 
+                    className={`block rounded-full transition-all duration-500 ${
+                      index === currentIndex 
+                        ? 'w-6 h-1.5' 
+                        : 'w-1.5 h-1.5 bg-muted-foreground/20 group-hover:bg-muted-foreground/40'
+                    }`}
+                    style={{
+                      backgroundColor: index === currentIndex ? service.color : undefined,
+                      boxShadow: index === currentIndex ? `0 0 12px ${service.color}60` : undefined,
+                    }}
+                  />
+                </button>
               ))}
             </div>
 
             <button
               onClick={nextSlide}
               disabled={isAnimating}
-              className="w-12 h-12 rounded-full border border-border/50 bg-card/50 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 disabled:opacity-50"
+              className="group w-11 h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all duration-500 disabled:opacity-30"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
         </div>
