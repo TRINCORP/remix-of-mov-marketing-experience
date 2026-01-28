@@ -233,52 +233,65 @@ const ServicesSection = () => {
               let zIndex = 0;
               let opacity = 1;
               let scale = 1;
+              let blur = 0;
+              let grayscale = 0;
 
               if (isCenter) {
-                transform = 'translateX(0) rotateY(0deg)';
+                transform = 'translateX(0) rotateY(0deg) translateZ(50px)';
                 zIndex = 30;
                 scale = 1;
+                blur = 0;
+                grayscale = 0;
               } else if (isLeft) {
-                transform = 'translateX(-85%) rotateY(15deg)';
+                transform = 'translateX(-90%) rotateY(18deg) translateZ(-50px)';
                 zIndex = 20;
-                scale = 0.85;
-                opacity = 0.6;
+                scale = 0.82;
+                opacity = 0.65;
+                blur = 1.5;
+                grayscale = 35;
               } else if (isRight) {
-                transform = 'translateX(85%) rotateY(-15deg)';
+                transform = 'translateX(90%) rotateY(-18deg) translateZ(-50px)';
                 zIndex = 20;
-                scale = 0.85;
-                opacity = 0.6;
+                scale = 0.82;
+                opacity = 0.65;
+                blur = 1.5;
+                grayscale = 35;
               } else if (isFar) {
-                transform = 'translateX(170%) rotateY(-25deg)';
+                transform = 'translateX(180%) rotateY(-30deg) translateZ(-100px)';
                 zIndex = 10;
-                scale = 0.7;
-                opacity = 0.3;
+                scale = 0.65;
+                opacity = 0.25;
+                blur = 3;
+                grayscale = 60;
               }
 
               return (
                 <div
                   key={`${service.id}-${service.position}`}
-                  className={`absolute w-[280px] md:w-[360px] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer ${
+                  className={`absolute w-[280px] md:w-[360px] cursor-pointer ${
                     isCenter ? '' : 'pointer-events-none md:pointer-events-auto'
                   }`}
                   style={{
                     transform: `${transform} scale(${scale})`,
                     zIndex,
                     opacity,
-                    filter: isCenter ? 'none' : 'grayscale(30%)',
+                    filter: `blur(${blur}px) grayscale(${grayscale}%)`,
+                    transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
+                    willChange: 'transform, opacity, filter',
                   }}
                   onClick={() => !isCenter && goToSlide(services.findIndex(s => s.id === service.id))}
                   onMouseEnter={() => isCenter && setHoveredCard(service.id)}
                   onMouseLeave={() => setHoveredCard(null)}
                 >
                   <div 
-                    className={`relative bg-card/80 backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-500 ${
+                    className={`relative bg-card/80 backdrop-blur-sm rounded-2xl overflow-hidden border ${
                       isCenter 
                         ? 'border-primary/40' 
                         : 'border-border/20'
                     }`}
                     style={{
-                      boxShadow: isCenter ? `0 30px 60px -20px ${service.color}40` : 'none',
+                      boxShadow: isCenter ? `0 30px 80px -20px ${service.color}50, 0 15px 40px -15px rgba(0,0,0,0.4)` : '0 10px 30px -10px rgba(0,0,0,0.2)',
+                      transition: 'box-shadow 0.8s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.5s ease',
                     }}
                   >
                     {/* Card Image - Smaller */}
@@ -286,25 +299,29 @@ const ServicesSection = () => {
                       <img
                         src={service.image}
                         alt={service.title}
-                        className={`w-full h-full object-cover transition-all duration-700 ${
-                          hoveredCard === service.id ? 'scale-110 brightness-110' : 'scale-100'
-                        }`}
+                        className="w-full h-full object-cover"
+                        style={{
+                          transform: hoveredCard === service.id ? 'scale(1.12)' : 'scale(1)',
+                          filter: hoveredCard === service.id ? 'brightness(1.1)' : 'brightness(1)',
+                          transition: 'transform 1s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease',
+                        }}
                       />
                       <div 
-                        className="absolute inset-0 transition-opacity duration-500"
+                        className="absolute inset-0"
                         style={{
                           background: `linear-gradient(to top, hsl(var(--card)) 5%, ${service.color}15 60%, transparent 100%)`,
+                          transition: 'opacity 0.6s ease',
                         }}
                       />
                       
                       {/* Floating Icon */}
                       <div 
-                        className={`absolute top-4 left-4 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 ${
-                          hoveredCard === service.id ? 'scale-110 rotate-[-8deg]' : ''
-                        }`}
+                        className="absolute top-4 left-4 w-12 h-12 rounded-xl flex items-center justify-center"
                         style={{ 
                           backgroundColor: service.color,
                           boxShadow: `0 8px 24px ${service.color}50`,
+                          transform: hoveredCard === service.id ? 'scale(1.15) rotate(-8deg)' : 'scale(1) rotate(0deg)',
+                          transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
                         }}
                       >
                         <Icon className="w-6 h-6 text-black" />
@@ -315,8 +332,11 @@ const ServicesSection = () => {
                     <div className="p-5 md:p-6">
                       {/* Tagline */}
                       <span 
-                        className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 block transition-colors duration-300"
-                        style={{ color: service.color }}
+                        className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 block"
+                        style={{ 
+                          color: service.color,
+                          transition: 'color 0.5s ease',
+                        }}
                       >
                         {service.tagline}
                       </span>
@@ -336,7 +356,10 @@ const ServicesSection = () => {
                         {service.features.map((feature, i) => (
                           <span 
                             key={i}
-                            className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-muted/40 text-muted-foreground border border-border/30 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
+                            className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-muted/40 text-muted-foreground border border-border/30"
+                            style={{
+                              transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+                            }}
                           >
                             {feature}
                           </span>
@@ -346,10 +369,18 @@ const ServicesSection = () => {
                       {/* Stats - Compact */}
                       <div className="flex items-center gap-5 pt-4 border-t border-border/30">
                         {service.stats.map((stat, i) => (
-                          <div key={i} className="transition-transform duration-300 hover:scale-105">
+                          <div 
+                            key={i}
+                            style={{
+                              transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                            }}
+                          >
                             <span 
-                              className="text-xl md:text-2xl font-black block transition-colors duration-300"
-                              style={{ color: service.color }}
+                              className="text-xl md:text-2xl font-black block"
+                              style={{ 
+                                color: service.color,
+                                transition: 'color 0.5s ease',
+                              }}
                             >
                               {stat.value}
                             </span>
@@ -364,11 +395,11 @@ const ServicesSection = () => {
                     {/* Animated Border Glow */}
                     {isCenter && (
                       <div 
-                        className={`absolute inset-0 rounded-2xl pointer-events-none transition-all duration-700 ${
-                          hoveredCard === service.id ? 'opacity-100' : 'opacity-0'
-                        }`}
+                        className="absolute inset-0 rounded-2xl pointer-events-none"
                         style={{
-                          boxShadow: `inset 0 0 40px ${service.color}15, 0 0 60px ${service.color}10`,
+                          boxShadow: `inset 0 0 50px ${service.color}15, 0 0 80px ${service.color}10`,
+                          opacity: hoveredCard === service.id ? 1 : 0,
+                          transition: 'opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
                         }}
                       />
                     )}
@@ -383,9 +414,15 @@ const ServicesSection = () => {
             <button
               onClick={prevSlide}
               disabled={isAnimating}
-              className="group w-11 h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all duration-500 disabled:opacity-30"
+              className="group w-11 h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 disabled:opacity-30"
+              style={{
+                transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
+              }}
             >
-              <ChevronLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
+              <ChevronLeft 
+                className="w-4 h-4 group-hover:-translate-x-0.5"
+                style={{ transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
+              />
             </button>
 
             {/* Elegant Dots */}
@@ -397,14 +434,13 @@ const ServicesSection = () => {
                   className="group relative p-1"
                 >
                   <span 
-                    className={`block rounded-full transition-all duration-500 ${
-                      index === currentIndex 
-                        ? 'w-6 h-1.5' 
-                        : 'w-1.5 h-1.5 bg-muted-foreground/20 group-hover:bg-muted-foreground/40'
-                    }`}
+                    className="block rounded-full"
                     style={{
-                      backgroundColor: index === currentIndex ? service.color : undefined,
-                      boxShadow: index === currentIndex ? `0 0 12px ${service.color}60` : undefined,
+                      width: index === currentIndex ? '24px' : '6px',
+                      height: '6px',
+                      backgroundColor: index === currentIndex ? service.color : 'hsl(var(--muted-foreground) / 0.2)',
+                      boxShadow: index === currentIndex ? `0 0 16px ${service.color}70` : 'none',
+                      transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
                     }}
                   />
                 </button>
@@ -414,9 +450,15 @@ const ServicesSection = () => {
             <button
               onClick={nextSlide}
               disabled={isAnimating}
-              className="group w-11 h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all duration-500 disabled:opacity-30"
+              className="group w-11 h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 disabled:opacity-30"
+              style={{
+                transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
+              }}
             >
-              <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              <ChevronRight 
+                className="w-4 h-4 group-hover:translate-x-0.5"
+                style={{ transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
+              />
             </button>
           </div>
         </div>
