@@ -34,12 +34,14 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4">
-        {/* Centered Pill Container */}
-        <div className={`flex items-center gap-2 px-2 py-2 rounded-full transition-all duration-500 ${
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
+        isScrolled ? 'flex justify-center px-4 pt-4' : 'flex justify-center px-0 pt-0'
+      }`}>
+        {/* Container that transforms from full-width to centered pill */}
+        <div className={`flex items-center justify-between transition-all duration-700 ease-out ${
           isScrolled 
-            ? 'bg-gray-900/95 backdrop-blur-xl shadow-2xl shadow-black/20' 
-            : 'bg-gray-900/80 backdrop-blur-lg'
+            ? 'gap-2 px-2 py-2 rounded-full bg-gray-900/95 backdrop-blur-xl shadow-2xl shadow-black/20 max-w-fit' 
+            : 'gap-4 px-6 md:px-12 py-4 rounded-none bg-gray-900/90 backdrop-blur-lg w-full'
         }`}>
           {/* Logo */}
           <a 
@@ -48,58 +50,71 @@ const Navbar = () => {
               e.preventDefault();
               handleNavClick('#home', 'home');
             }}
-            className="flex items-center gap-2 px-4 py-1 group cursor-pointer"
+            className={`flex items-center gap-2 group cursor-pointer transition-all duration-500 ${
+              isScrolled ? 'px-4 py-1' : 'px-0 py-0'
+            }`}
           >
             <img 
               src="/lovable-uploads/mov-logo-gold.png" 
               alt="MOV Logo" 
-              className="h-8 w-auto group-hover:scale-110 transition-transform duration-300"
+              className={`w-auto group-hover:scale-110 transition-all duration-300 ${
+                isScrolled ? 'h-8' : 'h-10'
+              }`}
             />
-            <span className="text-xl font-black text-white hidden sm:block">MOV</span>
+            <span className={`font-black text-white hidden sm:block transition-all duration-300 ${
+              isScrolled ? 'text-xl' : 'text-2xl'
+            }`}>MOV</span>
           </a>
 
-          {/* Divider */}
-          <div className="hidden md:block w-px h-6 bg-white/20" />
+          {/* Right side navigation */}
+          <div className="flex items-center gap-2">
+            {/* Divider - only visible when scrolled */}
+            <div className={`hidden md:block w-px h-6 bg-white/20 transition-opacity duration-500 ${
+              isScrolled ? 'opacity-100' : 'opacity-0'
+            }`} />
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => handleNavClick(item.href, item.id)}
-                className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
-                  activeSection === item.id 
-                    ? 'text-white bg-white/10' 
-                    : 'text-gray-300 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {item.name}
-              </button>
-            ))}
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center gap-1">
+              {navItems.map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => handleNavClick(item.href, item.id)}
+                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+                    activeSection === item.id 
+                      ? 'text-white bg-white/10' 
+                      : 'text-gray-300 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Divider - only visible when scrolled */}
+            <div className={`hidden md:block w-px h-6 bg-white/20 transition-opacity duration-500 ${
+              isScrolled ? 'opacity-100' : 'opacity-0'
+            }`} />
+
+            {/* Contact CTA Button */}
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg shadow-primary/25"
+              onClick={() => handleNavClick('#contact', 'contact')}
+            >
+              Contato
+            </Button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
+            </button>
           </div>
-
-          {/* Divider */}
-          <div className="hidden md:block w-px h-6 bg-white/20" />
-
-          {/* Contact CTA Button */}
-          <Button 
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg shadow-primary/25"
-            onClick={() => handleNavClick('#contact', 'contact')}
-          >
-            Contato
-          </Button>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors"
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
         </div>
       </nav>
 
