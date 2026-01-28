@@ -9,12 +9,9 @@ import PinnedSection from '@/components/PinnedSection';
 import TrustIndicators from '@/components/TrustIndicators';
 import ImpactSection from '@/components/ImpactSection';
 import ClientsPartnersSection from '@/components/ClientsPartnersSection';
-import FeaturedWorkSection from '@/components/FeaturedWorkSection';
 import CreativeShowcase from '@/components/CreativeShowcase';
 import VideoHeroBanner from '@/components/VideoHeroBanner';
 import ShowreelSection from '@/components/ShowreelSection';
-import CustomCursor from '@/components/CustomCursor';
-import { DualParallaxText } from '@/components/ParallaxText';
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
 
 const Index = () => {
@@ -22,9 +19,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Custom Cursor - Goat Agency style */}
-      <CustomCursor />
-      
       <Navbar />
       <main>
         <section id="home">
@@ -32,26 +26,11 @@ const Index = () => {
         </section>
         <VideoHeroBanner />
         <PinnedSection />
-        <FeaturedWorkSection />
-        
-        {/* Parallax Text Divider */}
-        <DualParallaxText 
-          topText="ESTRATÉGIA" 
-          bottomText="CRIATIVIDADE" 
-          speed={0.4}
-        />
         
         <TrustIndicators />
         <ShowreelSection />
         <CreativeShowcase />
         <ImpactSection />
-        
-        {/* Parallax Text Divider */}
-        <DualParallaxText 
-          topText="RESULTADOS" 
-          bottomText="PERFORMANCE" 
-          speed={0.3}
-        />
         
         <section id="about">
           <AboutSection />
