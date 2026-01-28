@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Phone, Mail } from 'lucide-react';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -68,6 +68,28 @@ const Navbar = () => {
 
           {/* Right side navigation */}
           <div className="flex items-center gap-2">
+            {/* Contact Icons - hidden on mobile */}
+            <div className="hidden md:flex items-center gap-1">
+              <a 
+                href="tel:+5519981134193"
+                className={`flex items-center justify-center w-9 h-9 rounded-full text-gray-300 hover:text-primary hover:bg-white/10 transition-all duration-300 ${
+                  isScrolled ? 'scale-90' : 'scale-100'
+                }`}
+                title="Ligar"
+              >
+                <Phone className="w-4 h-4" />
+              </a>
+              <a 
+                href="mailto:contato@movmarketing.com.br"
+                className={`flex items-center justify-center w-9 h-9 rounded-full text-gray-300 hover:text-primary hover:bg-white/10 transition-all duration-300 ${
+                  isScrolled ? 'scale-90' : 'scale-100'
+                }`}
+                title="Email"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
+            </div>
+
             {/* Divider - only visible when scrolled */}
             <div className={`hidden md:block w-px h-6 bg-white/20 transition-opacity duration-500 ${
               isScrolled ? 'opacity-100' : 'opacity-0'
