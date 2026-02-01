@@ -106,8 +106,10 @@ const services: Service[] = [
 
 const ServicesSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [direction, setDirection] = useState<'left' | 'right'>('right');
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -132,28 +134,34 @@ const ServicesSection = () => {
   const nextSlide = () => {
     if (isAnimating) return;
     setIsAnimating(true);
+    setDirection('right');
+    setPreviousIndex(currentIndex);
     setCurrentIndex((prev) => (prev + 1) % services.length);
-    setTimeout(() => setIsAnimating(false), 500);
+    setTimeout(() => setIsAnimating(false), 800);
   };
 
   const prevSlide = () => {
     if (isAnimating) return;
     setIsAnimating(true);
+    setDirection('left');
+    setPreviousIndex(currentIndex);
     setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
-    setTimeout(() => setIsAnimating(false), 500);
+    setTimeout(() => setIsAnimating(false), 800);
   };
 
   const goToSlide = (index: number) => {
     if (isAnimating || index === currentIndex) return;
     setIsAnimating(true);
+    setDirection(index > currentIndex ? 'right' : 'left');
+    setPreviousIndex(currentIndex);
     setCurrentIndex(index);
-    setTimeout(() => setIsAnimating(false), 500);
+    setTimeout(() => setIsAnimating(false), 800);
   };
 
   // Get visible cards (current + neighbors)
   const getVisibleCards = () => {
     const result = [];
-    for (let i = -1; i <= 2; i++) {
+    for (let i = -2; i <= 2; i++) {
       const index = (currentIndex + i + services.length) % services.length;
       result.push({ ...services[index], position: i });
     }
@@ -191,21 +199,54 @@ const ServicesSection = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
-        {/* Section Header */}
+        {/* Section Header with animated text transition */}
         <div className={`text-center mb-16 md:mb-20 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <div className="flex items-center justify-center gap-3 mb-6">
-            <Sparkles className="w-5 h-5 text-primary" />
-            <span className="text-sm font-bold text-primary tracking-widest uppercase">Nossos Serviços</span>
-            <Sparkles className="w-5 h-5 text-primary" />
+            <Sparkles 
+              className="w-5 h-5"
+              style={{ 
+                color: currentService.color,
+                transition: 'color 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+              }} 
+            />
+            <span 
+              className="text-sm font-bold tracking-widest uppercase"
+              style={{ 
+                color: currentService.color,
+                transition: 'color 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+              }}
+            >
+              Nossos Serviços
+            </span>
+            <Sparkles 
+              className="w-5 h-5"
+              style={{ 
+                color: currentService.color,
+                transition: 'color 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+              }} 
+            />
           </div>
           
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none mb-6">
-            <span className="text-foreground">Soluções que</span>
-            <br />
-            <span className="text-gradient">transformam</span>
-          </h2>
+          <div className="relative overflow-hidden">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none mb-6">
+              <span className="text-foreground">Soluções que</span>
+              <br />
+              <span 
+                className="inline-block"
+                style={{
+                  background: `linear-gradient(135deg, ${currentService.color} 0%, ${currentService.color}CC 100%)`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
+                  filter: `drop-shadow(0 4px 30px ${currentService.color}40)`,
+                }}
+              >
+                transformam
+              </span>
+            </h2>
+          </div>
           
           <p className="text-muted-foreground max-w-2xl mx-auto text-base md:text-lg">
             Descubra como cada serviço é projetado para impulsionar seu negócio ao próximo nível.
@@ -227,7 +268,8 @@ const ServicesSection = () => {
               const isCenter = service.position === 0;
               const isLeft = service.position === -1;
               const isRight = service.position === 1;
-              const isFar = service.position === 2;
+              const isFarLeft = service.position === -2;
+              const isFarRight = service.position === 2;
               
               let transform = '';
               let zIndex = 0;
@@ -236,33 +278,41 @@ const ServicesSection = () => {
               let blur = 0;
               let grayscale = 0;
 
+              // Enhanced positioning with smoother transitions
               if (isCenter) {
-                transform = 'translateX(0) rotateY(0deg) translateZ(50px)';
-                zIndex = 30;
+                transform = 'translateX(0) rotateY(0deg) translateZ(80px) scale(1)';
+                zIndex = 40;
                 scale = 1;
                 blur = 0;
                 grayscale = 0;
               } else if (isLeft) {
-                transform = 'translateX(-90%) rotateY(18deg) translateZ(-50px)';
-                zIndex = 20;
-                scale = 0.82;
-                opacity = 0.65;
-                blur = 1.5;
-                grayscale = 35;
+                transform = 'translateX(-85%) rotateY(25deg) translateZ(-30px)';
+                zIndex = 30;
+                scale = 0.85;
+                opacity = 0.7;
+                blur = 2;
+                grayscale = 40;
               } else if (isRight) {
-                transform = 'translateX(90%) rotateY(-18deg) translateZ(-50px)';
-                zIndex = 20;
-                scale = 0.82;
-                opacity = 0.65;
-                blur = 1.5;
-                grayscale = 35;
-              } else if (isFar) {
-                transform = 'translateX(180%) rotateY(-30deg) translateZ(-100px)';
+                transform = 'translateX(85%) rotateY(-25deg) translateZ(-30px)';
+                zIndex = 30;
+                scale = 0.85;
+                opacity = 0.7;
+                blur = 2;
+                grayscale = 40;
+              } else if (isFarLeft) {
+                transform = 'translateX(-160%) rotateY(40deg) translateZ(-100px)';
                 zIndex = 10;
                 scale = 0.65;
-                opacity = 0.25;
-                blur = 3;
-                grayscale = 60;
+                opacity = 0.2;
+                blur = 4;
+                grayscale = 70;
+              } else if (isFarRight) {
+                transform = 'translateX(160%) rotateY(-40deg) translateZ(-100px)';
+                zIndex = 10;
+                scale = 0.65;
+                opacity = 0.2;
+                blur = 4;
+                grayscale = 70;
               }
 
               return (
@@ -276,20 +326,24 @@ const ServicesSection = () => {
                     zIndex,
                     opacity,
                     filter: `blur(${blur}px) grayscale(${grayscale}%)`,
-                    transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
+                    transition: isAnimating 
+                      ? 'all 1s cubic-bezier(0.23, 1, 0.32, 1)' 
+                      : 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
                     willChange: 'transform, opacity, filter',
+                    transformStyle: 'preserve-3d',
                   }}
                   onClick={() => !isCenter && goToSlide(services.findIndex(s => s.id === service.id))}
                   onMouseEnter={() => isCenter && setHoveredCard(service.id)}
                   onMouseLeave={() => setHoveredCard(null)}
                 >
                   <div 
-                    className={`relative bg-card/80 backdrop-blur-sm rounded-2xl overflow-hidden border ${
+                    className={`relative bg-card/90 backdrop-blur-md rounded-2xl overflow-hidden border ${
                       isCenter 
-                        ? 'border-primary/40' 
+                        ? 'border-transparent' 
                         : 'border-border/20'
                     }`}
                     style={{
+                      borderColor: isCenter ? `${service.color}50` : undefined,
                       boxShadow: isCenter ? `0 30px 80px -20px ${service.color}50, 0 15px 40px -15px rgba(0,0,0,0.4)` : '0 10px 30px -10px rgba(0,0,0,0.2)',
                       transition: 'box-shadow 0.8s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.5s ease',
                     }}

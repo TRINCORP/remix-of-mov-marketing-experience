@@ -28,7 +28,6 @@ const Index = () => {
         <PinnedSection />
         
         <TrustIndicators />
-        <ShowreelSection />
         <CreativeShowcase />
         <ImpactSection />
         
