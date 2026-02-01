@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Brain, Rocket, Target, Megaphone, Palette, 
   BarChart3, ChevronLeft, ChevronRight, ArrowUpRight, Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Service {
   id: number;
@@ -106,13 +107,15 @@ const services: Service[] = [
 
 const ServicesSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [previousIndex, setPreviousIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [direction, setDirection] = useState<'left' | 'right'>('right');
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+
+  // Minimum swipe distance
+  const minSwipeDistance = 50;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -131,60 +134,354 @@ const ServicesSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  const nextSlide = () => {
+  const navigate = useCallback((direction: 'next' | 'prev') => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setDirection('right');
-    setPreviousIndex(currentIndex);
-    setCurrentIndex((prev) => (prev + 1) % services.length);
-    setTimeout(() => setIsAnimating(false), 800);
-  };
+    
+    if (direction === 'next') {
+      setCurrentIndex((prev) => (prev + 1) % services.length);
+    } else {
+      setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
+    }
+    
+    setTimeout(() => setIsAnimating(false), 600);
+  }, [isAnimating]);
 
-  const prevSlide = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setDirection('left');
-    setPreviousIndex(currentIndex);
-    setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
-    setTimeout(() => setIsAnimating(false), 800);
-  };
-
-  const goToSlide = (index: number) => {
+  const goToSlide = useCallback((index: number) => {
     if (isAnimating || index === currentIndex) return;
     setIsAnimating(true);
-    setDirection(index > currentIndex ? 'right' : 'left');
-    setPreviousIndex(currentIndex);
     setCurrentIndex(index);
-    setTimeout(() => setIsAnimating(false), 800);
+    setTimeout(() => setIsAnimating(false), 600);
+  }, [isAnimating, currentIndex]);
+
+  // Touch handlers for swipe
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
   };
 
-  // Get visible cards (current + neighbors)
-  const getVisibleCards = () => {
-    const result = [];
-    for (let i = -2; i <= 2; i++) {
-      const index = (currentIndex + i + services.length) % services.length;
-      result.push({ ...services[index], position: i });
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) {
+      navigate('next');
+    } else if (isRightSwipe) {
+      navigate('prev');
     }
-    return result;
   };
 
-  const visibleCards = getVisibleCards();
   const currentService = services[currentIndex];
-  const Icon = currentService.icon;
+
+  // Mobile Card Component
+  const MobileCard = ({ service, isActive }: { service: Service; isActive: boolean }) => {
+    const Icon = service.icon;
+    
+    return (
+      <div
+        className={`
+          flex-shrink-0 w-[85vw] max-w-[320px] mx-auto
+          transition-all duration-500 ease-out
+          ${isActive ? 'opacity-100 scale-100' : 'opacity-40 scale-95'}
+        `}
+      >
+        <div 
+          className="bg-card/95 backdrop-blur-md rounded-2xl overflow-hidden border border-border/30"
+          style={{
+            boxShadow: isActive 
+              ? `0 20px 60px -15px ${service.color}40, 0 10px 30px -10px rgba(0,0,0,0.3)` 
+              : '0 5px 20px -5px rgba(0,0,0,0.15)',
+            borderColor: isActive ? `${service.color}40` : undefined,
+          }}
+        >
+          {/* Image */}
+          <div className="relative h-36 overflow-hidden">
+            <img
+              src={service.image}
+              alt={service.title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(to top, hsl(var(--card)) 5%, ${service.color}15 60%, transparent 100%)`,
+              }}
+            />
+            
+            {/* Icon */}
+            <div 
+              className="absolute top-3 left-3 w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ 
+                backgroundColor: service.color,
+                boxShadow: `0 6px 20px ${service.color}50`,
+              }}
+            >
+              <Icon className="w-5 h-5 text-black" />
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-4">
+            <span 
+              className="text-[10px] font-bold tracking-[0.15em] uppercase mb-1 block"
+              style={{ color: service.color }}
+            >
+              {service.tagline}
+            </span>
+
+            <h3 className="text-lg font-black text-foreground mb-2 tracking-tight">
+              {service.title}
+            </h3>
+
+            <p className="text-muted-foreground text-xs mb-3 leading-relaxed">
+              {service.description}
+            </p>
+
+            {/* Features */}
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {service.features.map((feature, i) => (
+                <span 
+                  key={i}
+                  className="px-2 py-0.5 rounded-full text-[9px] font-medium bg-muted/50 text-muted-foreground border border-border/30"
+                >
+                  {feature}
+                </span>
+              ))}
+            </div>
+
+            {/* Stats */}
+            <div className="flex items-center gap-4 pt-3 border-t border-border/30">
+              {service.stats.map((stat, i) => (
+                <div key={i}>
+                  <span 
+                    className="text-lg font-black block"
+                    style={{ color: service.color }}
+                  >
+                    {stat.value}
+                  </span>
+                  <span className="text-[9px] text-muted-foreground uppercase tracking-wider">
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Desktop Card with 3D effect
+  const DesktopCarousel = () => {
+    const getVisibleCards = () => {
+      const result = [];
+      for (let i = -2; i <= 2; i++) {
+        const index = (currentIndex + i + services.length) % services.length;
+        result.push({ ...services[index], position: i, originalIndex: index });
+      }
+      return result;
+    };
+
+    const visibleCards = getVisibleCards();
+
+    return (
+      <div className="relative h-[520px] flex items-center justify-center">
+        <div className="relative w-full h-full" style={{ perspective: '1200px' }}>
+          {visibleCards.map((service) => {
+            const Icon = service.icon;
+            const isCenter = service.position === 0;
+            const isLeft = service.position === -1;
+            const isRight = service.position === 1;
+            const isFarLeft = service.position === -2;
+            const isFarRight = service.position === 2;
+            
+            let translateX = '0%';
+            let translateZ = '0px';
+            let rotateY = '0deg';
+            let scale = 1;
+            let opacity = 1;
+            let blur = 0;
+            let grayscale = 0;
+            let zIndex = 0;
+
+            if (isCenter) {
+              translateX = '-50%';
+              translateZ = '60px';
+              rotateY = '0deg';
+              scale = 1;
+              opacity = 1;
+              zIndex = 50;
+            } else if (isLeft) {
+              translateX = '-130%';
+              translateZ = '-50px';
+              rotateY = '20deg';
+              scale = 0.82;
+              opacity = 0.6;
+              blur = 2;
+              grayscale = 30;
+              zIndex = 30;
+            } else if (isRight) {
+              translateX = '30%';
+              translateZ = '-50px';
+              rotateY = '-20deg';
+              scale = 0.82;
+              opacity = 0.6;
+              blur = 2;
+              grayscale = 30;
+              zIndex = 30;
+            } else if (isFarLeft) {
+              translateX = '-200%';
+              translateZ = '-120px';
+              rotateY = '35deg';
+              scale = 0.6;
+              opacity = 0.2;
+              blur = 4;
+              grayscale = 60;
+              zIndex = 10;
+            } else if (isFarRight) {
+              translateX = '100%';
+              translateZ = '-120px';
+              rotateY = '-35deg';
+              scale = 0.6;
+              opacity = 0.2;
+              blur = 4;
+              grayscale = 60;
+              zIndex = 10;
+            }
+
+            return (
+              <div
+                key={`${service.id}-${service.position}`}
+                className={`absolute left-1/2 top-1/2 w-[340px] ${
+                  isCenter ? 'cursor-default' : 'cursor-pointer'
+                }`}
+                style={{
+                  transform: `translateX(${translateX}) translateY(-50%) translateZ(${translateZ}) rotateY(${rotateY}) scale(${scale})`,
+                  zIndex,
+                  opacity,
+                  filter: `blur(${blur}px) grayscale(${grayscale}%)`,
+                  transition: 'all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  transformStyle: 'preserve-3d',
+                  willChange: 'transform, opacity, filter',
+                }}
+                onClick={() => !isCenter && goToSlide(service.originalIndex)}
+              >
+                <div 
+                  className="bg-card/95 backdrop-blur-md rounded-2xl overflow-hidden border"
+                  style={{
+                    borderColor: isCenter ? `${service.color}50` : 'hsl(var(--border) / 0.2)',
+                    boxShadow: isCenter 
+                      ? `0 30px 80px -20px ${service.color}50, 0 15px 40px -15px rgba(0,0,0,0.35)` 
+                      : '0 10px 30px -10px rgba(0,0,0,0.2)',
+                    transition: 'box-shadow 0.7s ease, border-color 0.5s ease',
+                  }}
+                >
+                  {/* Image */}
+                  <div className="relative h-40 overflow-hidden">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="w-full h-full object-cover transition-transform duration-700"
+                      style={{
+                        transform: isCenter ? 'scale(1.05)' : 'scale(1)',
+                      }}
+                      loading="lazy"
+                    />
+                    <div 
+                      className="absolute inset-0"
+                      style={{
+                        background: `linear-gradient(to top, hsl(var(--card)) 5%, ${service.color}15 60%, transparent 100%)`,
+                      }}
+                    />
+                    
+                    {/* Icon */}
+                    <div 
+                      className="absolute top-4 left-4 w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-500"
+                      style={{ 
+                        backgroundColor: service.color,
+                        boxShadow: `0 8px 24px ${service.color}50`,
+                        transform: isCenter ? 'scale(1.1)' : 'scale(1)',
+                      }}
+                    >
+                      <Icon className="w-6 h-6 text-black" />
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5">
+                    <span 
+                      className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 block transition-colors duration-500"
+                      style={{ color: service.color }}
+                    >
+                      {service.tagline}
+                    </span>
+
+                    <h3 className="text-xl font-black text-foreground mb-2 tracking-tight">
+                      {service.title}
+                    </h3>
+
+                    <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
+                      {service.description}
+                    </p>
+
+                    {/* Features */}
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {service.features.map((feature, i) => (
+                        <span 
+                          key={i}
+                          className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-muted/40 text-muted-foreground border border-border/30"
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Stats */}
+                    <div className="flex items-center gap-5 pt-4 border-t border-border/30">
+                      {service.stats.map((stat, i) => (
+                        <div key={i}>
+                          <span 
+                            className="text-xl font-black block transition-colors duration-500"
+                            style={{ color: service.color }}
+                          >
+                            {stat.value}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                            {stat.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <section ref={containerRef} className="relative py-20 md:py-32 overflow-hidden bg-background">
-      {/* Animated background gradient */}
+    <section ref={containerRef} className="relative py-16 md:py-28 overflow-hidden bg-background">
+      {/* Animated background */}
       <div 
-        className="absolute inset-0 transition-all duration-700"
+        className="absolute inset-0 transition-all duration-700 ease-out"
         style={{
-          background: `radial-gradient(ellipse 80% 50% at 50% 100%, ${currentService.color}15 0%, transparent 60%)`,
+          background: `radial-gradient(ellipse 80% 50% at 50% 100%, ${currentService.color}12 0%, transparent 60%)`,
         }}
       />
 
-      {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+      {/* Floating particles - hidden on mobile for performance */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 rounded-full bg-primary/20 animate-float"
@@ -199,302 +496,92 @@ const ServicesSection = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
-        {/* Section Header with animated text transition */}
-        <div className={`text-center mb-16 md:mb-20 transition-all duration-1000 ${
+        {/* Header */}
+        <div className={`text-center mb-10 md:mb-16 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
-          <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
             <Sparkles 
-              className="w-5 h-5"
-              style={{ 
-                color: currentService.color,
-                transition: 'color 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              }} 
+              className="w-4 h-4 md:w-5 md:h-5 transition-colors duration-600"
+              style={{ color: currentService.color }}
             />
             <span 
-              className="text-sm font-bold tracking-widest uppercase"
-              style={{ 
-                color: currentService.color,
-                transition: 'color 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              }}
+              className="text-xs md:text-sm font-bold tracking-widest uppercase transition-colors duration-600"
+              style={{ color: currentService.color }}
             >
               Nossos Serviços
             </span>
             <Sparkles 
-              className="w-5 h-5"
-              style={{ 
-                color: currentService.color,
-                transition: 'color 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              }} 
+              className="w-4 h-4 md:w-5 md:h-5 transition-colors duration-600"
+              style={{ color: currentService.color }}
             />
           </div>
           
-          <div className="relative overflow-hidden">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-none mb-6">
-              <span className="text-foreground">Soluções que</span>
-              <br />
-              <span 
-                className="inline-block"
-                style={{
-                  background: `linear-gradient(135deg, ${currentService.color} 0%, ${currentService.color}CC 100%)`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                  filter: `drop-shadow(0 4px 30px ${currentService.color}40)`,
-                }}
-              >
-                transformam
-              </span>
-            </h2>
-          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-4 md:mb-6">
+            <span className="text-foreground block sm:inline">Soluções que</span>
+            <br className="hidden sm:block" />
+            <span 
+              className="inline-block transition-all duration-700 ease-out"
+              style={{
+                background: `linear-gradient(135deg, ${currentService.color} 0%, ${currentService.color}CC 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                filter: `drop-shadow(0 4px 20px ${currentService.color}30)`,
+              }}
+            >
+              transformam
+            </span>
+          </h2>
           
-          <p className="text-muted-foreground max-w-2xl mx-auto text-base md:text-lg">
-            Descubra como cada serviço é projetado para impulsionar seu negócio ao próximo nível.
+          <p className="text-muted-foreground max-w-xl mx-auto text-sm md:text-base px-4">
+            Descubra como cada serviço impulsiona seu negócio ao próximo nível.
           </p>
         </div>
 
-        {/* Carousel Container */}
-        <div className={`relative transition-all duration-1000 delay-200 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          
-          {/* Cards Carousel */}
-          <div 
-            ref={carouselRef}
-            className="relative h-[500px] md:h-[550px] flex items-center justify-center perspective-1000"
-          >
-            {visibleCards.map((service, idx) => {
-              const Icon = service.icon;
-              const isCenter = service.position === 0;
-              const isLeft = service.position === -1;
-              const isRight = service.position === 1;
-              const isFarLeft = service.position === -2;
-              const isFarRight = service.position === 2;
-              
-              let transform = '';
-              let zIndex = 0;
-              let opacity = 1;
-              let scale = 1;
-              let blur = 0;
-              let grayscale = 0;
+        {/* Carousel */}
+        <div 
+          className={`relative transition-all duration-1000 delay-200 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          {isMobile ? (
+            <div className="flex justify-center">
+              <MobileCard service={currentService} isActive={true} />
+            </div>
+          ) : (
+            <DesktopCarousel />
+          )}
 
-              // Enhanced positioning with smoother transitions
-              if (isCenter) {
-                transform = 'translateX(0) rotateY(0deg) translateZ(80px) scale(1)';
-                zIndex = 40;
-                scale = 1;
-                blur = 0;
-                grayscale = 0;
-              } else if (isLeft) {
-                transform = 'translateX(-85%) rotateY(25deg) translateZ(-30px)';
-                zIndex = 30;
-                scale = 0.85;
-                opacity = 0.7;
-                blur = 2;
-                grayscale = 40;
-              } else if (isRight) {
-                transform = 'translateX(85%) rotateY(-25deg) translateZ(-30px)';
-                zIndex = 30;
-                scale = 0.85;
-                opacity = 0.7;
-                blur = 2;
-                grayscale = 40;
-              } else if (isFarLeft) {
-                transform = 'translateX(-160%) rotateY(40deg) translateZ(-100px)';
-                zIndex = 10;
-                scale = 0.65;
-                opacity = 0.2;
-                blur = 4;
-                grayscale = 70;
-              } else if (isFarRight) {
-                transform = 'translateX(160%) rotateY(-40deg) translateZ(-100px)';
-                zIndex = 10;
-                scale = 0.65;
-                opacity = 0.2;
-                blur = 4;
-                grayscale = 70;
-              }
-
-              return (
-                <div
-                  key={`${service.id}-${service.position}`}
-                  className={`absolute w-[280px] md:w-[360px] cursor-pointer ${
-                    isCenter ? '' : 'pointer-events-none md:pointer-events-auto'
-                  }`}
-                  style={{
-                    transform: `${transform} scale(${scale})`,
-                    zIndex,
-                    opacity,
-                    filter: `blur(${blur}px) grayscale(${grayscale}%)`,
-                    transition: isAnimating 
-                      ? 'all 1s cubic-bezier(0.23, 1, 0.32, 1)' 
-                      : 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-                    willChange: 'transform, opacity, filter',
-                    transformStyle: 'preserve-3d',
-                  }}
-                  onClick={() => !isCenter && goToSlide(services.findIndex(s => s.id === service.id))}
-                  onMouseEnter={() => isCenter && setHoveredCard(service.id)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                >
-                  <div 
-                    className={`relative bg-card/90 backdrop-blur-md rounded-2xl overflow-hidden border ${
-                      isCenter 
-                        ? 'border-transparent' 
-                        : 'border-border/20'
-                    }`}
-                    style={{
-                      borderColor: isCenter ? `${service.color}50` : undefined,
-                      boxShadow: isCenter ? `0 30px 80px -20px ${service.color}50, 0 15px 40px -15px rgba(0,0,0,0.4)` : '0 10px 30px -10px rgba(0,0,0,0.2)',
-                      transition: 'box-shadow 0.8s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.5s ease',
-                    }}
-                  >
-                    {/* Card Image - Smaller */}
-                    <div className="relative h-40 md:h-44 overflow-hidden">
-                      <img
-                        src={service.image}
-                        alt={service.title}
-                        className="w-full h-full object-cover"
-                        style={{
-                          transform: hoveredCard === service.id ? 'scale(1.12)' : 'scale(1)',
-                          filter: hoveredCard === service.id ? 'brightness(1.1)' : 'brightness(1)',
-                          transition: 'transform 1s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease',
-                        }}
-                      />
-                      <div 
-                        className="absolute inset-0"
-                        style={{
-                          background: `linear-gradient(to top, hsl(var(--card)) 5%, ${service.color}15 60%, transparent 100%)`,
-                          transition: 'opacity 0.6s ease',
-                        }}
-                      />
-                      
-                      {/* Floating Icon */}
-                      <div 
-                        className="absolute top-4 left-4 w-12 h-12 rounded-xl flex items-center justify-center"
-                        style={{ 
-                          backgroundColor: service.color,
-                          boxShadow: `0 8px 24px ${service.color}50`,
-                          transform: hoveredCard === service.id ? 'scale(1.15) rotate(-8deg)' : 'scale(1) rotate(0deg)',
-                          transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                        }}
-                      >
-                        <Icon className="w-6 h-6 text-black" />
-                      </div>
-                    </div>
-
-                    {/* Card Content - Minimal */}
-                    <div className="p-5 md:p-6">
-                      {/* Tagline */}
-                      <span 
-                        className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 block"
-                        style={{ 
-                          color: service.color,
-                          transition: 'color 0.5s ease',
-                        }}
-                      >
-                        {service.tagline}
-                      </span>
-
-                      {/* Title */}
-                      <h3 className="text-xl md:text-2xl font-black text-foreground mb-2 tracking-tight">
-                        {service.title}
-                      </h3>
-
-                      {/* Description - Short */}
-                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-                        {service.description}
-                      </p>
-
-                      {/* Minimal Feature Pills */}
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {service.features.map((feature, i) => (
-                          <span 
-                            key={i}
-                            className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-muted/40 text-muted-foreground border border-border/30"
-                            style={{
-                              transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
-                            }}
-                          >
-                            {feature}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Stats - Compact */}
-                      <div className="flex items-center gap-5 pt-4 border-t border-border/30">
-                        {service.stats.map((stat, i) => (
-                          <div 
-                            key={i}
-                            style={{
-                              transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                            }}
-                          >
-                            <span 
-                              className="text-xl md:text-2xl font-black block"
-                              style={{ 
-                                color: service.color,
-                                transition: 'color 0.5s ease',
-                              }}
-                            >
-                              {stat.value}
-                            </span>
-                            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
-                              {stat.label}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Animated Border Glow */}
-                    {isCenter && (
-                      <div 
-                        className="absolute inset-0 rounded-2xl pointer-events-none"
-                        style={{
-                          boxShadow: `inset 0 0 50px ${service.color}15, 0 0 80px ${service.color}10`,
-                          opacity: hoveredCard === service.id ? 1 : 0,
-                          transition: 'opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-                        }}
-                      />
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Navigation Controls - Refined */}
-          <div className="flex items-center justify-center gap-6 mt-10">
+          {/* Navigation */}
+          <div className="flex items-center justify-center gap-4 md:gap-6 mt-8 md:mt-10">
             <button
-              onClick={prevSlide}
+              onClick={() => navigate('prev')}
               disabled={isAnimating}
-              className="group w-11 h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 disabled:opacity-30"
-              style={{
-                transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
-              }}
+              className="group w-10 h-10 md:w-11 md:h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 disabled:opacity-30 transition-all duration-400"
+              aria-label="Serviço anterior"
             >
-              <ChevronLeft 
-                className="w-4 h-4 group-hover:-translate-x-0.5"
-                style={{ transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
-              />
+              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-300" />
             </button>
 
-            {/* Elegant Dots */}
-            <div className="flex items-center gap-2.5">
+            {/* Dots */}
+            <div className="flex items-center gap-2 md:gap-2.5">
               {services.map((service, index) => (
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
                   className="group relative p-1"
+                  aria-label={`Ir para ${service.title}`}
                 >
                   <span 
-                    className="block rounded-full"
+                    className="block rounded-full transition-all duration-500 ease-out"
                     style={{
-                      width: index === currentIndex ? '24px' : '6px',
+                      width: index === currentIndex ? (isMobile ? '20px' : '24px') : '6px',
                       height: '6px',
                       backgroundColor: index === currentIndex ? service.color : 'hsl(var(--muted-foreground) / 0.2)',
-                      boxShadow: index === currentIndex ? `0 0 16px ${service.color}70` : 'none',
-                      transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+                      boxShadow: index === currentIndex ? `0 0 14px ${service.color}60` : 'none',
                     }}
                   />
                 </button>
@@ -502,40 +589,34 @@ const ServicesSection = () => {
             </div>
 
             <button
-              onClick={nextSlide}
+              onClick={() => navigate('next')}
               disabled={isAnimating}
-              className="group w-11 h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 disabled:opacity-30"
-              style={{
-                transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
-              }}
+              className="group w-10 h-10 md:w-11 md:h-11 rounded-full border border-border/30 bg-card/30 backdrop-blur-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 disabled:opacity-30 transition-all duration-400"
+              aria-label="Próximo serviço"
             >
-              <ChevronRight 
-                className="w-4 h-4 group-hover:translate-x-0.5"
-                style={{ transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
-              />
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300" />
             </button>
           </div>
         </div>
 
-        {/* Bottom CTA */}
-        <div className={`flex flex-col items-center justify-center gap-6 mt-16 transition-all duration-1000 delay-400 ${
+        {/* CTA */}
+        <div className={`flex flex-col items-center justify-center gap-4 md:gap-6 mt-12 md:mt-16 transition-all duration-1000 delay-400 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <Button 
-            className="btn-hero group text-base px-8 py-6"
+            className="btn-hero group text-sm md:text-base px-6 md:px-8 py-5 md:py-6"
             onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
           >
-            <span>Solicitar Orçamento Gratuito</span>
-            <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            <span>Solicitar Orçamento</span>
+            <ArrowUpRight className="ml-2 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </Button>
           
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs md:text-sm text-muted-foreground">
             ✨ Resposta em até <span className="text-primary font-bold">24 horas</span>
           </p>
         </div>
       </div>
 
-      {/* Floating animation keyframes */}
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
@@ -544,10 +625,6 @@ const ServicesSection = () => {
         
         .animate-float {
           animation: float linear infinite;
-        }
-        
-        .perspective-1000 {
-          perspective: 1000px;
         }
       `}</style>
     </section>
