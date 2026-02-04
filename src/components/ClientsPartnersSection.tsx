@@ -1,8 +1,11 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { Sparkles, Star, Zap } from 'lucide-react';
+import { Sparkles, Star, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
+import { useIsMobile } from '@/hooks/use-mobile';
 
-// Real client logos from MOV_CLIENTES_PARCEIROS folder - updated paths
+// Real client logos from MOV_CLIENTES_PARCEIROS folder
 const clients = [
   { name: "Aline Britto MMC", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Aline Britto MMC.jpg" },
   { name: "Amitai", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Amitai.png" },
@@ -23,7 +26,6 @@ const clients = [
   { name: "SDG Guincho", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - SDG Guincho.jpg" },
   { name: "Wolfs", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Wolfs.jpeg" },
   { name: "Trincorp", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/TRINCORP_LOGO_COMPLETA.jpeg" },
-  { name: "Fertiquímica Alt", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Fertiquímica.webp" },
 ];
 
 // 3D Floating Card Component with magnetic effect
@@ -246,12 +248,43 @@ const AnimatedStat = ({ value, label, icon: Icon }: { value: string; label: stri
 
 const ClientsPartnersSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+  
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true })
+  );
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { 
+      loop: true, 
+      align: 'start',
+      slidesToScroll: 1,
+      dragFree: true,
+    },
+    [autoplayPlugin.current]
+  );
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  const handleCardHover = (index: number) => {
+    setHoveredIndex(index);
+    setIsPaused(true);
+    autoplayPlugin.current.stop();
+  };
+
+  const handleCardLeave = () => {
+    setHoveredIndex(null);
+    setIsPaused(false);
+    autoplayPlugin.current.play();
+  };
 
   return (
     <section 
       ref={sectionRef}
-      className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-b from-background via-background/95 to-background"
+      className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-background via-background/95 to-background"
     >
       {/* Background effects */}
       <FloatingOrbs />
@@ -271,7 +304,7 @@ const ClientsPartnersSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <motion.div 
-          className="text-center max-w-4xl mx-auto mb-16 md:mb-24"
+          className="text-center max-w-4xl mx-auto mb-12 md:mb-16"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -289,7 +322,7 @@ const ClientsPartnersSection = () => {
             <span className="text-sm font-medium text-primary">Confiança que gera resultados</span>
           </motion.div>
           
-          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4">
             <span className="text-foreground">Nossos </span>
             <span className="relative inline-block">
               <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
@@ -306,15 +339,14 @@ const ClientsPartnersSection = () => {
             </span>
           </h2>
           
-          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Marcas que escolheram transformar sua presença digital conosco. 
-            <span className="text-foreground font-medium"> Cada parceria é uma história de sucesso.</span>
+          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+            Marcas que escolheram transformar sua presença digital conosco.
           </p>
         </motion.div>
 
         {/* Stats row */}
         <motion.div 
-          className="flex flex-wrap justify-center gap-8 md:gap-16 mb-16 md:mb-24"
+          className="flex flex-wrap justify-center gap-6 md:gap-12 mb-12"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -325,18 +357,61 @@ const ClientsPartnersSection = () => {
           <AnimatedStat value="5+" label="Anos de experiência" icon={Zap} />
         </motion.div>
 
-        {/* Logo grid with 3D effects */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 lg:gap-10 justify-items-center mb-16">
-          {clients.map((client, index) => (
-            <FloatingLogoCard
-              key={client.name}
-              client={client}
-              index={index}
-              isHovered={hoveredIndex === index}
-              onHover={() => setHoveredIndex(index)}
-              onLeave={() => setHoveredIndex(null)}
-            />
-          ))}
+        {/* Carousel Container */}
+        <div className="relative group">
+          {/* Navigation Arrows */}
+          <button
+            onClick={scrollPrev}
+            className="absolute left-0 md:-left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-card/90 backdrop-blur-sm border border-border/50 flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+          
+          <button
+            onClick={scrollNext}
+            className="absolute right-0 md:-right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-card/90 backdrop-blur-sm border border-border/50 flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg"
+            aria-label="Next"
+          >
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+
+          {/* Carousel */}
+          <div className="overflow-hidden px-4" ref={emblaRef}>
+            <div className="flex gap-4 md:gap-6">
+              {clients.map((client, index) => (
+                <div 
+                  key={client.name} 
+                  className="flex-shrink-0"
+                  style={{ 
+                    width: isMobile ? 'calc(50% - 8px)' : 'calc(20% - 19.2px)'
+                  }}
+                >
+                  <FloatingLogoCard
+                    client={client}
+                    index={index}
+                    isHovered={hoveredIndex === index}
+                    onHover={() => handleCardHover(index)}
+                    onLeave={handleCardLeave}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pause indicator */}
+          <AnimatePresence>
+            {isPaused && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-xs text-primary"
+              >
+                Pausado
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Bottom CTA */}
