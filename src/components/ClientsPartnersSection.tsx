@@ -5,27 +5,48 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { useIsMobile } from '@/hooks/use-mobile';
 
+// Import all client logos
+import logoAlineBritto from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Aline Britto MMC.jpg';
+import logoAmitai from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Amitai.png';
+import logoArteFunilaria from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Arte Funilaria.png';
+import logoCafeAbelha from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Café Abelha.jpg';
+import logoCristianeLoureiro from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Cristiane Loureiro.png';
+import logoCruSemDisfarces from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Cru Sem Disfarces.jpg';
+import logoFYAudioVisual from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - FY Audio Visual.jpg';
+import logoFertiQuimica from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - FertiQuímica.jpg';
+import logoGeloToy from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Gelo Toy.jpg';
+import logoKelbyFigueiredo from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Kelby Figueiredo.jpg';
+import logoLCTec from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - LC Tec.jpg';
+import logoMajesttadeSeguros from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Majesttade Seguros.png';
+import logoMiriamVieira from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Miriam Vieira.png';
+import logoMundoZitrus from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Mundo Zitrus.jpg';
+import logoNSACursos from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - NSA Cursos.png';
+import logoPUVGroup from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - PUV group.png';
+import logoSDGGuincho from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - SDG Guincho.jpg';
+import logoWolfs from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Wolfs.jpeg';
+import logoTrincorp from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/TRINCORP_LOGO_COMPLETA.jpeg';
+
 // Real client logos from MOV_CLIENTES_PARCEIROS folder
 const clients = [
-  { name: "Aline Britto MMC", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Aline%20Britto%20MMC.jpg" },
-  { name: "Amitai", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Amitai.png" },
-  { name: "Arte Funilaria", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Arte%20Funilaria.png" },
-  { name: "Café Abelha", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Caf%C3%A9%20Abelha.jpg" },
-  { name: "Cristiane Loureiro", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Cristiane%20Loureiro.png" },
-  { name: "Cru Sem Disfarces", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Cru%20Sem%20Disfarces.jpg" },
-  { name: "FY Audio Visual", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20FY%20Audio%20Visual.jpg" },
-  { name: "FertiQuímica", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20FertiQu%C3%ADmica.jpg" },
-  { name: "Gelo Toy", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Gelo%20Toy.jpg" },
-  { name: "Kelby Figueiredo", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Kelby%20Figueiredo.jpg" },
-  { name: "LC Tec", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20LC%20Tec.jpg" },
-  { name: "Majesttade Seguros", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Majesttade%20Seguros.png" },
-  { name: "Miriam Vieira", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Miriam%20Vieira.png" },
-  { name: "Mundo Zitrus", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Mundo%20Zitrus.jpg" },
-  { name: "NSA Cursos", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20NSA%20Cursos.png" },
-  { name: "PUV Group", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20PUV%20group.png" },
-  { name: "SDG Guincho", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20SDG%20Guincho.jpg" },
-  { name: "Wolfs", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo%20-%20Wolfs.jpeg" },
-  { name: "Trincorp", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/TRINCORP_LOGO_COMPLETA.jpeg" },
+  { name: "Aline Britto MMC", logo: logoAlineBritto },
+  { name: "Amitai", logo: logoAmitai },
+  { name: "Arte Funilaria", logo: logoArteFunilaria },
+  { name: "Café Abelha", logo: logoCafeAbelha },
+  { name: "Cristiane Loureiro", logo: logoCristianeLoureiro },
+  { name: "Cru Sem Disfarces", logo: logoCruSemDisfarces },
+  { name: "FY Audio Visual", logo: logoFYAudioVisual },
+  { name: "FertiQuímica", logo: logoFertiQuimica },
+  { name: "Gelo Toy", logo: logoGeloToy },
+  { name: "Kelby Figueiredo", logo: logoKelbyFigueiredo },
+  { name: "LC Tec", logo: logoLCTec },
+  { name: "Majesttade Seguros", logo: logoMajesttadeSeguros },
+  { name: "Miriam Vieira", logo: logoMiriamVieira },
+  { name: "Mundo Zitrus", logo: logoMundoZitrus },
+  { name: "NSA Cursos", logo: logoNSACursos },
+  { name: "PUV Group", logo: logoPUVGroup },
+  { name: "SDG Guincho", logo: logoSDGGuincho },
+  { name: "Wolfs", logo: logoWolfs },
+  { name: "Trincorp", logo: logoTrincorp },
 ];
 
 // 3D Floating Card Component with magnetic effect
