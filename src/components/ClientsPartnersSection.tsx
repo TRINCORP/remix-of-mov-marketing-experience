@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { Sparkles, Star, Zap } from 'lucide-react';
 
-// Real client logos from MOV_CLIENTES_PARCEIROS folder
+// Real client logos from MOV_CLIENTES_PARCEIROS folder - updated paths
 const clients = [
   { name: "Aline Britto MMC", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Aline Britto MMC.jpg" },
   { name: "Amitai", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Amitai.png" },
@@ -23,6 +23,7 @@ const clients = [
   { name: "SDG Guincho", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - SDG Guincho.jpg" },
   { name: "Wolfs", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Wolfs.jpeg" },
   { name: "Trincorp", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/TRINCORP_LOGO_COMPLETA.jpeg" },
+  { name: "Fertiquímica Alt", logo: "/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Fertiquímica.webp" },
 ];
 
 // 3D Floating Card Component with magnetic effect
