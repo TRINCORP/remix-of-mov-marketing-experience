@@ -113,17 +113,17 @@ const HeroSection = () => {
 
           {/* Subheadline */}
           <p 
-            className={`text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed transition-all duration-700 ${
+            className={`text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
             style={{ transitionDelay: '400ms' }}
           >
-            Assessoria de marketing para empresas que precisam estruturar <span className="text-primary font-semibold">crescimento</span> com clareza e estratégia.
+            Estruturamos o marketing da sua empresa com <span className="text-primary font-semibold">clareza</span>, estratégia e foco em <span className="text-primary font-semibold">crescimento real</span>.
           </p>
 
           {/* CTA Button */}
           <div 
-            className={`flex justify-center transition-all duration-700 ${
+            className={`flex justify-center pt-2 transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
             style={{ transitionDelay: '600ms' }}
@@ -133,36 +133,37 @@ const HeroSection = () => {
               size="lg"
               className="group relative px-10 py-7 text-lg font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-500 overflow-hidden rounded-full shadow-[0_0_40px_rgba(234,179,8,0.3)] hover:shadow-[0_0_60px_rgba(234,179,8,0.5)] hover:scale-105"
             >
-              {/* Animated Background */}
               <div className="absolute inset-0 bg-gradient-to-r from-primary via-yellow-400 to-primary bg-[length:200%_100%] animate-[shimmer_2s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              {/* Button Content */}
               <span className="relative z-10 flex items-center gap-3">
                 <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
                 Começar Revolução
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
               </span>
-
-              {/* Pulse Ring */}
               <div className="absolute inset-0 rounded-full border-2 border-primary/50 animate-ping opacity-20" />
             </Button>
           </div>
 
-          {/* Mission Statement */}
+          {/* Pillars */}
           <div 
-            className={`max-w-2xl mx-auto pt-8 transition-all duration-700 ${
+            className={`flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 pt-10 transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
             style={{ transitionDelay: '800ms' }}
           >
-            <div className="relative px-8 py-6 rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-sm">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-background rounded-full border border-primary/30">
-                <span className="text-[10px] font-bold tracking-[0.3em] text-primary uppercase">Nossa Atuação</span>
+            {[
+              { icon: '🎯', title: 'Posicionamento', desc: 'Clareza na mensagem e no mercado' },
+              { icon: '📈', title: 'Geração de Demanda', desc: 'Estratégias que atraem clientes' },
+              { icon: '🤝', title: 'Ao lado do gestor', desc: 'Parceria com quem decide' },
+            ].map((pillar, i) => (
+              <div 
+                key={i}
+                className="group flex flex-col items-center text-center max-w-[200px] cursor-default"
+              >
+                <span className="text-2xl mb-2 group-hover:scale-125 transition-transform duration-300">{pillar.icon}</span>
+                <span className="text-sm font-bold text-foreground tracking-wide">{pillar.title}</span>
+                <span className="text-xs text-muted-foreground mt-1">{pillar.desc}</span>
               </div>
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-center">
-                Atuamos ao lado de <span className="text-foreground font-semibold">gestores e decisores</span> na organização do marketing, posicionamento e <span className="text-primary font-semibold">geração de demanda</span> para empresas em fase de crescimento.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </div>
