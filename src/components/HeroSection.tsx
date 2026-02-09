@@ -118,8 +118,7 @@ const HeroSection = () => {
             }`}
             style={{ transitionDelay: '400ms' }}
           >
-            Estratégias digitais de alta performance que geram resultados reais. 
-            Mais de <span className="text-primary font-semibold">500 marcas</span> já confiam em nosso método exclusivo.
+            Assessoria de marketing para empresas que precisam estruturar <span className="text-primary font-semibold">crescimento</span> com clareza e estratégia.
           </p>
 
           {/* CTA Button */}
@@ -149,37 +148,21 @@ const HeroSection = () => {
             </Button>
           </div>
 
-          {/* Trust Stats */}
+          {/* Mission Statement */}
           <div 
-            className={`flex flex-wrap items-center justify-center gap-8 pt-8 transition-all duration-700 ${
+            className={`max-w-2xl mx-auto pt-8 transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
             style={{ transitionDelay: '800ms' }}
           >
-            {[
-              { value: '500+', label: 'Marcas Atendidas' },
-              { value: '300%', label: 'ROI Médio' },
-              { value: '98%', label: 'Satisfação' },
-            ].map((stat, index) => (
-              <div 
-                key={index}
-                className="text-center group cursor-default"
-              >
-                <div 
-                  className="text-2xl md:text-3xl font-black group-hover:scale-110 transition-transform duration-300"
-                  style={{
-                    background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(38, 92%, 50%) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  {stat.value}
-                </div>
-                <div className="text-sm text-muted-foreground font-medium">
-                  {stat.label}
-                </div>
+            <div className="relative px-8 py-6 rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-sm">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-background rounded-full border border-primary/30">
+                <span className="text-[10px] font-bold tracking-[0.3em] text-primary uppercase">Nossa Atuação</span>
               </div>
-            ))}
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-center">
+                Atuamos ao lado de <span className="text-foreground font-semibold">gestores e decisores</span> na organização do marketing, posicionamento e <span className="text-primary font-semibold">geração de demanda</span> para empresas em fase de crescimento.
+              </p>
+            </div>
           </div>
         </div>
       </div>
