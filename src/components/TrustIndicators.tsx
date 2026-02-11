@@ -12,31 +12,31 @@ import {
 
 const trustMetrics = [
   {
-    icon: Users,
-    value: "500+",
-    label: "Empresas Transformadas",
-    description: "Clientes satisfeitos em todo Brasil",
+    icon: TrendingUp,
+    value: "2+",
+    label: "Anos de Mercado",
+    description: "Experiência consolidada",
     color: "primary"
   },
   {
-    icon: TrendingUp,
-    value: "300%",
-    label: "Crescimento Médio",
-    description: "Resultado comprovado em ROI",
+    icon: Users,
+    value: "30+",
+    label: "Empresas Atendidas",
+    description: "Clientes em todo Brasil",
     color: "secondary"
   },
   {
     icon: Award,
-    value: "98%",
+    value: "95%",
     label: "Taxa de Satisfação",
     description: "Excelência reconhecida",
     color: "accent"
   },
   {
     icon: Globe,
-    value: "5+",
-    label: "Anos de Mercado",
-    description: "Experiência consolidada",
+    value: "3+",
+    label: "Estados do Brasil",
+    description: "Presença nacional",
     color: "primary"
   }
 ];

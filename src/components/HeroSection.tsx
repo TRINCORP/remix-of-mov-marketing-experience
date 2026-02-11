@@ -168,18 +168,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div 
-        className={`absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-700 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}
-        style={{ transitionDelay: '1000ms' }}
-      >
-        <span className="text-[10px] font-medium tracking-[0.2em] text-muted-foreground uppercase">
-          Scroll
-        </span>
-        <div className="w-px h-12 bg-gradient-to-b from-primary/50 to-transparent animate-pulse" />
-      </div>
 
       {/* Corner Accents */}
       <div 

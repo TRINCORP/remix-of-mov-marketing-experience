@@ -6,38 +6,38 @@ const slides = [
   {
     id: 1,
     headline: "ESTRATÉGIA",
-    subline: "que gera resultados",
-    description: "Não criamos campanhas bonitas. Criamos máquinas de crescimento.",
+    subline: "que gera resultados consistentes",
+    description: "Não criamos campanhas bonitas. Criamos máquinas de crescimento sustentáveis no longo prazo.",
     image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&h=1080&fit=crop&q=80",
     accent: "hsl(var(--primary))",
     icon: Target,
   },
   {
     id: 2,
-    headline: "CRIATIVIDADE",
-    subline: "sem limites",
-    description: "Ideias que quebram padrões e constroem marcas memoráveis.",
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1920&h=1080&fit=crop&q=80",
+    headline: "VELOCIDADE",
+    subline: "com direção e execução",
+    description: "Decisões rápidas, execução ágil e foco no que realmente move o negócio. Agilidade sem perder estratégia.",
+    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&h=1080&fit=crop&q=80",
     accent: "hsl(var(--secondary))",
-    icon: Sparkles,
+    icon: Zap,
   },
   {
     id: 3,
     headline: "PERFORMANCE",
-    subline: "de alto impacto",
-    description: "Cada real investido retorna multiplicado. Prometemos números.",
+    subline: "de alto impacto orientada a resultado real",
+    description: "Dados, métricas e otimização contínua para transformar marketing em crescimento mensurável.",
     image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1920&h=1080&fit=crop&q=80",
     accent: "hsl(var(--primary-glow))",
     icon: TrendingUp,
   },
   {
     id: 4,
-    headline: "VELOCIDADE",
-    subline: "de execução",
-    description: "Do briefing ao resultado em tempo recorde. Sem desculpas.",
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&h=1080&fit=crop&q=80",
+    headline: "CRIATIVIDADE",
+    subline: "com propósito e resultado",
+    description: "Ideias que não existem apenas para chamar atenção, mas para sustentar posicionamento, conversão e legado.",
+    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1920&h=1080&fit=crop&q=80",
     accent: "hsl(var(--primary))",
-    icon: Zap,
+    icon: Sparkles,
   },
 ];
 
@@ -243,9 +243,9 @@ const PinnedSection = () => {
 
               {/* Headline with animated transition */}
               <div className="overflow-hidden mb-4">
-                <h2 
+              <h2 
                   key={slide?.headline}
-                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black animate-fade-in"
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black animate-fade-in leading-tight"
                   style={{ 
                     color: slide?.accent || 'hsl(var(--primary))',
                     textShadow: `0 0 60px ${slide?.accent || 'hsl(var(--primary))'}40`,
@@ -255,10 +255,10 @@ const PinnedSection = () => {
                 </h2>
               </div>
               
-              <div className="overflow-hidden mb-6">
+              <div className="overflow-hidden mb-4 sm:mb-6">
                 <h3 
                   key={slide?.subline}
-                  className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground animate-fade-in"
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground animate-fade-in leading-snug"
                   style={{ animationDelay: '100ms' }}
                 >
                   {slide?.subline}
@@ -267,7 +267,7 @@ const PinnedSection = () => {
               
               <p 
                 key={slide?.description}
-                className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 animate-fade-in"
+                className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 animate-fade-in leading-relaxed"
                 style={{ animationDelay: '200ms' }}
               >
                 {slide?.description}
@@ -421,11 +421,11 @@ const PinnedSection = () => {
                 style={{ transitionDelay: '600ms' }}
               >
                 <span 
-                  className="text-xl md:text-3xl lg:text-4xl font-bold tracking-widest uppercase"
-                  style={{ color: 'hsl(var(--primary))' }}
-                >
-                  Marketing Digital
-                </span>
+                   className="text-xl md:text-3xl lg:text-4xl font-bold tracking-widest uppercase"
+                   style={{ color: 'hsl(var(--primary))' }}
+                 >
+                   Resultado
+                 </span>
               </div>
 
               {/* Play video button */}
