@@ -74,59 +74,6 @@ const Footer = () => {
 
   return (
     <footer ref={containerRef} className="relative overflow-hidden bg-background">
-      {/* Big CTA Section */}
-      <div className="relative py-20 md:py-32">
-        {/* Background pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `radial-gradient(circle at center, hsl(var(--primary)) 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
-          }}
-        />
-
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <div className={`transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <Zap className="w-5 h-5 text-primary" />
-              <span className="text-sm font-bold text-primary tracking-widest uppercase">
-                Pronto para começar?
-              </span>
-            </div>
-
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-8 leading-none">
-              <span className="text-foreground">Vamos fazer</span>
-              <br />
-              <span className="text-gradient">sua marca explodir</span>
-            </h2>
-
-            <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10">
-              Não espere mais. O próximo case de sucesso pode ser o seu.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button 
-                className="btn-hero group text-lg px-10 py-6"
-                onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
-              >
-                <span>Iniciar Projeto</span>
-                <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </Button>
-
-              <Button 
-                variant="outline"
-                className="px-10 py-6 text-lg border-2 border-primary/30 hover:border-primary hover:bg-primary/10"
-                onClick={() => window.open('mailto:contato@mov.marketing', '_blank')}
-              >
-                <Mail className="mr-2 w-5 h-5" />
-                Enviar Email
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Marquee */}
       <FooterMarquee />
