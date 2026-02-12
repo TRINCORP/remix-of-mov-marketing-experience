@@ -13,7 +13,7 @@ import ImpactSection from '@/components/ImpactSection';
 import ClientsPartnersSection from '@/components/ClientsPartnersSection';
 import CreativeShowcase from '@/components/CreativeShowcase';
 import VideoHeroBanner from '@/components/VideoHeroBanner';
-import ShowreelSection from '@/components/ShowreelSection';
+
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
 
 const Index = () => {
