@@ -360,21 +360,35 @@ const ClientsPartnersSection = () => {
             <span className="text-sm font-medium text-primary">Confiança que gera resultados</span>
           </motion.div>
           
-          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4">
-            <span className="text-foreground">Nossos </span>
-            <span className="relative inline-block">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 overflow-hidden">
+            <motion.span
+              className="inline-block text-foreground"
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              Nossos{" "}
+            </motion.span>
+            <motion.span 
+              className="relative inline-block"
+              initial={{ opacity: 0, x: -80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
               <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
                 Clientes & Parceiros
               </span>
               {/* Underline effect */}
               <motion.div 
                 className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-primary via-accent to-primary"
-                initial={{ scaleX: 0 }}
+                initial={{ scaleX: 0, originX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
               />
-            </span>
+            </motion.span>
           </h2>
           
           <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
