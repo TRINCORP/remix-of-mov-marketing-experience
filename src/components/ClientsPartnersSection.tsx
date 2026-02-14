@@ -22,6 +22,9 @@ import logoSDGGuincho from '@/assets/clients/sdg-guincho.png';
 import logoWolfs from '@/assets/clients/wolfs.png';
 import logoTrincorp from '@/assets/clients/trincorp.png';
 
+// Logos that need a white background (circular/colored logos that don't work with invert)
+const needsWhiteBg = new Set(["Café Abelha", "LC Tec", "Gelo Toy", "FY Audio Visual", "FertiQuímica"]);
+
 const clients = [
   { name: "Aline Britto MMC", logo: logoAlineBritto },
   { name: "Café Abelha", logo: logoCafeAbelha },
@@ -140,23 +143,34 @@ const FloatingLogoCard = ({
         
         {/* Logo container */}
         <div className="relative z-10 w-full h-full p-4 md:p-5 flex items-center justify-center">
-          <div 
-            className="w-full h-full rounded-xl flex items-center justify-center p-3 md:p-4"
-            style={{ 
-              backgroundColor: "rgba(255, 255, 255, 0.95)",
-              transform: "translateZ(30px)"
-            }}
-          >
+          {needsWhiteBg.has(client.name) ? (
+            <div 
+              className="w-full h-full rounded-xl flex items-center justify-center p-3 md:p-4"
+              style={{ 
+                backgroundColor: "rgba(255, 255, 255, 0.95)",
+                transform: "translateZ(30px)"
+              }}
+            >
+              <motion.img
+                src={client.logo}
+                alt={client.name}
+                className="max-w-full max-h-full object-contain"
+                style={{ filter: "grayscale(100%) contrast(1.1)" }}
+                loading="lazy"
+              />
+            </div>
+          ) : (
             <motion.img
               src={client.logo}
               alt={client.name}
               className="max-w-full max-h-full object-contain transition-all duration-500"
               style={{
-                filter: "grayscale(100%) contrast(1.1)",
+                filter: "grayscale(100%) brightness(0) invert(1) opacity(0.85)",
+                transform: "translateZ(30px)"
               }}
               loading="lazy"
             />
-          </div>
+          )}
         </div>
         
         {/* Shine effect */}
