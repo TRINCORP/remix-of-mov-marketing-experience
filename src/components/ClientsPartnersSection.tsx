@@ -5,33 +5,27 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-// Import all client logos
-import logoAlineBritto from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Aline Britto MMC.jpg';
-import logoAmitai from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Amitai.png';
-import logoArteFunilaria from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Arte Funilaria.png';
-import logoCafeAbelha from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Café Abelha.jpg';
-import logoCristianeLoureiro from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Cristiane Loureiro.png';
-import logoCruSemDisfarces from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Cru Sem Disfarces.jpg';
-import logoFYAudioVisual from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - FY Audio Visual.jpg';
-import logoFertiQuimica from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - FertiQuímica.jpg';
-import logoGeloToy from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Gelo Toy.jpg';
-import logoKelbyFigueiredo from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Kelby Figueiredo.jpg';
-import logoLCTec from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - LC Tec.jpg';
-import logoMajesttadeSeguros from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Majesttade Seguros.png';
-import logoMiriamVieira from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Miriam Vieira.png';
-import logoMundoZitrus from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Mundo Zitrus.jpg';
-import logoNSACursos from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - NSA Cursos.png';
-import logoPUVGroup from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - PUV group.png';
-import logoSDGGuincho from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - SDG Guincho.jpg';
-import logoWolfs from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Wolfs.jpeg';
-import logoTrincorp from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/TRINCORP_LOGO_COMPLETA.jpeg';
+// Import all client logos (PNG sem fundo)
+import logoAlineBritto from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Aline Britto MMC.png';
+import logoCafeAbelha from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Café Abelha.png';
+import logoCarolione from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Carolione Social Media.png';
+import logoCristianeLoureiro from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Cristiane Loureiro Logo.png';
+import logoCruSemDisfarces from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Cru Sem Disfarces.png';
+import logoFYAudioVisual from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - FY Audio Visual.png';
+import logoFertiQuimica from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - FertiQuímica.png';
+import logoGeloToy from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Gelo Toy.png';
+import logoKelbyFigueiredo from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Kelby Figueiredo.png';
+import logoLCTec from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - LC Tec.png';
+import logoMiriamVieira from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo Psicóloga Miriam - Sem fundo.png';
+import logoMundoZitrus from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Mundo Zitrus.png';
+import logoSDGGuincho from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - SDG Guincho.png';
+import logoWolfs from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Wolfs.png';
+import logoTrincorp from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/TRINCORP_LOGO_COMPLETA-removebg-preview.png';
 
-// Real client logos from MOV_CLIENTES_PARCEIROS folder
 const clients = [
   { name: "Aline Britto MMC", logo: logoAlineBritto },
-  { name: "Amitai", logo: logoAmitai },
-  { name: "Arte Funilaria", logo: logoArteFunilaria },
   { name: "Café Abelha", logo: logoCafeAbelha },
+  { name: "Carolione Social Media", logo: logoCarolione },
   { name: "Cristiane Loureiro", logo: logoCristianeLoureiro },
   { name: "Cru Sem Disfarces", logo: logoCruSemDisfarces },
   { name: "FY Audio Visual", logo: logoFYAudioVisual },
@@ -39,11 +33,8 @@ const clients = [
   { name: "Gelo Toy", logo: logoGeloToy },
   { name: "Kelby Figueiredo", logo: logoKelbyFigueiredo },
   { name: "LC Tec", logo: logoLCTec },
-  { name: "Majesttade Seguros", logo: logoMajesttadeSeguros },
   { name: "Miriam Vieira", logo: logoMiriamVieira },
   { name: "Mundo Zitrus", logo: logoMundoZitrus },
-  { name: "NSA Cursos", logo: logoNSACursos },
-  { name: "PUV Group", logo: logoPUVGroup },
   { name: "SDG Guincho", logo: logoSDGGuincho },
   { name: "Wolfs", logo: logoWolfs },
   { name: "Trincorp", logo: logoTrincorp },
@@ -152,9 +143,9 @@ const FloatingLogoCard = ({
           <motion.img
             src={client.logo}
             alt={client.name}
-            className="max-w-full max-h-full object-contain filter transition-all duration-500"
+            className="max-w-full max-h-full object-contain transition-all duration-500"
             style={{
-              filter: isHovered ? "grayscale(0%) brightness(1.1)" : "grayscale(100%) brightness(0.8)",
+              filter: "grayscale(100%) brightness(0.85) contrast(1.1)",
               transform: "translateZ(30px)"
             }}
             loading="lazy"
