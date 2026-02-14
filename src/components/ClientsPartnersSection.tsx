@@ -140,16 +140,23 @@ const FloatingLogoCard = ({
         
         {/* Logo container */}
         <div className="relative z-10 w-full h-full p-4 md:p-5 flex items-center justify-center">
-          <motion.img
-            src={client.logo}
-            alt={client.name}
-            className="max-w-full max-h-full object-contain transition-all duration-500"
-            style={{
-              filter: "grayscale(100%) brightness(0) invert(1) opacity(0.85)",
+          <div 
+            className="w-full h-full rounded-xl flex items-center justify-center p-3 md:p-4"
+            style={{ 
+              backgroundColor: "rgba(255, 255, 255, 0.95)",
               transform: "translateZ(30px)"
             }}
-            loading="lazy"
-          />
+          >
+            <motion.img
+              src={client.logo}
+              alt={client.name}
+              className="max-w-full max-h-full object-contain transition-all duration-500"
+              style={{
+                filter: "grayscale(100%) contrast(1.1)",
+              }}
+              loading="lazy"
+            />
+          </div>
         </div>
         
         {/* Shine effect */}
