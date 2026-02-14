@@ -9,7 +9,6 @@ const CustomCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Only show custom cursor on desktop
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if (isMobile) return;
 
@@ -23,8 +22,6 @@ const CustomCursor = () => {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      
-      // Check for data attributes or element types
       const cursorType = target.closest('[data-cursor]')?.getAttribute('data-cursor');
       const isButton = target.closest('button, a, [role="button"]');
       const isVideo = target.closest('video, [data-cursor="play"]');
@@ -61,8 +58,6 @@ const CustomCursor = () => {
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mouseup', handleMouseUp);
-
-    // Hide default cursor
     document.body.style.cursor = 'none';
 
     return () => {
@@ -75,36 +70,73 @@ const CustomCursor = () => {
     };
   }, []);
 
-  // Don't render on mobile
   if (typeof window !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     return null;
   }
 
   return (
     <>
-      {/* Trailing outline cursor only */}
+      {/* Main cursor dot */}
       <div
         ref={cursorRef}
-        className={`fixed pointer-events-none z-[9999] rounded-full border-2 border-primary/60 transition-all duration-300 ease-out ${
+        className={`fixed pointer-events-none z-[9999] transition-transform duration-150 ease-out ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
         style={{
           left: position.x,
           top: position.y,
-          width: isHovering ? (cursorText ? '80px' : '50px') : '36px',
-          height: isHovering ? (cursorText ? '80px' : '50px') : '36px',
-          transform: `translate(-50%, -50%) scale(${isClicking ? 0.85 : 1})`,
-          backgroundColor: cursorText ? 'hsl(var(--primary) / 0.15)' : 'transparent',
-          borderColor: isHovering ? 'hsl(var(--primary))' : 'hsl(var(--primary) / 0.5)',
+          transform: `translate(-50%, -50%) scale(${isClicking ? 0.8 : 1})`,
         }}
       >
-        {cursorText && (
-          <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-primary tracking-wider">
-            {cursorText}
-          </span>
-        )}
+        {/* Outer ring */}
+        <div
+          className={`absolute rounded-full border-2 border-primary transition-all duration-300 ease-out ${
+            isHovering ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
+          }`}
+          style={{
+            width: cursorText ? '80px' : '50px',
+            height: cursorText ? '80px' : '50px',
+            transform: 'translate(-50%, -50%)',
+            left: '50%',
+            top: '50%',
+            backgroundColor: cursorText ? 'hsl(var(--primary))' : 'transparent',
+          }}
+        >
+          {cursorText && (
+            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-primary-foreground tracking-wider">
+              {cursorText}
+            </span>
+          )}
+        </div>
+
+        {/* Inner dot */}
+        <div
+          className={`rounded-full bg-primary transition-all duration-150 ${
+            isHovering && cursorText ? 'scale-0' : 'scale-100'
+          }`}
+          style={{
+            width: isHovering ? '12px' : '8px',
+            height: isHovering ? '12px' : '8px',
+            boxShadow: '0 0 20px hsl(var(--primary) / 0.5)',
+          }}
+        />
       </div>
 
+      {/* Trailing cursor */}
+      <div
+        className={`fixed pointer-events-none z-[9998] rounded-full border border-primary/30 transition-all duration-500 ease-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{
+          left: position.x,
+          top: position.y,
+          width: '40px',
+          height: '40px',
+          transform: `translate(-50%, -50%) scale(${isHovering ? 1.5 : 1})`,
+        }}
+      />
+
+      {/* Global style to hide cursor on interactive elements */}
       <style>{`
         * {
           cursor: none !important;

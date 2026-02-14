@@ -126,20 +126,25 @@ const FloatingLogoCard = ({
         {/* Glass morphism background */}
         <div className="absolute inset-0 bg-gradient-to-br from-card/90 via-card/80 to-card/70 backdrop-blur-xl border border-border/50" />
         
-        {/* Animated border gradient */}
-        <motion.div 
-          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
-          style={{
-            background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%)",
-            padding: "2px",
-            mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            maskComposite: "xor",
-            WebkitMaskComposite: "xor"
-          }}
-          initial={{ rotate: 0 }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        />
+        {/* Animated border gradient - only on hover */}
+        <AnimatePresence>
+          {isHovered && (
+            <motion.div 
+              className="absolute inset-0 rounded-2xl"
+              style={{
+                background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%)",
+                padding: "2px",
+                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                maskComposite: "xor",
+                WebkitMaskComposite: "xor"
+              }}
+              initial={{ rotate: 0, opacity: 0 }}
+              animate={{ rotate: 360, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ rotate: { duration: 8, repeat: Infinity, ease: "linear" }, opacity: { duration: 0.3 } }}
+            />
+          )}
+        </AnimatePresence>
         
         {/* Logo container */}
         <div className="relative z-10 w-full h-full p-4 md:p-5 flex items-center justify-center">
