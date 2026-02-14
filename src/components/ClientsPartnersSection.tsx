@@ -23,7 +23,7 @@ import logoWolfs from '@/assets/clients/wolfs.png';
 import logoTrincorp from '@/assets/clients/trincorp.png';
 
 // Logos that need a white background (circular/colored logos that don't work with invert)
-const needsWhiteBg = new Set(["Café Abelha", "LC Tec", "Gelo Toy", "FY Audio Visual", "FertiQuímica"]);
+const needsWhiteBg = new Set<string>();
 
 const clients = [
   { name: "Aline Britto MMC", logo: logoAlineBritto },
@@ -33,7 +33,7 @@ const clients = [
   { name: "Cru Sem Disfarces", logo: logoCruSemDisfarces },
   { name: "FY Audio Visual", logo: logoFYAudioVisual },
   { name: "FertiQuímica", logo: logoFertiQuimica },
-  { name: "Gelo Toy", logo: logoGeloToy },
+  { name: "CocoToy", logo: logoGeloToy },
   { name: "Kelby Figueiredo", logo: logoKelbyFigueiredo },
   { name: "LC Tec", logo: logoLCTec },
   { name: "Miriam Vieira", logo: logoMiriamVieira },
