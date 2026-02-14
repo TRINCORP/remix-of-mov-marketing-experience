@@ -5,22 +5,22 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-// Import all client logos (PNG sem fundo)
-import logoAlineBritto from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Aline Britto MMC.png';
-import logoCafeAbelha from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Café Abelha.png';
-import logoCarolione from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Carolione Social Media.png';
-import logoCristianeLoureiro from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Cristiane Loureiro Logo.png';
-import logoCruSemDisfarces from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Cru Sem Disfarces.png';
-import logoFYAudioVisual from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - FY Audio Visual.png';
-import logoFertiQuimica from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - FertiQuímica.png';
-import logoGeloToy from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Gelo Toy.png';
-import logoKelbyFigueiredo from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Kelby Figueiredo.png';
-import logoLCTec from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - LC Tec.png';
-import logoMiriamVieira from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo Psicóloga Miriam - Sem fundo.png';
-import logoMundoZitrus from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Mundo Zitrus.png';
-import logoSDGGuincho from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - SDG Guincho.png';
-import logoWolfs from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/Logo - Wolfs.png';
-import logoTrincorp from '/lovable-uploads/MOV_CLIENTES_PARCEIROS/TRINCORP_LOGO_COMPLETA-removebg-preview.png';
+// Import all client logos from organized assets
+import logoAlineBritto from '@/assets/clients/aline-britto.png';
+import logoCafeAbelha from '@/assets/clients/cafe-abelha.png';
+import logoCarolione from '@/assets/clients/carolione.png';
+import logoCristianeLoureiro from '@/assets/clients/cristiane-loureiro.png';
+import logoCruSemDisfarces from '@/assets/clients/cru-sem-disfarces.png';
+import logoFYAudioVisual from '@/assets/clients/fy-audiovisual.png';
+import logoFertiQuimica from '@/assets/clients/fertiquimica.png';
+import logoGeloToy from '@/assets/clients/gelo-toy.png';
+import logoKelbyFigueiredo from '@/assets/clients/kelby-figueiredo.png';
+import logoLCTec from '@/assets/clients/lc-tec.png';
+import logoMiriamVieira from '@/assets/clients/miriam-vieira.png';
+import logoMundoZitrus from '@/assets/clients/mundo-zitrus.png';
+import logoSDGGuincho from '@/assets/clients/sdg-guincho.png';
+import logoWolfs from '@/assets/clients/wolfs.png';
+import logoTrincorp from '@/assets/clients/trincorp.png';
 
 const clients = [
   { name: "Aline Britto MMC", logo: logoAlineBritto },
@@ -145,7 +145,7 @@ const FloatingLogoCard = ({
             alt={client.name}
             className="max-w-full max-h-full object-contain transition-all duration-500"
             style={{
-              filter: "grayscale(100%) brightness(0.85) contrast(1.1)",
+              filter: "grayscale(100%) brightness(0) invert(1) opacity(0.85)",
               transform: "translateZ(30px)"
             }}
             loading="lazy"
