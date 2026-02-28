@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Rocket, Search, Map, Settings, BarChart3, Brain } from 'lucide-react';
+import { Rocket, Search, Map, Settings, BarChart3, Brain, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import imgDiagnostico from '@/assets/process/diagnostico-estrategico.jpg';
 import imgPlanejamento from '@/assets/process/planejamento-direcionamento.png';
@@ -16,7 +16,6 @@ interface ProcessStep {
   image: string;
   caption: string;
   icon: typeof Search;
-  rotation: number;
 }
 
 const steps: ProcessStep[] = [
@@ -31,7 +30,6 @@ const steps: ProcessStep[] = [
     image: imgDiagnostico,
     caption: 'Diagnóstico estratégico',
     icon: Search,
-    rotation: -6,
   },
   {
     id: 2,
@@ -43,7 +41,6 @@ const steps: ProcessStep[] = [
     image: imgPlanejamento,
     caption: 'Planejamento estratégico',
     icon: Map,
-    rotation: 4,
   },
   {
     id: 3,
@@ -55,7 +52,6 @@ const steps: ProcessStep[] = [
     image: imgEstrutura,
     caption: 'Estrutura operacional',
     icon: Settings,
-    rotation: -3,
   },
   {
     id: 4,
@@ -68,7 +64,6 @@ const steps: ProcessStep[] = [
     image: imgExecucao,
     caption: 'Performance estratégica',
     icon: BarChart3,
-    rotation: 5,
   },
   {
     id: 5,
@@ -81,119 +76,76 @@ const steps: ProcessStep[] = [
     image: imgDecisao,
     caption: 'Sistema de crescimento',
     icon: Brain,
-    rotation: -4,
   },
 ];
 
-const PolaroidCard = ({
-  step,
-  index,
-  isActive,
-  onClick,
-  isVisible,
-}: {
-  step: ProcessStep;
-  index: number;
-  isActive: boolean;
-  onClick: () => void;
-  isVisible: boolean;
-}) => {
-  const [hovered, setHovered] = useState(false);
-  const Icon = step.icon;
-
-  return (
-    <motion.div
-      className="cursor-pointer"
-      initial={{ opacity: 0, y: 40, rotate: step.rotation }}
-      animate={
-        isVisible
-          ? {
-              opacity: 1,
-              y: 0,
-              rotate: hovered || isActive ? 0 : step.rotation,
-              scale: hovered ? 1.05 : isActive ? 1.02 : 1,
-            }
-          : {}
-      }
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={onClick}
-    >
-      <div
-        className={`relative bg-white p-2 pb-10 rounded-lg transition-shadow duration-300 ${
-          isActive
-            ? 'shadow-[0_20px_50px_rgba(0,0,0,0.4),0_0_0_2px_hsl(var(--primary))]'
-            : 'shadow-[0_10px_30px_rgba(0,0,0,0.25)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.35)]'
-        }`}
-      >
-        {/* Image */}
-        <div className="w-full aspect-[4/3] overflow-hidden rounded-sm">
-          <img
-            src={step.image}
-            alt={step.caption}
-            className={`w-full h-full object-cover transition-transform duration-500 ${hovered ? 'scale-110' : 'scale-100'}`}
-            loading="lazy"
-          />
-        </div>
-
-        {/* Caption */}
-        <div className="absolute bottom-2 left-0 right-0 text-center px-2">
-          <span className="text-gray-600 font-medium text-xs md:text-sm" style={{ fontFamily: "'Caveat', cursive", fontSize: 'clamp(0.8rem, 1.2vw, 1.1rem)' }}>
-            {step.caption}
-          </span>
-        </div>
-
-        {/* Active indicator */}
-        {isActive && (
-          <motion.div
-            className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-primary flex items-center justify-center shadow-lg"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-          >
-            <Icon className="w-3.5 h-3.5 text-primary-foreground" />
-          </motion.div>
-        )}
-
-        {/* Decorative tape */}
-        <div
-          className="absolute -top-2.5 left-1/2 w-14 h-5 opacity-70 rounded-sm"
-          style={{
-            background: 'linear-gradient(135deg, hsla(45, 80%, 70%, 0.8), hsla(45, 80%, 60%, 0.6))',
-            transform: `translateX(-50%) rotate(${(index % 2 === 0 ? 3 : -2)}deg)`,
-          }}
-        />
-      </div>
-    </motion.div>
-  );
-};
+const AUTOPLAY_INTERVAL = 6000;
 
 const CreativeShowcase = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [progress, setProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
       { threshold: 0.15 }
     );
     if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
 
+  // Autoplay
+  const startAutoplay = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (progressRef.current) clearInterval(progressRef.current);
+
+    setProgress(0);
+    const startTime = Date.now();
+
+    progressRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      setProgress(Math.min((elapsed / AUTOPLAY_INTERVAL) * 100, 100));
+    }, 30);
+
+    intervalRef.current = setInterval(() => {
+      setActiveStep(prev => (prev + 1) % steps.length);
+    }, AUTOPLAY_INTERVAL);
+  }, []);
+
+  useEffect(() => {
+    if (isVisible && !isPaused) startAutoplay();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (progressRef.current) clearInterval(progressRef.current);
+    };
+  }, [isVisible, isPaused, activeStep, startAutoplay]);
+
+  const goTo = (index: number) => {
+    setActiveStep(index);
+    // Reset autoplay timer
+    if (!isPaused) startAutoplay();
+  };
+
+  const goNext = () => goTo((activeStep + 1) % steps.length);
+  const goPrev = () => goTo((activeStep - 1 + steps.length) % steps.length);
+
   const current = steps[activeStep];
+  const Icon = current.icon;
 
   return (
     <section
       ref={containerRef}
-      className="relative py-24 md:py-32 overflow-hidden"
+      className="relative py-20 md:py-32 overflow-hidden"
       style={{
         background: 'linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.3) 50%, hsl(var(--background)) 100%)',
       }}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
     >
       {/* Background grid */}
       <div
@@ -205,85 +157,213 @@ const CreativeShowcase = () => {
       />
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Badge */}
+        {/* Static SEO title */}
         <motion.div
-          className="flex justify-start mb-8"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-center max-w-4xl mx-auto mb-16"
+          initial={{ opacity: 0, y: 30 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7 }}
         >
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-6 py-2">
+          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-6 py-2 mb-6">
             <Rocket className="w-4 h-4 text-primary" />
-            <span className="text-sm font-bold text-primary tracking-wider">NOSSO PROCESSO CRIATIVO</span>
+            <span className="text-sm font-bold text-primary tracking-wider">NOSSO PROCESSO</span>
           </div>
+
+          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 leading-tight">
+            <span className="text-foreground">Marketing estratégico </span>
+            <span className="text-gradient">que gera resultados</span>
+          </h2>
+          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+            Conheça as etapas do nosso processo — da análise à performance.
+          </p>
         </motion.div>
 
-        {/* Title + Subtitle - dynamic */}
-        <AnimatePresence mode="wait">
+        {/* Main content area */}
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          
+          {/* LEFT: Image showcase */}
           <motion.div
-            key={activeStep}
-            className="max-w-3xl mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="relative"
+            initial={{ opacity: 0, x: -40 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 leading-tight text-foreground">
-              {current.title.split(' ').slice(0, -1).join(' ')}{' '}
-              <span className="text-gradient relative inline-block">
-                {current.title.split(' ').slice(-1)[0]}
-                <svg
-                  className="absolute -bottom-2 left-0 w-full h-4 text-primary"
-                  viewBox="0 0 200 20"
-                >
-                  <path
-                    d="M0,10 Q50,0 100,10 T200,10"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    className="animate-draw"
-                  />
-                </svg>
-              </span>
-            </h2>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep}
+                initial={{ opacity: 0, scale: 0.92, rotate: -2 }}
+                animate={{ opacity: 1, scale: 1, rotate: -2 }}
+                exit={{ opacity: 0, scale: 0.92 }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="relative mx-auto max-w-md lg:max-w-lg"
+              >
+                {/* Polaroid */}
+                <div className="bg-white p-3 pb-14 rounded-lg shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
+                  <div className="aspect-[4/3] overflow-hidden rounded-sm">
+                    <img
+                      src={current.image}
+                      alt={current.caption}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <p
+                    className="absolute bottom-3.5 left-0 right-0 text-center text-gray-500 text-lg"
+                    style={{ fontFamily: "'Caveat', cursive" }}
+                  >
+                    {current.caption}
+                  </p>
+                </div>
 
-            <div className="space-y-2">
-              {current.subtitle.map((line, i) => (
-                <p key={i} className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                  {line}
-                </p>
-              ))}
+                {/* Tape */}
+                <div
+                  className="absolute -top-3 left-1/2 w-20 h-7 rounded-sm opacity-70"
+                  style={{
+                    background: 'linear-gradient(135deg, hsla(45, 80%, 70%, 0.8), hsla(45, 80%, 60%, 0.6))',
+                    transform: 'translateX(-50%) rotate(3deg)',
+                  }}
+                />
+
+                {/* Step badge on image */}
+                <motion.div
+                  className="absolute -bottom-4 -right-4 bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center font-black text-lg shadow-lg shadow-primary/30"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 15, delay: 0.2 }}
+                >
+                  {String(activeStep + 1).padStart(2, '0')}
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Navigation arrows */}
+            <div className="flex items-center justify-center gap-4 mt-8">
+              <button
+                onClick={goPrev}
+                className="w-10 h-10 rounded-full bg-muted/80 border border-border/50 flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                aria-label="Etapa anterior"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              {/* Dots with progress */}
+              <div className="flex items-center gap-2">
+                {steps.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goTo(i)}
+                    className="relative h-2 rounded-full overflow-hidden transition-all duration-300"
+                    style={{ width: i === activeStep ? '40px' : '10px' }}
+                    aria-label={`Ir para etapa ${i + 1}`}
+                  >
+                    <div className="absolute inset-0 bg-muted-foreground/20 rounded-full" />
+                    {i === activeStep && (
+                      <motion.div
+                        className="absolute inset-0 bg-primary rounded-full origin-left"
+                        style={{ scaleX: progress / 100, transformOrigin: 'left' }}
+                      />
+                    )}
+                    {i < activeStep && (
+                      <div className="absolute inset-0 bg-primary rounded-full" />
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={goNext}
+                className="w-10 h-10 rounded-full bg-muted/80 border border-border/50 flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                aria-label="Próxima etapa"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
             </div>
           </motion.div>
-        </AnimatePresence>
 
-        {/* Cards grid - all visible at once */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-          {steps.map((step, index) => (
-            <PolaroidCard
-              key={step.id}
-              step={step}
-              index={index}
-              isActive={activeStep === index}
-              onClick={() => setActiveStep(index)}
-              isVisible={isVisible}
-            />
-          ))}
+          {/* RIGHT: Text content + step tabs */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            {/* Step tabs - vertical timeline style */}
+            <div className="space-y-2 mb-0">
+              {steps.map((step, index) => {
+                const StepIcon = step.icon;
+                const isActive = activeStep === index;
+
+                return (
+                  <motion.button
+                    key={step.id}
+                    onClick={() => goTo(index)}
+                    className={`w-full flex items-start gap-4 p-4 rounded-xl text-left transition-all duration-400 border ${
+                      isActive
+                        ? 'bg-primary/10 border-primary/40'
+                        : 'bg-transparent border-transparent hover:bg-muted/50 hover:border-border/30'
+                    }`}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={isVisible ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.4 + index * 0.08 }}
+                  >
+                    {/* Step number + icon */}
+                    <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                      isActive
+                        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
+                        : 'bg-muted text-muted-foreground'
+                    }`}>
+                      <StepIcon className="w-4 h-4" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className={`font-bold text-sm md:text-base transition-colors duration-300 ${
+                        isActive ? 'text-primary' : 'text-foreground/70'
+                      }`}>
+                        {step.cardTitle}
+                      </div>
+
+                      {/* Expanded content for active */}
+                      <AnimatePresence>
+                        {isActive && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                            className="overflow-hidden"
+                          >
+                            <h3 className="text-lg md:text-xl lg:text-2xl font-black text-foreground mt-2 mb-2">
+                              {step.title}
+                            </h3>
+                            {step.subtitle.map((line, i) => (
+                              <p key={i} className="text-sm md:text-base text-muted-foreground leading-relaxed mb-1">
+                                {line}
+                              </p>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Progress bar at bottom of active card */}
+                    {isActive && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-muted-foreground/10 rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full bg-primary rounded-full"
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
+                    )}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </motion.div>
         </div>
       </div>
 
-      {/* Styles */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
-
-        @keyframes draw {
-          from { stroke-dasharray: 200; stroke-dashoffset: 200; }
-          to { stroke-dashoffset: 0; }
-        }
-        .animate-draw {
-          stroke-dasharray: 200;
-          animation: draw 2s ease forwards;
-        }
       `}</style>
     </section>
   );
