@@ -94,17 +94,17 @@ const VideoHeroBanner = () => {
           }`}
         >
           {/* Glitch text effect */}
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 relative glitch-container">
+      <h2 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-4 relative glitch-container">
             <span className="glitch-text text-white relative">
               MARKETING
             </span>
           </h2>
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6">
+          <h2 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6">
             <span className="text-gradient">QUE MOVE</span>
           </h2>
           
           {/* Animated subtitle */}
-          <div className="flex items-center justify-center gap-4 text-xl md:text-2xl text-white/80">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 text-sm sm:text-xl md:text-2xl text-white/80 flex-wrap">
             <span className="animate-pulse">🚀</span>
             <span>Estratégia</span>
             <span className="text-primary">•</span>
@@ -142,21 +142,21 @@ const VideoHeroBanner = () => {
         </button>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2">
+      {/* Scroll indicator - hidden on very small screens to avoid overlap */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 hidden sm:flex flex-col items-center gap-2">
         <span className="text-xs text-white/60 uppercase tracking-widest">Role para explorar</span>
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
           <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-bounce" />
         </div>
       </div>
 
-      {/* Decorative film borders */}
-      <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/50 to-transparent flex flex-col justify-around py-8">
+      {/* Decorative film borders - hidden on small mobile */}
+      <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/50 to-transparent hidden sm:flex flex-col justify-around py-8">
         {[...Array(12)].map((_, i) => (
           <div key={i} className="w-4 h-5 bg-black/40 rounded-sm mx-2" />
         ))}
       </div>
-      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/50 to-transparent flex flex-col justify-around py-8">
+      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/50 to-transparent hidden sm:flex flex-col justify-around py-8">
         {[...Array(12)].map((_, i) => (
           <div key={i} className="w-4 h-5 bg-black/40 rounded-sm mx-2" />
         ))}

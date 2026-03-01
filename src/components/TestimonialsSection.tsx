@@ -100,7 +100,7 @@ const TestimonialsSection = () => {
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <section className="gsap-section py-32 px-6 relative overflow-hidden">
+    <section className="gsap-section py-16 md:py-32 px-4 md:px-6 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="gsap-parallax absolute top-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" data-speed="0.3" />
@@ -110,26 +110,26 @@ const TestimonialsSection = () => {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-20">
-          <div className="gsap-badge inline-flex items-center gap-2 bg-secondary/10 border border-secondary/20 rounded-full px-6 py-3 mb-8">
+        <div className="text-center mb-10 md:mb-20">
+          <div className="gsap-badge inline-flex items-center gap-2 bg-secondary/10 border border-secondary/20 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-6 md:mb-8">
             <Quote className="w-5 h-5 text-secondary animate-pulse" />
             <span className="text-sm font-semibold text-secondary">DEPOIMENTOS</span>
           </div>
           
-          <h2 className="gsap-headline text-4xl md:text-6xl font-black mb-6">
+          <h2 className="gsap-headline text-3xl sm:text-4xl md:text-6xl font-black mb-4 md:mb-6">
             <span className="text-gradient silver-shine-text">O QUE NOSSOS</span>
             <br />
             <span className="text-foreground">CLIENTES FALAM</span>
           </h2>
           
-          <p className="gsap-paragraph text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="gsap-paragraph text-base md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Histórias reais de transformação e sucesso. 
             <span className="text-secondary font-bold"> Resultados que falam por si</span>.
           </p>
         </div>
 
         {/* Main Testimonial Display */}
-        <div className="gsap-cards-container grid lg:grid-cols-2 gap-12 items-center mb-20">
+        <div className="gsap-cards-container grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center mb-10 md:mb-20">
           {/* Testimonial Card */}
           <Card className="gsap-card card-glow relative overflow-hidden">
             <div className="absolute top-6 left-6">
@@ -165,7 +165,7 @@ const TestimonialsSection = () => {
             </div>
 
             {/* Result Badge */}
-            <div className="absolute top-6 right-6 bg-gradient-to-r from-secondary to-accent text-white px-4 py-2 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-gradient-to-r from-secondary to-accent text-white px-2 py-1 sm:px-4 sm:py-2 rounded-full text-[10px] sm:text-sm font-bold max-w-[140px] sm:max-w-none text-center">
               {currentTestimonial.results}
             </div>
           </Card>

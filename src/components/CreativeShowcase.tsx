@@ -156,7 +156,7 @@ const CreativeShowcase = () => {
         }}
       />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Static SEO title */}
         <motion.div
           className="text-center max-w-4xl mx-auto mb-16"
@@ -179,7 +179,7 @@ const CreativeShowcase = () => {
         </motion.div>
 
         {/* Main content area */}
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           
           {/* LEFT: Image showcase */}
           <motion.div
