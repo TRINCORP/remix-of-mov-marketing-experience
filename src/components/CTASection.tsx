@@ -29,7 +29,7 @@ const CTASection = () => {
   };
 
   return (
-    <section className="gsap-section py-32 px-6 relative overflow-hidden">
+    <section className="gsap-section py-16 md:py-32 px-4 md:px-6 relative overflow-hidden">
       {/* Dramatic Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
       
@@ -50,13 +50,13 @@ const CTASection = () => {
             <span className="text-lg font-bold text-gradient">PRONTO PARA DECOLAR?</span>
           </div>
           
-          <h2 className="gsap-headline text-5xl md:text-7xl font-black mb-8 leading-tight">
+          <h2 className="gsap-headline text-3xl sm:text-5xl md:text-7xl font-black mb-6 md:mb-8 leading-tight">
             <span className="block text-gradient">VAMOS</span>
             <span className="block text-foreground">REVOLUCIONAR</span>
             <span className="block text-gradient">SEU NEGÓCIO</span>
           </h2>
           
-          <p className="gsap-paragraph text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
+          <p className="gsap-paragraph text-base sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8 md:mb-12">
             Transforme sua marca em um <span className="text-primary font-bold">fenômeno digital</span>. 
             Consultoria gratuita disponível.
           </p>
@@ -79,9 +79,9 @@ const CTASection = () => {
           </div>
 
           {/* Quick Action Buttons */}
-          <div className="gsap-cta flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
+          <div className="gsap-cta flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-10 md:mb-20">
             <Button 
-              className="btn-hero group text-xl px-12 py-6"
+              className="btn-hero group text-base sm:text-xl px-8 sm:px-12 py-5 sm:py-6 w-full sm:w-auto"
               onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
             >
               <Sparkles className="mr-3 w-6 h-6 group-hover:rotate-12 transition-transform" />
@@ -116,7 +116,7 @@ const CTASection = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="gsap-cards-container grid lg:grid-cols-2 gap-12 items-start">
+        <div className="gsap-cards-container grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* Form */}
           <div className="gsap-card card-glow">
             <div className="flex items-center gap-3 mb-8">

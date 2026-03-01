@@ -121,7 +121,7 @@ const TrustIndicators = () => {
   }, []);
 
   return (
-    <section className="gsap-section py-20 px-6 relative overflow-hidden">
+    <section className="gsap-section py-12 md:py-20 px-4 md:px-6 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-mesh opacity-30" />
       

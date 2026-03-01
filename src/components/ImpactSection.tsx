@@ -465,14 +465,14 @@ const BrazilMap = () => {
         transitionDelay: `${400 + index * 200}ms`,
         zIndex: 10
       }}>
-            <div className="flex flex-col items-center gap-1 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg border border-[hsl(45,96%,64%)]/30 shadow-lg hover:scale-110 transition-transform cursor-pointer animate-fade-in" style={{
+            <div className="flex flex-col items-center gap-0.5 sm:gap-1 bg-background/95 backdrop-blur-sm px-2 py-1 sm:px-4 sm:py-2 rounded-lg border border-[hsl(45,96%,64%)]/30 shadow-lg hover:scale-110 transition-transform cursor-pointer animate-fade-in" style={{
               animationDelay: `${400 + index * 200}ms`,
               animationFillMode: 'backwards'
             }}>
-              <span className="text-2xl md:text-3xl font-black text-[hsl(45,96%,64%)]">
+              <span className="text-base sm:text-2xl md:text-3xl font-black text-[hsl(45,96%,64%)]">
                 {region.number}
               </span>
-              <span className="text-xs font-medium text-foreground/70 whitespace-nowrap">
+              <span className="text-[10px] sm:text-xs font-medium text-foreground/70 whitespace-nowrap">
                 {region.label}
               </span>
             </div>

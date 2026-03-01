@@ -14,7 +14,7 @@ const FooterMarquee = () => {
         {[1, 2, 3].map((_, i) => (
           <span 
             key={i} 
-            className="mx-8 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-transparent tracking-tighter"
+            className="mx-4 sm:mx-8 text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-black text-transparent tracking-tighter"
             style={{
               WebkitTextStroke: '1px hsl(var(--primary) / 0.3)',
             }}

@@ -176,7 +176,7 @@ const ProblemsSection = () => {
                   </div>
 
                   {/* Description */}
-                  <p className="text-muted-foreground text-[15px] leading-relaxed relative z-10 pl-16">
+                  <p className="text-muted-foreground text-[15px] leading-relaxed relative z-10 pl-0 sm:pl-16">
                     {problem.description}
                   </p>
 

@@ -135,7 +135,7 @@ const PinnedSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative h-[500vh] bg-background"
+      className="relative h-[300vh] md:h-[500vh] bg-background"
     >
       {/* Conteúdo fixo */}
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
@@ -201,7 +201,7 @@ const PinnedSection = () => {
 
         {/* Floating accent shapes */}
         <div 
-          className={`absolute top-20 right-20 w-64 h-64 rounded-full blur-3xl transition-all duration-1000 ${showFinalReveal ? 'opacity-0' : 'opacity-100'}`}
+          className={`absolute top-10 right-5 sm:top-20 sm:right-20 w-32 sm:w-64 h-32 sm:h-64 rounded-full blur-3xl transition-all duration-1000 ${showFinalReveal ? 'opacity-0' : 'opacity-100'}`}
           style={{
             background: slide?.accent || 'hsl(var(--primary))',
             opacity: 0.1 + scrollProgress * 0.1,
@@ -209,7 +209,7 @@ const PinnedSection = () => {
           }}
         />
         <div 
-          className={`absolute bottom-20 left-20 w-48 h-48 rounded-full blur-3xl transition-all duration-1000 ${showFinalReveal ? 'opacity-0' : 'opacity-100'}`}
+          className={`absolute bottom-10 left-5 sm:bottom-20 sm:left-20 w-24 sm:w-48 h-24 sm:h-48 rounded-full blur-3xl transition-all duration-1000 ${showFinalReveal ? 'opacity-0' : 'opacity-100'}`}
           style={{
             background: 'hsl(var(--secondary))',
             opacity: 0.1 + scrollProgress * 0.1,
@@ -382,7 +382,7 @@ const PinnedSection = () => {
                 }`}
                 style={{ transitionDelay: '200ms' }}
               >
-                <span className="text-2xl md:text-4xl font-medium text-foreground/80 tracking-wide">
+                <span className="text-xl sm:text-2xl md:text-4xl font-medium text-foreground/80 tracking-wide">
                   Nós somos
                 </span>
               </div>
@@ -399,8 +399,8 @@ const PinnedSection = () => {
                   }`}
                   style={{ transitionDelay: '400ms' }}
                 >
-                  <span 
-                    className="text-8xl md:text-[12rem] lg:text-[16rem] font-black"
+                <span 
+                    className="text-6xl sm:text-8xl md:text-[12rem] lg:text-[16rem] font-black"
                     style={{
                       background: 'linear-gradient(135deg, hsl(45, 96%, 75%) 0%, hsl(45, 96%, 64%) 40%, hsl(38, 92%, 50%) 100%)',
                       WebkitBackgroundClip: 'text',
