@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import { Volume2, VolumeX, Play, Pause, Rocket, Target } from 'lucide-react';
 
 const VideoHeroBanner = () => {
   const videoRef = useRef<HTMLVideoElement>(null);

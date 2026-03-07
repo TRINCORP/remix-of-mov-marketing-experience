@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Target, TrendingUp, Handshake } from 'lucide-react';
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
 import heroBg from '@/assets/hero-bg.jpg';
 
