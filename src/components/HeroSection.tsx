@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Target, TrendingUp, Handshake } from 'lucide-react';
 import { useGSAPNavigation } from '@/hooks/useGSAPNavigation';
 import heroBg from '@/assets/hero-bg.jpg';
 
@@ -151,15 +151,19 @@ const HeroSection = () => {
             style={{ transitionDelay: '800ms' }}
           >
             {[
-              { icon: '🎯', title: 'Posicionamento', desc: 'Clareza na mensagem e no mercado' },
-              { icon: '📈', title: 'Geração de Demanda', desc: 'Estratégias que atraem clientes' },
-              { icon: '🤝', title: 'Ao lado do gestor', desc: 'Parceria com quem decide' },
+              { icon: 'target', title: 'Posicionamento', desc: 'Clareza na mensagem e no mercado' },
+              { icon: 'trending-up', title: 'Geração de Demanda', desc: 'Estratégias que atraem clientes' },
+              { icon: 'handshake', title: 'Ao lado do gestor', desc: 'Parceria com quem decide' },
             ].map((pillar, i) => (
               <div 
                 key={i}
                 className="group flex flex-col items-center text-center max-w-[200px] cursor-default"
               >
-                <span className="text-2xl mb-2 group-hover:scale-125 transition-transform duration-300">{pillar.icon}</span>
+                <span className="mb-2 group-hover:scale-125 transition-transform duration-300 text-primary">
+                  {pillar.icon === 'target' && <Target className="w-6 h-6" />}
+                  {pillar.icon === 'trending-up' && <TrendingUp className="w-6 h-6" />}
+                  {pillar.icon === 'handshake' && <Handshake className="w-6 h-6" />}
+                </span>
                 <span className="text-sm font-bold text-foreground tracking-wide">{pillar.title}</span>
                 <span className="text-xs text-muted-foreground mt-1">{pillar.desc}</span>
               </div>

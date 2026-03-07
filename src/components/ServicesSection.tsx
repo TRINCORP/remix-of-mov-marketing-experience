@@ -612,7 +612,7 @@ const ServicesSection = () => {
           </Button>
           
           <p className="text-xs md:text-sm text-muted-foreground">
-            ✨ Resposta em até <span className="text-primary font-bold">24 horas</span>
+            <Sparkles className="w-3.5 h-3.5 inline-block text-primary mr-1" /> Resposta em até <span className="text-primary font-bold">24 horas</span>
           </p>
         </div>
       </div>
