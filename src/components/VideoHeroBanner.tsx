@@ -105,13 +105,13 @@ const VideoHeroBanner = () => {
           
           {/* Animated subtitle */}
           <div className="flex items-center justify-center gap-2 sm:gap-4 text-sm sm:text-xl md:text-2xl text-white/80 flex-wrap">
-            <span className="animate-pulse">🚀</span>
+            <Rocket className="w-4 h-4 sm:w-5 sm:h-5 text-primary animate-pulse" />
             <span>Estratégia</span>
             <span className="text-primary">•</span>
-            <span>Criatividade</span>
+            <span>Performance</span>
             <span className="text-primary">•</span>
             <span>Resultados</span>
-            <span className="animate-pulse">🎯</span>
+            <Target className="w-4 h-4 sm:w-5 sm:h-5 text-primary animate-pulse" />
           </div>
         </div>
       </div>
