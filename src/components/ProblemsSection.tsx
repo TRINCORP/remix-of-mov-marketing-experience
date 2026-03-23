@@ -19,26 +19,26 @@ const ProblemsSection = () => {
     {
       icon: Puzzle,
       label: "Descentralizado",
-      title: "Marketing fragmentado",
+      title: "Marketing fragmentado sem integração",
       description: "Ações espalhadas, sem integração entre canais, equipes e mensagens. Esforço alto, retorno baixo.",
     },
     {
       icon: Target,
       label: "Sem direção",
-      title: "Falta de estratégia clara",
+      title: "Falta de estratégia de marketing clara",
       description: "Sem clareza sobre posicionamento, canais prioritários e métricas. Decisões reativas em vez de planejadas.",
     },
     {
       icon: GitBranch,
       label: "Isolado",
       title: "Dependência de canais isolados",
-      description: "Apostas em ações soltas que não se conectam ao negócio. Resultados que não se sustentam.",
+      description: "Apostas em ações soltas que não se conectam ao negócio. Resultados que não se sustentam no médio prazo.",
     },
     {
       icon: BarChart3,
       label: "Sem resultado",
-      title: "Marketing sem crescimento real",
-      description: "Muito investimento, pouca conversão. Dificuldade em transformar marketing em crescimento mensurável.",
+      title: "Investimento em marketing sem retorno",
+      description: "Muito investimento, pouca conversão. Dificuldade em transformar marketing em crescimento mensurável para o negócio.",
     },
   ];
 
@@ -49,21 +49,18 @@ const ProblemsSection = () => {
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Dramatic dark gradient */}
         <div
           className={`absolute inset-0 transition-opacity duration-[2000ms] ${isVisible ? 'opacity-100' : 'opacity-0'}`}
           style={{
             background: 'radial-gradient(ellipse 80% 60% at 50% 100%, hsl(0 60% 20% / 0.08), transparent)',
           }}
         />
-        {/* Primary glow */}
         <div
           className={`absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[150px] transition-all duration-[2500ms] ${
             isVisible ? 'opacity-10' : 'opacity-0'
           }`}
           style={{ background: 'radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)' }}
         />
-        {/* Noise texture */}
         <div
           className="absolute inset-0"
           style={{
@@ -97,7 +94,7 @@ const ProblemsSection = () => {
             }`}
             style={{ transitionDelay: '150ms' }}
           >
-            <span className="text-foreground">Nós entendemos o que é um</span>
+            <span className="text-foreground">Seu marketing existe, mas</span>
             <br />
             <span
               style={{
@@ -107,7 +104,7 @@ const ProblemsSection = () => {
                 filter: 'drop-shadow(0 4px 20px hsl(0, 70%, 50%, 0.2))',
               }}
             >
-              marketing que não funciona
+              não gera resultado?
             </span>
           </h2>
 
@@ -119,7 +116,7 @@ const ProblemsSection = () => {
           >
             Empresas em crescimento costumam enfrentar o mesmo cenário: o marketing existe, mas está{' '}
             <span className="text-foreground font-semibold">descentralizado</span>, pouco integrado à estratégia e 
-            dependente de ações isoladas.
+            dependente de ações isoladas que não se sustentam.
           </p>
         </div>
 
@@ -138,7 +135,6 @@ const ProblemsSection = () => {
                 onMouseEnter={() => setHoveredProblem(index)}
                 onMouseLeave={() => setHoveredProblem(null)}
               >
-                {/* Glow effect */}
                 <div className={`absolute -inset-1 rounded-3xl blur-xl transition-opacity duration-700 ${
                   isHovered ? 'opacity-100' : 'opacity-0'
                 }`}
@@ -148,7 +144,6 @@ const ProblemsSection = () => {
                 />
 
                 <div className="relative h-full bg-muted/20 backdrop-blur-sm rounded-3xl p-8 md:p-10 border border-border/40 group-hover:border-primary/25 transition-all duration-500 overflow-hidden group-hover:bg-muted/30">
-                  {/* Number watermark */}
                   <div
                     className="absolute -top-4 -right-2 text-[8rem] font-black leading-none select-none pointer-events-none transition-all duration-700"
                     style={{
@@ -160,7 +155,6 @@ const ProblemsSection = () => {
                     {String(index + 1).padStart(2, '0')}
                   </div>
 
-                  {/* Header */}
                   <div className="flex items-start gap-4 mb-5 relative z-10">
                     <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/15 group-hover:border-primary/30 group-hover:scale-110 transition-all duration-500">
                       <Icon className="w-6 h-6 text-primary" />
@@ -175,12 +169,10 @@ const ProblemsSection = () => {
                     </div>
                   </div>
 
-                  {/* Description */}
                   <p className="text-muted-foreground text-[15px] leading-relaxed relative z-10 pl-0 sm:pl-16">
                     {problem.description}
                   </p>
 
-                  {/* Bottom accent */}
                   <div className="absolute bottom-0 left-10 right-10 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 </div>
               </div>
@@ -196,7 +188,6 @@ const ProblemsSection = () => {
           style={{ transitionDelay: '900ms' }}
         >
           <div className="relative bg-gradient-to-br from-muted/30 via-muted/15 to-muted/30 backdrop-blur-sm rounded-3xl p-10 md:p-14 border border-primary/15 overflow-hidden">
-            {/* Decorative corners */}
             <div className="absolute top-0 left-0 w-20 h-20 border-l border-t border-primary/20 rounded-tl-3xl" />
             <div className="absolute bottom-0 right-0 w-20 h-20 border-r border-b border-primary/20 rounded-br-3xl" />
 
@@ -215,7 +206,7 @@ const ProblemsSection = () => {
               >
                 sistema estratégico
               </span>
-              , alinhado aos objetivos reais da empresa.
+              , alinhado aos objetivos reais da sua empresa.
             </p>
 
             <Button

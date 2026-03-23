@@ -24,7 +24,6 @@ const CTASection = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
     console.log('Form submitted:', formData);
   };
 
@@ -47,26 +46,28 @@ const CTASection = () => {
         <div className="text-center mb-20">
           <div className="gsap-badge inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 rounded-full px-8 py-4 mb-8">
             <Rocket className="w-6 h-6 text-primary animate-bounce" />
-            <span className="text-lg font-bold text-gradient">PRONTO PARA DECOLAR?</span>
+            <span className="text-lg font-bold text-gradient">VAMOS CONVERSAR</span>
           </div>
           
           <h2 className="gsap-headline text-3xl sm:text-5xl md:text-7xl font-black mb-6 md:mb-8 leading-tight">
-            <span className="block text-gradient">VAMOS</span>
-            <span className="block text-foreground">REVOLUCIONAR</span>
-            <span className="block text-gradient">SEU NEGÓCIO</span>
+            <span className="block text-foreground">Pronto para</span>
+            <span className="block text-gradient">estruturar o marketing</span>
+            <span className="block text-foreground">da sua empresa?</span>
           </h2>
           
-          <p className="gsap-paragraph text-base sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8 md:mb-12">
-            Transforme sua marca em um <span className="text-primary font-bold">fenômeno digital</span>. 
-            Consultoria gratuita disponível.
+          <p className="gsap-paragraph text-base sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-2">
+            Fale com um estrategista da MOV e descubra o que é possível para o seu negócio.
+          </p>
+          <p className="text-sm text-muted-foreground mb-8 md:mb-12">
+            Atendemos todo o Brasil, online e presencial.
           </p>
 
           {/* Benefits */}
           <div className="gsap-cards-container grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
             {[
-              { icon: Zap, text: "Consultoria Gratuita", color: "primary" },
-              { icon: Target, text: "Estratégia Personalizada", color: "secondary" },
-              { icon: CheckCircle, text: "Resultados Garantidos", color: "accent" }
+              { icon: Zap, text: "Consultoria gratuita", color: "primary" },
+              { icon: Target, text: "Estratégia personalizada", color: "secondary" },
+              { icon: CheckCircle, text: "Sem compromisso", color: "accent" }
             ].map((benefit, index) => (
               <div 
                 key={index} 
@@ -85,7 +86,7 @@ const CTASection = () => {
               onClick={() => window.open('https://wa.me/5519981134193', '_blank')}
             >
               <Sparkles className="mr-3 w-6 h-6 group-hover:rotate-12 transition-transform" />
-              <span>Consultoria Gratuita</span>
+              <span>Quero minha consultoria gratuita</span>
               <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </Button>
             
@@ -124,7 +125,7 @@ const CTASection = () => {
                 <MessageCircle className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-foreground">Fale Conosco</h3>
+                <h3 className="text-2xl font-bold text-foreground">Fale conosco</h3>
                 <p className="text-muted-foreground">Resposta em até 2 horas</p>
               </div>
             </div>
@@ -173,7 +174,7 @@ const CTASection = () => {
 
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
-                  Conte-nos sobre seu projeto
+                  Conte-nos sobre seu projeto, seus objetivos e como podemos ajudar
                 </label>
                 <Textarea
                   value={formData.message}
@@ -195,10 +196,13 @@ const CTASection = () => {
           <div className="space-y-8">
             {/* Contact Methods */}
             <div className="card-glow">
-              <h3 className="text-2xl font-bold text-foreground mb-6">Contatos Diretos</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-6">Contatos diretos</h3>
               
               <div className="space-y-4">
-                <div className="flex items-center gap-4 p-4 bg-primary/5 rounded-2xl hover:bg-primary/10 transition-colors cursor-pointer group">
+                <a 
+                  href="tel:+5519981134193"
+                  className="flex items-center gap-4 p-4 bg-primary/5 rounded-2xl hover:bg-primary/10 transition-colors cursor-pointer group"
+                >
                   <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Phone className="w-6 h-6 text-white" />
                   </div>
@@ -206,9 +210,12 @@ const CTASection = () => {
                     <div className="font-semibold text-foreground">Telefone</div>
                     <div className="text-muted-foreground">(19) 98113-4193</div>
                   </div>
-                </div>
+                </a>
 
-                <div className="flex items-center gap-4 p-4 bg-secondary/5 rounded-2xl hover:bg-secondary/10 transition-colors cursor-pointer group">
+                <a 
+                  href="mailto:contato@mov.marketing"
+                  className="flex items-center gap-4 p-4 bg-secondary/5 rounded-2xl hover:bg-secondary/10 transition-colors cursor-pointer group"
+                >
                   <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Mail className="w-6 h-6 text-white" />
                   </div>
@@ -216,9 +223,14 @@ const CTASection = () => {
                     <div className="font-semibold text-foreground">Email</div>
                     <div className="text-muted-foreground">contato@mov.marketing</div>
                   </div>
-                </div>
+                </a>
 
-                <div className="flex items-center gap-4 p-4 bg-accent/5 rounded-2xl hover:bg-accent/10 transition-colors cursor-pointer group">
+                <a 
+                  href="https://wa.me/5519981134193"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-4 bg-accent/5 rounded-2xl hover:bg-accent/10 transition-colors cursor-pointer group"
+                >
                   <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                     <MessageCircle className="w-6 h-6 text-white" />
                   </div>
@@ -226,7 +238,7 @@ const CTASection = () => {
                     <div className="font-semibold text-foreground">WhatsApp</div>
                     <div className="text-muted-foreground">Resposta instantânea</div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
 

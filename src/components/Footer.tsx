@@ -65,11 +65,11 @@ const Footer = () => {
   ];
 
   const services = [
-    'Estratégia Digital',
-    'Growth Hacking',
-    'Performance',
+    'Gestão de Tráfego Pago',
+    'Estruturação Comercial',
+    'Desenvolvimento de Sites',
     'Social Media',
-    'Branding',
+    'Produção Audiovisual',
   ];
 
   return (
@@ -100,7 +100,7 @@ const Footer = () => {
               </div>
 
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                Marketing que move marcas para resultados extraordinários.
+                MOV Assessoria de Marketing — Indaiatuba, SP — Atendemos todo o Brasil.
               </p>
 
               {/* Social Links */}
@@ -194,7 +194,7 @@ const Footer = () => {
                 
                 <div className="flex items-start gap-3 text-muted-foreground">
                   <MapPin className="w-5 h-5 text-primary mt-0.5" />
-                  <span>São Paulo, SP - Brasil</span>
+                  <span>Indaiatuba, SP — Brasil</span>
                 </div>
               </div>
 
@@ -233,8 +233,8 @@ const Footer = () => {
       <div className="border-t border-border/30 py-6">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">
-              © 2024 MOV Marketing. Todos os direitos reservados.
+            <p className="text-sm text-muted-foreground text-center md:text-left">
+              © 2024 MOV Assessoria de Marketing | Indaiatuba, SP | (19) 98113-4193 | contato@mov.marketing | Atendemos todo o Brasil
             </p>
             
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
