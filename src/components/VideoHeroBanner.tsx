@@ -51,10 +51,10 @@ const VideoHeroBanner = () => {
   };
 
   return (
-    <section
+    <section 
       ref={containerRef}
-      className="relative h-[60vh] md:h-[70vh] overflow-hidden">
-      
+      className="relative h-[60vh] md:h-[70vh] overflow-hidden"
+    >
       {/* Video Background */}
       <video
         ref={videoRef}
@@ -63,12 +63,12 @@ const VideoHeroBanner = () => {
         loop
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
-        poster="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&h=1080&fit=crop">
-        
-        <source
-          src="https://player.vimeo.com/external/434045526.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=165"
-          type="video/mp4" />
-        
+        poster="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&h=1080&fit=crop"
+      >
+        <source 
+          src="https://player.vimeo.com/external/434045526.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=165" 
+          type="video/mp4" 
+        />
       </video>
 
       {/* Overlay gradient */}
@@ -76,23 +76,23 @@ const VideoHeroBanner = () => {
       
       {/* Animated color accents */}
       <div className="absolute inset-0 pointer-events-none">
-        <div
+        <div 
           className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl animate-pulse"
-          style={{ background: 'hsla(var(--primary), 0.2)' }} />
-        
-        <div
+          style={{ background: 'hsla(var(--primary), 0.2)' }}
+        />
+        <div 
           className="absolute bottom-1/4 right-1/4 w-48 h-48 rounded-full blur-3xl animate-pulse animation-delay-1000"
-          style={{ background: 'hsla(var(--secondary), 0.15)' }} />
-        
+          style={{ background: 'hsla(var(--secondary), 0.15)' }}
+        />
       </div>
 
       {/* Content */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div
+        <div 
           className={`text-center transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`
-          }>
-          
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           {/* Glitch text effect */}
       <h2 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-4 relative glitch-container">
             <span className="glitch-text text-white relative">
@@ -117,30 +117,30 @@ const VideoHeroBanner = () => {
       </div>
 
       {/* Video controls */}
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
+      <div className="absolute bottom-6 right-6 flex gap-3">
+        <button
+          onClick={togglePlay}
+          className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors border border-white/30"
+          aria-label={isPlaying ? 'Pausar' : 'Reproduzir'}
+        >
+          {isPlaying ? (
+            <Pause className="w-5 h-5 text-white" />
+          ) : (
+            <Play className="w-5 h-5 text-white ml-0.5" />
+          )}
+        </button>
+        <button
+          onClick={toggleMute}
+          className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors border border-white/30"
+          aria-label={isMuted ? 'Ativar som' : 'Silenciar'}
+        >
+          {isMuted ? (
+            <VolumeX className="w-5 h-5 text-white" />
+          ) : (
+            <Volume2 className="w-5 h-5 text-white" />
+          )}
+        </button>
+      </div>
 
       {/* Scroll indicator - hidden on very small screens to avoid overlap */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 hidden sm:flex flex-col items-center gap-2">
@@ -152,14 +152,14 @@ const VideoHeroBanner = () => {
 
       {/* Decorative film borders - hidden on small mobile */}
       <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/50 to-transparent hidden sm:flex flex-col justify-around py-8">
-        {[...Array(12)].map((_, i) =>
-        <div key={i} className="w-4 h-5 bg-black/40 rounded-sm mx-2" />
-        )}
+        {[...Array(12)].map((_, i) => (
+          <div key={i} className="w-4 h-5 bg-black/40 rounded-sm mx-2" />
+        ))}
       </div>
       <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/50 to-transparent hidden sm:flex flex-col justify-around py-8">
-        {[...Array(12)].map((_, i) =>
-        <div key={i} className="w-4 h-5 bg-black/40 rounded-sm mx-2" />
-        )}
+        {[...Array(12)].map((_, i) => (
+          <div key={i} className="w-4 h-5 bg-black/40 rounded-sm mx-2" />
+        ))}
       </div>
 
       {/* Glitch effect styles */}
@@ -221,8 +221,8 @@ const VideoHeroBanner = () => {
           }
         }
       `}</style>
-    </section>);
-
+    </section>
+  );
 };
 
 export default VideoHeroBanner;
