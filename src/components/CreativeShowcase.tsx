@@ -22,10 +22,10 @@ const steps: ProcessStep[] = [
   {
     id: 1,
     cardTitle: 'Diagnóstico Estratégico',
-    title: 'Estrutura que começa antes da execução',
+    title: 'Tudo começa antes da primeira campanha',
     subtitle: [
-      'Antes de qualquer campanha, mergulhamos no cenário, números e posicionamento.',
-      'Decisão vem antes de ação.',
+      'Antes de qualquer ação de marketing, mergulhamos no cenário, nos números e no posicionamento do seu negócio.',
+      'Diagnóstico antes de execução.',
     ],
     image: imgDiagnostico,
     caption: 'Diagnóstico estratégico',
@@ -34,9 +34,9 @@ const steps: ProcessStep[] = [
   {
     id: 2,
     cardTitle: 'Planejamento e Direcionamento',
-    title: 'Clareza que organiza o crescimento',
+    title: 'Clareza que organiza o crescimento do negócio',
     subtitle: [
-      'Transformamos análise em plano estruturado, prioridades definidas e metas alinhadas ao negócio.',
+      'Transformamos análise em plano estruturado de marketing, com prioridades definidas e metas alinhadas aos objetivos reais da empresa.',
     ],
     image: imgPlanejamento,
     caption: 'Planejamento estratégico',
@@ -45,9 +45,9 @@ const steps: ProcessStep[] = [
   {
     id: 3,
     cardTitle: 'Estrutura e Processos',
-    title: 'Processos que sustentam escala',
+    title: 'Processos de marketing que sustentam escala',
     subtitle: [
-      'Nada é improvisado. Trabalhamos com fluxos internos claros, acompanhamento contínuo e organização operacional.',
+      'Nada é improvisado. Trabalhamos com fluxos internos claros, acompanhamento contínuo e organização operacional para crescer com consistência.',
     ],
     image: imgEstrutura,
     caption: 'Estrutura operacional',
@@ -56,10 +56,10 @@ const steps: ProcessStep[] = [
   {
     id: 4,
     cardTitle: 'Execução e Performance',
-    title: 'Execução orientada por dados',
+    title: 'Marketing digital orientado por dados',
     subtitle: [
       'Criatividade guiada por métricas.',
-      'Performance construída com acompanhamento constante.',
+      'Performance construída com acompanhamento constante e otimização baseada em resultado real.',
     ],
     image: imgExecucao,
     caption: 'Performance estratégica',
@@ -68,10 +68,10 @@ const steps: ProcessStep[] = [
   {
     id: 5,
     cardTitle: 'Decisão Acima de Execução',
-    title: 'Decisão antes de produção',
+    title: 'Estratégia antes de produção',
     subtitle: [
-      'Não começamos criando.',
-      'Começamos entendendo o que realmente precisa ser construído. Aqui tratamos marketing como um sistema. Integramos estratégia, tecnologia, comercial e comunicação em uma estrutura única de crescimento.',
+      'Não começamos criando. Começamos entendendo o que realmente precisa ser construído.',
+      'Integramos estratégia, tecnologia, processo comercial e comunicação em uma estrutura única de crescimento para o seu negócio.',
     ],
     image: imgDecisao,
     caption: 'Sistema de crescimento',
@@ -99,7 +99,6 @@ const CreativeShowcase = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Autoplay
   const startAutoplay = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (progressRef.current) clearInterval(progressRef.current);
@@ -127,7 +126,6 @@ const CreativeShowcase = () => {
 
   const goTo = (index: number) => {
     setActiveStep(index);
-    // Reset autoplay timer
     if (!isPaused) startAutoplay();
   };
 
@@ -166,15 +164,15 @@ const CreativeShowcase = () => {
         >
           <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-6 py-2 mb-6">
             <Rocket className="w-4 h-4 text-primary" />
-            <span className="text-sm font-bold text-primary tracking-wider">NOSSO PROCESSO</span>
+            <span className="text-sm font-bold text-primary tracking-wider">COMO TRABALHAMOS</span>
           </div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 leading-tight">
-            <span className="text-foreground">Marketing estratégico </span>
-            <span className="text-gradient">que gera resultados</span>
+            <span className="text-foreground">Um processo de marketing que gera </span>
+            <span className="text-gradient">crescimento real</span>
           </h2>
           <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
-            Conheça as etapas do nosso processo — da análise à performance.
+            Cada etapa foi pensada para transformar estratégia em resultado mensurável para o seu negócio.
           </p>
         </motion.div>
 

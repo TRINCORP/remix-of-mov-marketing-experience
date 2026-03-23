@@ -22,9 +22,9 @@ const services: Service[] = [
   {
     id: 1,
     icon: Target,
-    title: "Gestão de Tráfego",
+    title: "Gestão de Tráfego Pago",
     tagline: "Demanda previsível",
-    description: "Aquisição previsível de demanda alinhada à estratégia do negócio.",
+    description: "Aquisição previsível de clientes através de campanhas no Google Ads e Meta Ads, alinhadas à estratégia do negócio.",
     features: ["Meta Ads", "Google Ads", "Analytics"],
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
     color: "#FFD93D",
@@ -38,7 +38,7 @@ const services: Service[] = [
     icon: Rocket,
     title: "Estruturação Comercial",
     tagline: "Escale com processo",
-    description: "Processos, posicionamento e vendas organizadas para escalar com previsibilidade.",
+    description: "Processos, posicionamento e vendas organizadas para pequenas e médias empresas escalarem com previsibilidade e método.",
     features: ["Processos", "Vendas", "Posicionamento"],
     image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
     color: "#FF6B6B",
@@ -50,9 +50,9 @@ const services: Service[] = [
   {
     id: 3,
     icon: Palette,
-    title: "Desenvolvimento de Sites",
+    title: "Desenvolvimento de Sites e Landing Pages",
     tagline: "Presença que converte",
-    description: "Presença digital estruturada para conversão, autoridade e crescimento.",
+    description: "Presença digital estruturada para conversão, autoridade e crescimento. Sites otimizados para SEO e experiência do usuário.",
     features: ["Landing Pages", "UI/UX", "SEO"],
     image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&h=600&fit=crop",
     color: "#4ECDC4",
@@ -63,24 +63,10 @@ const services: Service[] = [
   },
   {
     id: 4,
-    icon: Brain,
-    title: "Desenvolvimento de Sistemas",
-    tagline: "Tecnologia sob medida",
-    description: "Tecnologia sob medida para otimizar processos e sustentar crescimento.",
-    features: ["Automação", "Integração", "Dashboards"],
-    image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&h=600&fit=crop",
-    color: "#A855F7",
-    stats: [
-      { value: "100%", label: "customizado" },
-      { value: "-40%", label: "retrabalho" },
-    ],
-  },
-  {
-    id: 5,
     icon: Megaphone,
-    title: "Social Media",
+    title: "Social Media e Gestão de Redes Sociais",
     tagline: "Marca com confiança",
-    description: "Comunicação estratégica que constrói marca e gera confiança.",
+    description: "Comunicação estratégica que constrói marca, gera confiança e aproxima sua empresa do cliente certo.",
     features: ["Conteúdo", "Gestão", "Estratégia"],
     image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&h=600&fit=crop",
     color: "#F472B6",
@@ -90,11 +76,11 @@ const services: Service[] = [
     ],
   },
   {
-    id: 6,
+    id: 5,
     icon: BarChart3,
-    title: "Áudio Visual Premium",
+    title: "Produção Audiovisual para Empresas",
     tagline: "Produções de autoridade",
-    description: "Produções que elevam percepção de marca e autoridade.",
+    description: "Vídeos e fotografias profissionais que elevam a percepção de marca e constroem autoridade no mercado digital.",
     features: ["Vídeos", "Fotografia", "Edição"],
     image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&h=600&fit=crop",
     color: "#06B6D4",
@@ -114,7 +100,6 @@ const ServicesSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  // Minimum swipe distance
   const minSwipeDistance = 50;
 
   useEffect(() => {
@@ -154,7 +139,6 @@ const ServicesSection = () => {
     setTimeout(() => setIsAnimating(false), 600);
   }, [isAnimating, currentIndex]);
 
-  // Touch handlers for swipe
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
@@ -200,7 +184,6 @@ const ServicesSection = () => {
             borderColor: isActive ? `${service.color}40` : undefined,
           }}
         >
-          {/* Image */}
           <div className="relative h-36 overflow-hidden">
             <img
               src={service.image}
@@ -215,7 +198,6 @@ const ServicesSection = () => {
               }}
             />
             
-            {/* Icon */}
             <div 
               className="absolute top-3 left-3 w-10 h-10 rounded-xl flex items-center justify-center"
               style={{ 
@@ -227,7 +209,6 @@ const ServicesSection = () => {
             </div>
           </div>
 
-          {/* Content */}
           <div className="p-4">
             <span 
               className="text-[10px] font-bold tracking-[0.15em] uppercase mb-1 block"
@@ -244,7 +225,6 @@ const ServicesSection = () => {
               {service.description}
             </p>
 
-            {/* Features */}
             <div className="flex flex-wrap gap-1.5 mb-3">
               {service.features.map((feature, i) => (
                 <span 
@@ -256,7 +236,6 @@ const ServicesSection = () => {
               ))}
             </div>
 
-            {/* Stats */}
             <div className="flex items-center gap-4 pt-3 border-t border-border/30">
               {service.stats.map((stat, i) => (
                 <div key={i}>
@@ -383,7 +362,6 @@ const ServicesSection = () => {
                     transition: 'box-shadow 0.7s ease, border-color 0.5s ease',
                   }}
                 >
-                  {/* Image */}
                   <div className="relative h-40 overflow-hidden">
                     <img
                       src={service.image}
@@ -401,7 +379,6 @@ const ServicesSection = () => {
                       }}
                     />
                     
-                    {/* Icon */}
                     <div 
                       className="absolute top-4 left-4 w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-500"
                       style={{ 
@@ -414,7 +391,6 @@ const ServicesSection = () => {
                     </div>
                   </div>
 
-                  {/* Content */}
                   <div className="p-5">
                     <span 
                       className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 block transition-colors duration-500"
@@ -431,7 +407,6 @@ const ServicesSection = () => {
                       {service.description}
                     </p>
 
-                    {/* Features */}
                     <div className="flex flex-wrap gap-1.5 mb-4">
                       {service.features.map((feature, i) => (
                         <span 
@@ -443,7 +418,6 @@ const ServicesSection = () => {
                       ))}
                     </div>
 
-                    {/* Stats */}
                     <div className="flex items-center gap-5 pt-4 border-t border-border/30">
                       {service.stats.map((stat, i) => (
                         <div key={i}>
@@ -518,7 +492,7 @@ const ServicesSection = () => {
           </div>
           
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-4 md:mb-6">
-            <span className="text-foreground block sm:inline">Soluções que</span>
+            <span className="text-foreground block sm:inline">Soluções de marketing digital que</span>
             <br className="hidden sm:block" />
             <span 
               className="inline-block transition-all duration-700 ease-out"
@@ -529,12 +503,12 @@ const ServicesSection = () => {
                 filter: `drop-shadow(0 4px 20px ${currentService.color}30)`,
               }}
             >
-              transformam
+              transformam negócios
             </span>
           </h2>
           
           <p className="text-muted-foreground max-w-xl mx-auto text-sm md:text-base px-4">
-            Descubra como cada serviço impulsiona seu negócio ao próximo nível.
+            Cada serviço foi estruturado para gerar resultado real e impulsionar o crescimento da sua empresa.
           </p>
         </div>
 
