@@ -500,16 +500,15 @@ const ImpactSection = () => {
             {/* Title */}
             <div className={`space-y-4 transition-all duration-1000 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">
-                A maior e melhor assessoria de{' '}
-                <span className="text-gradient">marketing do Brasil</span>
+                Resultados que comprovam{' '}
+                <span className="text-gradient">o que fazemos</span>
               </h2>
             </div>
 
             {/* Subtitle */}
             <p className={`text-lg md:text-xl text-muted-foreground leading-relaxed transition-all duration-1000 delay-200 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
-              Há mais de 12 anos alavancando empresas dos mais diversos segmentos. 
-              Nosso foco é na geração de vendas e na transformação da realidade de 
-              milhares de empreendedores, dentro e fora do Brasil.
+              Atuação consolidada no mercado com presença nacional, 
+              atendendo empresas de diversos segmentos com foco em crescimento real e resultados mensuráveis.
             </p>
 
             {/* Metrics Grid */}

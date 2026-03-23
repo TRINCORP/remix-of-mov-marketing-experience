@@ -14,29 +14,29 @@ const trustMetrics = [
   {
     icon: TrendingUp,
     value: "2+",
-    label: "Anos de Mercado",
-    description: "Experiência consolidada",
+    label: "Anos de experiência em marketing digital",
+    description: "Atuação consolidada no mercado",
     color: "primary"
   },
   {
     icon: Users,
     value: "30+",
-    label: "Empresas Atendidas",
-    description: "Clientes em todo Brasil",
+    label: "Empresas atendidas em todo o Brasil",
+    description: "De pequenos negócios a médias empresas",
     color: "secondary"
   },
   {
     icon: Award,
     value: "95%",
-    label: "Taxa de Satisfação",
-    description: "Excelência reconhecida",
+    label: "Taxa de satisfação dos clientes",
+    description: "Excelência reconhecida por quem contrata",
     color: "accent"
   },
   {
     icon: Globe,
     value: "3+",
-    label: "Estados do Brasil",
-    description: "Presença nacional",
+    label: "Estados atendidos",
+    description: "Presença nacional, atendimento online e presencial",
     color: "primary"
   }
 ];
@@ -50,12 +50,12 @@ const certifications = [
   {
     icon: CheckCircle,
     title: "Meta Business Partner",
-    description: "Especialistas em Facebook & Instagram"
+    description: "Especialistas em tráfego pago no Facebook e Instagram"
   },
   {
     icon: Award,
     title: "HubSpot Certified",
-    description: "Inbound Marketing Expert"
+    description: "Especialistas em inbound marketing"
   }
 ];
 
@@ -122,7 +122,6 @@ const TrustIndicators = () => {
 
   return (
     <section className="gsap-section py-12 md:py-20 px-4 md:px-6 relative overflow-hidden">
-      {/* Background Effects */}
       <div className="absolute inset-0 bg-mesh opacity-30" />
       
       <div className="max-w-7xl mx-auto relative z-10">
@@ -134,9 +133,9 @@ const TrustIndicators = () => {
           </div>
           
           <h2 className="gsap-headline text-headline mb-6">
-            <span className="text-gradient">Números que</span>
+            <span className="text-gradient">Resultados que comprovam</span>
             <br />
-            <span className="text-foreground">Falam por Si</span>
+            <span className="text-foreground">o que fazemos</span>
           </h2>
         </div>
 
@@ -179,12 +178,12 @@ const TrustIndicators = () => {
         {/* Social Proof */}
         <div className="text-center mt-8">
           <p className="text-body text-muted-foreground max-w-2xl mx-auto mb-4">
-            "A MOV não é apenas uma agência, é um parceiro estratégico que realmente 
+            "A MOV não é apenas uma agência de marketing, é um parceiro estratégico que realmente 
             entende nosso negócio e entrega resultados excepcionais."
           </p>
           
           <div className="text-sm text-primary font-semibold">
-            Avaliação média de 4.9/5 baseada em 200+ reviews
+            Avaliação média de 4.9/5 baseada em 200+ avaliações de clientes
           </div>
         </div>
       </div>

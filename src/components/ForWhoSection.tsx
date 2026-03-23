@@ -17,18 +17,18 @@ const ForWhoSection = () => {
   const idealClients = [
     {
       icon: Building2,
-      title: "Empresas que já validaram",
-      description: "Trabalhamos com empresas que já validaram seus serviços ou produtos e precisam dar o próximo passo com mais organização, clareza e direção estratégica.",
+      title: "Empresas que já validaram o negócio",
+      description: "Trabalhamos com empresas que já validaram seus serviços ou produtos e precisam dar o próximo passo com mais organização, clareza e direção estratégica no marketing.",
     },
     {
       icon: TrendingUp,
-      title: "Negócios em crescimento",
-      description: "Atendemos negócios em crescimento ou transição de nível, que exigem profissionalismo, método e visão de longo prazo no marketing.",
+      title: "Negócios em fase de crescimento",
+      description: "Atendemos negócios em crescimento ou transição de nível que exigem profissionalismo, método e visão de longo prazo para escalar com previsibilidade.",
     },
     {
       icon: Shield,
-      title: "Marketing como estratégia",
-      description: "Nosso trabalho faz sentido para empresas que entendem o marketing como parte da estratégia do negócio — não como gasto, mas como investimento.",
+      title: "Quem trata marketing como investimento",
+      description: "Nosso trabalho faz sentido para empresas que entendem o marketing digital como parte da estratégia do negócio. Não como gasto, mas como motor de crescimento.",
     },
   ];
 
@@ -58,7 +58,6 @@ const ForWhoSection = () => {
           }`}
           style={{ background: 'radial-gradient(circle, hsl(var(--primary-glow)) 0%, transparent 70%)' }}
         />
-        {/* Subtle grid */}
         <div
           className="absolute inset-0"
           style={{
@@ -91,7 +90,7 @@ const ForWhoSection = () => {
             }`}
             style={{ transitionDelay: '150ms' }}
           >
-            <span className="text-foreground">Não é para</span>{' '}
+            <span className="text-foreground">Não atendemos</span>{' '}
             <span
               style={{
                 background: 'linear-gradient(135deg, hsl(45, 96%, 75%) 0%, hsl(45, 96%, 64%) 30%, hsl(38, 92%, 50%) 100%)',
@@ -110,8 +109,8 @@ const ForWhoSection = () => {
             }`}
             style={{ transitionDelay: '300ms' }}
           >
-            Trabalhamos com quem leva o marketing a sério e busca{' '}
-            <span className="text-primary font-semibold">crescimento real</span>.
+            Trabalhamos com quem leva o marketing a sério e enxerga{' '}
+            <span className="text-primary font-semibold">crescimento real</span> como objetivo.
           </p>
         </div>
 
@@ -129,21 +128,17 @@ const ForWhoSection = () => {
                 onMouseEnter={() => setActiveCard(index)}
                 onMouseLeave={() => setActiveCard(null)}
               >
-                {/* Glow on hover */}
                 <div className="absolute -inset-1 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                 <div className="relative h-full bg-muted/30 backdrop-blur-sm rounded-3xl p-8 md:p-10 border border-border/50 group-hover:border-primary/30 transition-all duration-500 overflow-hidden">
-                  {/* Top accent line */}
                   <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  {/* Icon */}
                   <div className="relative mb-6">
                     <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-500 group-hover:scale-110">
                       <Icon className="w-7 h-7 text-primary" />
                     </div>
                   </div>
 
-                  {/* Content */}
                   <h3 className="text-xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
                     {client.title}
                   </h3>
@@ -151,12 +146,10 @@ const ForWhoSection = () => {
                     {client.description}
                   </p>
 
-                  {/* Arrow indicator */}
                   <div className="mt-6 flex items-center gap-2 text-primary/50 group-hover:text-primary transition-all duration-300">
                     <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
                   </div>
 
-                  {/* Background pattern */}
                   <div
                     className="absolute bottom-0 right-0 w-32 h-32 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500"
                     style={{
@@ -178,7 +171,6 @@ const ForWhoSection = () => {
           style={{ transitionDelay: '800ms' }}
         >
           <div className="relative bg-muted/20 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-border/30 overflow-hidden">
-            {/* Red accent */}
             <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-red-500/60 via-red-500/30 to-transparent" />
 
             <div className="flex items-center gap-3 mb-6">

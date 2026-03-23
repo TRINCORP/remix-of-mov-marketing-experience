@@ -30,10 +30,7 @@ const HeroSection = () => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroBg})` }}
       >
-        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-background/85" />
-        
-        {/* Gradient Overlays */}
         <div 
           className="absolute inset-0"
           style={{
@@ -52,13 +49,11 @@ const HeroSection = () => {
           className={`absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] transition-all duration-[2000ms] ${
             isVisible ? 'opacity-60 scale-100' : 'opacity-0 scale-50'
           }`}
-          style={{ animationDelay: '200ms' }}
         />
         <div 
           className={`absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/15 rounded-full blur-[100px] transition-all duration-[2500ms] ${
             isVisible ? 'opacity-50 scale-100' : 'opacity-0 scale-50'
           }`}
-          style={{ animationDelay: '400ms' }}
         />
       </div>
 
@@ -74,40 +69,29 @@ const HeroSection = () => {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-xs font-medium tracking-[0.2em] text-primary uppercase backdrop-blur-sm">
               <Sparkles className="w-3 h-3" />
-              Marketing que Transforma
+              Assessoria de marketing digital
               <Sparkles className="w-3 h-3" />
             </span>
           </div>
 
-          {/* Main Headline */}
+          {/* Main Headline - H1 */}
           <h1 
             className={`transition-all duration-1000 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
             style={{ transitionDelay: '200ms' }}
           >
-            <span 
-              className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.9] tracking-tighter"
-              style={{
-                background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(45, 96%, 64%) 50%, hsl(38, 92%, 50%) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              MOV
-            </span>
-            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-2 tracking-tight">
-              REVOLUCIONA SEU
-            </span>
-            <span 
-              className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-1 tracking-tight"
-              style={{
-                background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(45, 96%, 64%) 50%, hsl(38, 92%, 50%) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              MARKETING
+            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[0.95] tracking-tight text-foreground">
+              Marketing que faz pequenos e médios negócios{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(135deg, hsl(45, 96%, 72%) 0%, hsl(45, 96%, 64%) 50%, hsl(38, 92%, 50%) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                crescerem de verdade
+              </span>
             </span>
           </h1>
 
@@ -118,7 +102,7 @@ const HeroSection = () => {
             }`}
             style={{ transitionDelay: '400ms' }}
           >
-            Estruturamos o marketing da sua empresa com <span className="text-primary font-semibold">clareza</span>, estratégia e foco em <span className="text-primary font-semibold">crescimento real</span>.
+            Tráfego pago, social media, sites e estruturação comercial. Tudo integrado para você <span className="text-primary font-semibold">escalar com previsibilidade</span>.
           </p>
 
           {/* CTA Button */}
@@ -136,7 +120,7 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-primary via-yellow-400 to-primary bg-[length:200%_100%] animate-[shimmer_2s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <span className="relative z-10 flex items-center gap-3">
                 <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-                Começar Revolução
+                Quero estruturar meu marketing
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
               </span>
               <div className="absolute inset-0 rounded-full border-2 border-primary/50 animate-ping opacity-20" />
@@ -171,7 +155,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-
 
       {/* Corner Accents */}
       <div 

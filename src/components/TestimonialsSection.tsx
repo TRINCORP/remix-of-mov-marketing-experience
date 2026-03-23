@@ -4,83 +4,57 @@ import { Star, Quote, TrendingUp, Users, Award } from 'lucide-react';
 
 const testimonials = [
   {
-    name: "Maria Silva",
-    position: "CEO, TechnoVision",
-    company: "Startup de IA",
+    name: "Cliente 1",
+    position: "Cargo",
+    company: "Empresa",
     rating: 5,
-    text: "A MOV transformou completamente nossa presença digital. Em 6 meses, aumentamos nosso faturamento em 300% e nos tornamos referência no setor.",
-    results: "300% aumento no faturamento",
+    text: "Antes, nosso marketing era desorganizado e reativo. Hoje temos clareza de estratégia, processos definidos e decisões muito mais seguras para o negócio.",
+    results: "Marketing estruturado",
     image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=face",
     metrics: [
-      { label: "ROI", before: "25%", after: "85%" },
-      { label: "Conversão", before: "1.2%", after: "4.8%" }
+      { label: "Organização", before: "Reativo", after: "Estruturado" },
+      { label: "Decisões", before: "Intuitivas", after: "Baseadas em dados" }
     ]
   },
   {
-    name: "Carlos Mendes",
-    position: "Fundador",
-    company: "EcoSmart Solutions",
+    name: "Cliente 2",
+    position: "Cargo",
+    company: "Empresa",
     rating: 5,
-    text: "Estratégias inovadoras que realmente funcionam. A equipe da MOV não apenas entende de marketing, eles respiram inovação.",
-    results: "250% mais leads qualificados",
+    text: "O diferencial foi a visão estratégica. A MOV não entrega apenas execução de marketing, entrega direção.",
+    results: "Visão estratégica",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
     metrics: [
-      { label: "Leads/mês", before: "120", after: "420" },
-      { label: "Ticket Médio", before: "R$ 350", after: "R$ 890" }
+      { label: "Estratégia", before: "Inexistente", after: "Definida" },
+      { label: "Direção", before: "Sem foco", after: "Clara" }
     ]
   },
   {
-    name: "Ana Costa",
-    position: "Diretora de Marketing",
-    company: "Fashion Forward",
+    name: "Cliente 3",
+    position: "Cargo",
+    company: "Empresa",
     rating: 5,
-    text: "ROI impressionante! A MOV conseguiu escalar nossa marca de forma sustentável e com resultados mensuráveis em cada campanha.",
-    results: "500% ROI em campanhas",
+    text: "É uma assessoria que entende de negócio, não só de marketing. Isso muda completamente o nível da conversa e dos resultados.",
+    results: "Parceiro estratégico",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
     metrics: [
-      { label: "ROAS", before: "1.8x", after: "6.2x" },
-      { label: "CAC", before: "R$ 180", after: "R$ 45" }
+      { label: "Conversas", before: "Operacionais", after: "Estratégicas" },
+      { label: "Resultados", before: "Inconstantes", after: "Consistentes" }
     ]
   },
   {
-    name: "Ricardo Santos",
-    position: "Co-founder",
-    company: "FinTech Pro",
+    name: "Cliente 4",
+    position: "Cargo",
+    company: "Empresa",
     rating: 5,
-    text: "Parceria estratégica que vai além do marketing. A MOV se tornou uma extensão da nossa equipe, sempre trazendo insights valiosos.",
-    results: "1M+ usuários adquiridos",
+    text: "Com a MOV conseguimos crescer com mais previsibilidade e muito menos improviso.",
+    results: "Crescimento previsível",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
     metrics: [
-      { label: "Usuários", before: "15K", after: "1.2M" },
-      { label: "Engajamento", before: "12%", after: "48%" }
+      { label: "Crescimento", before: "Imprevisível", after: "Previsível" },
+      { label: "Processo", before: "Improviso", after: "Método" }
     ]
   },
-  {
-    name: "Juliana Oliveira",
-    position: "CMO",
-    company: "HealthTech Innovation",
-    rating: 5,
-    text: "Criatividade sem limites! Cada campanha da MOV supera nossas expectativas e gera buzz genuíno no mercado.",
-    results: "150% crescimento orgânico",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face",
-    metrics: [
-      { label: "Tráfego Orgânico", before: "5K/mês", after: "18K/mês" },
-      { label: "Taxa Retenção", before: "35%", after: "72%" }
-    ]
-  },
-  {
-    name: "Pedro Almeida",
-    position: "CEO",
-    company: "SaaS Revolution",
-    rating: 5,
-    text: "A MOV não apenas executa, eles inovam. Transformaram nossa visão em realidade digital com resultados que superaram todos os KPIs.",
-    results: "400% aumento em conversões",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop&crop=face",
-    metrics: [
-      { label: "MRR", before: "R$ 45K", after: "R$ 220K" },
-      { label: "Churn", before: "8%", after: "2.1%" }
-    ]
-  }
 ];
 
 const TestimonialsSection = () => {
@@ -123,8 +97,8 @@ const TestimonialsSection = () => {
           </h2>
           
           <p className="gsap-paragraph text-base md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Histórias reais de transformação e sucesso. 
-            <span className="text-secondary font-bold"> Resultados que falam por si</span>.
+            Quem contratou a MOV{' '}
+            <span className="text-secondary font-bold">não voltou ao improviso</span>.
           </p>
         </div>
 
@@ -155,6 +129,7 @@ const TestimonialsSection = () => {
                   src={currentTestimonial.image}
                   alt={currentTestimonial.name}
                   className="w-16 h-16 rounded-full border-2 border-primary/20"
+                  loading="lazy"
                 />
                 <div>
                   <div className="font-bold text-foreground">{currentTestimonial.name}</div>
@@ -164,7 +139,6 @@ const TestimonialsSection = () => {
               </div>
             </div>
 
-            {/* Result Badge */}
             <div className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-gradient-to-r from-secondary to-accent text-white px-2 py-1 sm:px-4 sm:py-2 rounded-full text-[10px] sm:text-sm font-bold max-w-[140px] sm:max-w-none text-center">
               {currentTestimonial.results}
             </div>
@@ -172,7 +146,6 @@ const TestimonialsSection = () => {
 
           {/* Stats & Navigation */}
           <div className="space-y-8">
-            {/* Dynamic Impact Stats - Before/After for each client */}
             <div className="gsap-cards-container grid grid-cols-2 gap-6">
               {currentTestimonial.metrics.map((metric, index) => (
                 <div key={index} className="gsap-card text-center p-6 bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10 rounded-2xl">
