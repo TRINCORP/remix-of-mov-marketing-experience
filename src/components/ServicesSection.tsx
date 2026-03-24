@@ -610,9 +610,16 @@ const ServicesSection = () => {
           0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
           50% { transform: translateY(-20px) rotate(180deg); opacity: 0.5; }
         }
-        
         .animate-float {
           animation: float linear infinite;
+        }
+        @keyframes slide-in-left {
+          0% { transform: translateX(60px); opacity: 0; }
+          100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slide-in-right {
+          0% { transform: translateX(-60px); opacity: 0; }
+          100% { transform: translateX(0); opacity: 1; }
         }
       `}</style>
     </section>
