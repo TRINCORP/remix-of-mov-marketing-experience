@@ -121,18 +121,20 @@ const ServicesSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  const navigate = useCallback((direction: 'next' | 'prev') => {
+  const navigate = useCallback((dir: 'next' | 'prev') => {
     if (isAnimating) return;
     setIsAnimating(true);
+    setDirection(dir);
+    setPrevIndex(currentIndex);
     
-    if (direction === 'next') {
+    if (dir === 'next') {
       setCurrentIndex((prev) => (prev + 1) % services.length);
     } else {
       setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
     }
     
     setTimeout(() => setIsAnimating(false), 600);
-  }, [isAnimating]);
+  }, [isAnimating, currentIndex]);
 
   const goToSlide = useCallback((index: number) => {
     if (isAnimating || index === currentIndex) return;
