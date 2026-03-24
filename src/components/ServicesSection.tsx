@@ -528,8 +528,16 @@ const ServicesSection = () => {
           onTouchEnd={onTouchEnd}
         >
           {isMobile ? (
-            <div className="flex justify-center">
-              <MobileCard service={currentService} isActive={true} />
+            <div className="relative overflow-hidden" style={{ minHeight: '380px' }}>
+              <div
+                key={currentIndex}
+                className="mobile-card-enter"
+                style={{
+                  animation: `slide-in-${direction === 'next' ? 'left' : 'right'} 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`,
+                }}
+              >
+                <MobileCard service={currentService} isActive={true} />
+              </div>
             </div>
           ) : (
             <DesktopCarousel />
