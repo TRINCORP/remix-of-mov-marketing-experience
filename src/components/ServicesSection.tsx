@@ -93,8 +93,10 @@ const services: Service[] = [
 
 const ServicesSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -119,22 +121,26 @@ const ServicesSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  const navigate = useCallback((direction: 'next' | 'prev') => {
+  const navigate = useCallback((dir: 'next' | 'prev') => {
     if (isAnimating) return;
     setIsAnimating(true);
+    setDirection(dir);
+    setPrevIndex(currentIndex);
     
-    if (direction === 'next') {
+    if (dir === 'next') {
       setCurrentIndex((prev) => (prev + 1) % services.length);
     } else {
       setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
     }
     
     setTimeout(() => setIsAnimating(false), 600);
-  }, [isAnimating]);
+  }, [isAnimating, currentIndex]);
 
   const goToSlide = useCallback((index: number) => {
     if (isAnimating || index === currentIndex) return;
     setIsAnimating(true);
+    setDirection(index > currentIndex ? 'next' : 'prev');
+    setPrevIndex(currentIndex);
     setCurrentIndex(index);
     setTimeout(() => setIsAnimating(false), 600);
   }, [isAnimating, currentIndex]);
@@ -522,8 +528,16 @@ const ServicesSection = () => {
           onTouchEnd={onTouchEnd}
         >
           {isMobile ? (
-            <div className="flex justify-center">
-              <MobileCard service={currentService} isActive={true} />
+            <div className="relative overflow-hidden" style={{ minHeight: '380px' }}>
+              <div
+                key={currentIndex}
+                className="mobile-card-enter"
+                style={{
+                  animation: `slide-in-${direction === 'next' ? 'left' : 'right'} 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`,
+                }}
+              >
+                <MobileCard service={currentService} isActive={true} />
+              </div>
             </div>
           ) : (
             <DesktopCarousel />
@@ -596,9 +610,16 @@ const ServicesSection = () => {
           0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
           50% { transform: translateY(-20px) rotate(180deg); opacity: 0.5; }
         }
-        
         .animate-float {
           animation: float linear infinite;
+        }
+        @keyframes slide-in-left {
+          0% { transform: translateX(60px); opacity: 0; }
+          100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slide-in-right {
+          0% { transform: translateX(-60px); opacity: 0; }
+          100% { transform: translateX(0); opacity: 1; }
         }
       `}</style>
     </section>
