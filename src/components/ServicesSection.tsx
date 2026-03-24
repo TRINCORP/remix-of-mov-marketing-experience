@@ -139,6 +139,8 @@ const ServicesSection = () => {
   const goToSlide = useCallback((index: number) => {
     if (isAnimating || index === currentIndex) return;
     setIsAnimating(true);
+    setDirection(index > currentIndex ? 'next' : 'prev');
+    setPrevIndex(currentIndex);
     setCurrentIndex(index);
     setTimeout(() => setIsAnimating(false), 600);
   }, [isAnimating, currentIndex]);
