@@ -103,15 +103,15 @@ const WorkCard = ({ item, index }: { item: WorkItem; index: number }) => {
   }, [isHovered]);
 
   const sizeClasses = {
-    large: 'col-span-2 row-span-2',
-    medium: 'col-span-1 row-span-2',
+    large: 'col-span-1 sm:col-span-2 row-span-1 sm:row-span-2',
+    medium: 'col-span-1 row-span-1 sm:row-span-2',
     small: 'col-span-1 row-span-1',
   };
 
   const heightClasses = {
-    large: 'h-[500px] md:h-[600px]',
-    medium: 'h-[400px] md:h-[500px]',
-    small: 'h-[250px] md:h-[280px]',
+    large: 'h-[280px] sm:h-[400px] md:h-[500px] lg:h-[600px]',
+    medium: 'h-[260px] sm:h-[350px] md:h-[500px]',
+    small: 'h-[220px] sm:h-[250px] md:h-[280px]',
   };
 
   return (
@@ -371,7 +371,7 @@ const FeaturedWorkSection = () => {
         </div>
 
         {/* Work Grid - Bento Style */}
-        <div className="gsap-cards-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12">
+        <div className="gsap-cards-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-12">
           {featuredWork.map((item, index) => (
             <WorkCard key={item.id} item={item} index={index} />
           ))}

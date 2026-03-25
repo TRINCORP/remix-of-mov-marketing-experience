@@ -14,7 +14,7 @@ const FooterMarquee = () => {
         {[1, 2, 3].map((_, i) => (
           <span 
             key={i} 
-            className="mx-4 sm:mx-8 text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-black text-transparent tracking-tighter"
+            className="mx-3 sm:mx-6 text-2xl sm:text-4xl md:text-6xl lg:text-8xl font-black text-transparent tracking-tighter"
             style={{
               WebkitTextStroke: '1px hsl(var(--primary) / 0.3)',
             }}
@@ -81,7 +81,7 @@ const Footer = () => {
       {/* Main Footer Content */}
       <div className="relative py-16 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12">
             
             {/* Brand Column */}
             <div className={`lg:col-span-1 transition-all duration-700 ${
