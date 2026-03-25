@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX, Play, Pause, Rocket, Target } from 'lucide-react';
+import { Rocket, Target } from 'lucide-react';
 
 const VideoHeroBanner = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -15,10 +13,8 @@ const VideoHeroBanner = () => {
         if (videoRef.current) {
           if (entry.isIntersecting) {
             videoRef.current.play();
-            setIsPlaying(true);
           } else {
             videoRef.current.pause();
-            setIsPlaying(false);
           }
         }
       },
@@ -31,24 +27,6 @@ const VideoHeroBanner = () => {
 
     return () => observer.disconnect();
   }, []);
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
 
   return (
     <section 
@@ -116,31 +94,6 @@ const VideoHeroBanner = () => {
         </div>
       </div>
 
-      {/* Video controls */}
-      <div className="absolute bottom-6 right-6 flex gap-3">
-        <button
-          onClick={togglePlay}
-          className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors border border-white/30"
-          aria-label={isPlaying ? 'Pausar' : 'Reproduzir'}
-        >
-          {isPlaying ? (
-            <Pause className="w-5 h-5 text-white" />
-          ) : (
-            <Play className="w-5 h-5 text-white ml-0.5" />
-          )}
-        </button>
-        <button
-          onClick={toggleMute}
-          className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors border border-white/30"
-          aria-label={isMuted ? 'Ativar som' : 'Silenciar'}
-        >
-          {isMuted ? (
-            <VolumeX className="w-5 h-5 text-white" />
-          ) : (
-            <Volume2 className="w-5 h-5 text-white" />
-          )}
-        </button>
-      </div>
 
       {/* Scroll indicator - hidden on very small screens to avoid overlap */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 hidden sm:flex flex-col items-center gap-2">

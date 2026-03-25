@@ -88,14 +88,11 @@ const Footer = () => {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}>
               <div className="flex items-center gap-3 mb-6">
-                <div 
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
-                  style={{
-                    background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))',
-                  }}
-                >
-                  <Sparkles className="w-6 h-6 text-primary-foreground" />
-                </div>
+                <img
+                  src="/lovable-uploads/mov-logo-gold.png"
+                  alt="MOV"
+                  className="w-12 h-12 object-contain"
+                />
                 <span className="text-3xl font-black text-gradient">MOV</span>
               </div>
 
